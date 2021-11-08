@@ -131,15 +131,13 @@ msp.add_lwpolyline(linia_2, dxfattribs={'layer': 'KONEC-Przerywana'})
 # dim = msp.add_linear_dim(base=(0, -wysokosc_podpory - 100), p1=(0, -wysokosc_podpory), p2=(sPL, -wysokosc_podpory),
 #                          dimstyle='KONEC_1_50', dxfattribs={'layer': 'KONEC-Wymiary'})
 
-dim = msp.add_multi_point_linear_dim(base=(0, -wysokosc_podpory - 100),
-                                points=[(0, -wysokosc_podpory),
-                                       (sPL, -wysokosc_podpory),
-                                       (sPL + rB, -wysokosc_podpory),
-                                       (sPL + rB + sPP, -wysokosc_podpory)],
-                               dxfattribs={'layer': 'KONEC-Wymiary'},
-                               dimstyle='KONEC_1_50',
-                                     override={'dimscale': 20}
-
-                               )
+# dim = msp.add_multi_point_linear_dim(base=(0, -wysokosc_podpory - 100),
+#                                 points=[(0, -wysokosc_podpory),
+#                                        (sPL, -wysokosc_podpory),
+#                                        (sPL + rB, -wysokosc_podpory),
+#                                        (sPL + rB + sPP, -wysokosc_podpory)],
+#                                dxfattribs={'layer': 'KONEC-Wymiary'},
+#                                dimstyle='KONEC_1_50',
+#                                      override={'dimscale': 20})
 
 drawing.saveas('test.dxf')

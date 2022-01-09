@@ -23,29 +23,38 @@ class DxfElement:
                  cover_top: int,
                  cover_left: int,
                  cover_right: int,
+                 first_row_stirrup_range_left: int,
+                 first_row_stirrup_range_right: int,
+                 first_row_stirrup_spacing_left: int,
+                 first_row_stirrup_spacing_right: int,
+                 secondary_stirrup_spacing: int,
                  name: str = "Belka",
                  dxfversion: str = 'R2018',
                  start_point_x: int = 0,
                  start_point_y: int = 0):
 
+        self.secondary_stirrup_spacing = self._is_valid_value(secondary_stirrup_spacing, 0, 400)
+        self.first_row_stirrup_spacing_right = self._is_valid_value(first_row_stirrup_spacing_right, 10, 400)
+        self.first_row_stirrup_spacing_left = self._is_valid_value(first_row_stirrup_spacing_left, 10, 400)
+        self.first_row_stirrup_range_right = self._is_valid_value(first_row_stirrup_range_right, 0, 15000)
+        self.first_row_stirrup_range_left = self._is_valid_value(first_row_stirrup_range_left, 0, 15000)
         self.name = name
-        self.cover_right = cover_right
-        self.cover_left = cover_left
-        self.diameter_main_bottom = diameter_main_bottom
-        self.beam_width = beam_width
-        self.cover_view_right = cover_view_right
-        self.cover_top = cover_top
-        self.beam_height = beam_height
-        self.cover_bottom = cover_bottom
-        self.cover_view_left = cover_view_left
-        self.diameter_main_top = diameter_main_top
-        self.diameter_stirrup = diameter_stirrup
+        self.cover_right = self._is_valid_value(cover_right, 5, 100)
+        self.cover_left = self._is_valid_value(cover_left, 5, 100)
+        self.beam_width = self._is_valid_value(beam_width, 100, 1000)
+        self.cover_top = self._is_valid_value(cover_top, 5, 100)
+        self.cover_bottom = self._is_valid_value(cover_bottom, 5, 100)
+        self.cover_view_right = self._is_valid_value(cover_view_right, 5, 100)
+        self.cover_view_left = self._is_valid_value(cover_view_left, 5, 100)
+        self.diameter_main_bottom = self._is_valid_value(diameter_main_bottom, 1, 100)
+        self.diameter_main_top = self._is_valid_value(diameter_main_top, 1, 100)
+        self.diameter_stirrup = self._is_valid_value(diameter_stirrup, 1, 100)
         self.start_point_y = start_point_y
         self.start_point_x = start_point_x
-        self.width_support_right = width_support_right
-        self.width_support_left = width_support_left
-        self.beam_span = beam_span
-        self.beam_height = beam_height
+        self.width_support_right = self._is_valid_value(width_support_right, 50, 1000)
+        self.width_support_left = self._is_valid_value(width_support_left, 50, 1000)
+        self.beam_span = self._is_valid_value(beam_span, 300, 15000)
+        self.beam_height = self._is_valid_value(beam_height, 100, 1500)
 
         self.counter = None
         self.bar = None
@@ -64,7 +73,15 @@ class DxfElement:
         self.beam_outline()
         self.view_top_bar()
         self.view_bottom_bar()
+        self.secondary_stirrup_spacing_min()
         self.save()
+
+    """Część sprawdzająca poprawnośc danych"""
+
+    def _is_valid_value(self, value, min_value=0, max_value=99999):
+        if type(value) != int or value <= min_value or value > max_value:
+            raise ValueError(f"{value} max is {max_value}[m]")
+        return value
 
     @staticmethod
     def bar_bending(diameter: int):
@@ -73,6 +90,11 @@ class DxfElement:
             return diameter * 2.5
         else:
             return diameter * 4.0
+
+    def secondary_stirrup_spacing_min(self):
+        self.secondary_stirrup_spacing = math.floor(
+            min(self.secondary_stirrup_spacing, 400, (self.beam_height * 0.75)) / 5) * 5
+        return self.secondary_stirrup_spacing
 
     def initial_drawing(self, LTSCALE: int = 50, INSUNITS: int = 4, MEASUREMENT: int = 1):
         """
@@ -180,6 +202,12 @@ class DxfElement:
                               self.start_point_y + self.cover_bottom + self.diameter_stirrup + 0.5 * self.diameter_main_bottom))]
         return self.msp.add_lwpolyline(points, dxfattribs={'closed': False, 'layer': self.bar})
 
+    def stirrupSpacing(self):
+        """rozstaw strzemion w belce"""
+        localization_stirrups = []
+        if self.first_row_stirrup_range_left > 0:
+            pass
 
-draw = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35)
+
+draw = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 1000, 250, 150, 400)
 # draw.initial_drawing(LTSCALE=20, INSUNITS=0)

@@ -6,312 +6,179 @@ from ezdxf.tools.standards import linetypes
 from math import pi, floor
 from random import randrange, choice
 
-drawing = ezdxf.new(dxfversion='R2018', setup=["linetypes"])
-drawing.header['$LTSCALE'] = 50
-drawing.header['$INSUNITS'] = 4
-drawing.header['$MEASUREMENT'] = 1
 
-msp = drawing.modelspace()
+class DxfElement:
+    def __init__(self,
+                 beam_span: int,
+                 beam_height: int,
+                 beam_width: int,
+                 width_support_left: int,
+                 width_support_right: int,
+                 diameter_main_top: int,
+                 diameter_main_bottom: int,
+                 diameter_stirrup: int,
+                 cover_view_left: int,
+                 cover_view_right: int,
+                 cover_bottom: int,
+                 cover_top: int,
+                 cover_left: int,
+                 cover_right: int,
+                 name: str = "Belka",
+                 dxfversion: str = 'R2018',
+                 start_point_x: int = 0,
+                 start_point_y: int = 0):
 
-drawing.layers.new('KONEC-Obrys', dxfattribs={'color': 3})
-drawing.layers.new('KONEC-Prety', dxfattribs={'color': 1})
-drawing.layers.new('KONEC-Strzemiona', dxfattribs={'color': 6})
-drawing.layers.new('KONEC-Kreskowanie', dxfattribs={'color': 7})
-drawing.layers.new('KONEC-Wymiary', dxfattribs={'color': 4})
-drawing.layers.new('KONEC-Przerywana', dxfattribs={'color': 8, 'linetype': 'DASHED'})
+        self.name = name
+        self.cover_right = cover_right
+        self.cover_left = cover_left
+        self.diameter_main_bottom = diameter_main_bottom
+        self.beam_width = beam_width
+        self.cover_view_right = cover_view_right
+        self.cover_top = cover_top
+        self.beam_height = beam_height
+        self.cover_bottom = cover_bottom
+        self.cover_view_left = cover_view_left
+        self.diameter_main_top = diameter_main_top
+        self.diameter_stirrup = diameter_stirrup
+        self.start_point_y = start_point_y
+        self.start_point_x = start_point_x
+        self.width_support_right = width_support_right
+        self.width_support_left = width_support_left
+        self.beam_span = beam_span
+        self.beam_height = beam_height
 
-drawing.styles.new('KONEC-TEKST', dxfattribs={'font': 'Arial.ttf'})
+        self.counter = None
+        self.bar = None
+        self.stirrup = None
+        self.hatch = None
+        self.dimension = None
+        self.hidden = None
+        self.dim_name = None
+        self.text = None
 
-drawing.dimstyles.new('KONEC_1_20',
-                      dxfattribs={'dimjust': 0, 'dimscale': 20, 'dimblk': 'OBLIQUE', 'dimtxsty': 'KONEC-TEKST'})
+        self.dxfversion = dxfversion
+        self.drawing = ezdxf.new(dxfversion=self.dxfversion, setup=["linetypes"])
+        self.initial_drawing()
+        self.layer_element()
+        self.msp = self.drawing.modelspace()
+        self.beam_outline()
+        self.view_top_bar()
+        self.view_bottom_bar()
+        self.save()
 
-srednice_prętów = (12, 16, 20, 24, 28, 32)
-# rozpietoscBelki
-rB = randrange(400, 6000, 25)
-# wysokoscBelki
-wB = randrange(200, 800, 50)
-# szerokoscBelki
-sB = randrange(150, 500, 50)
-# szerokoscPodporyLewej
-sPL = randrange(150, 500, 50)
-# szerokoscPodporyPrawej
-sPP = randrange(150, 500, 50)
-# srednicaPretaGlownegoGornego
-sPGG = choice(srednice_prętów)
-# srednicaPretaGlownegoDolnego
-sPGD = choice(srednice_prętów)
-# średnicaStrzemienia
-sS = choice((6, 8))
-# otulinaGorna
-oG = randrange(15, 80, 5)
-# otulinaDolna
-oD = randrange(15, 80, 5)
-# otulinaBocznaLewa
-oBL = randrange(15, 80, 5)
-# otulinaBocznaPrawa
-oBP = randrange(15, 80, 5)
-# otulinaBocznaLewaPrzekroj
-oBLP = randrange(15, 80, 5)
-# otulinaBocznaPrawaPrzekroj
-oBPP = randrange(15, 80, 5)
-# zasięgStrzemionPIerszegorzęduLewa
-zSPL = randrange(int(rB / 8), int(rB / 4))
-# zasięgStrzemionPIerszegorzęduPrawa
-zSPP = randrange(int(rB / 8), int(rB / 4))
-# rozstawStrzemionPIerszegorzęduLewa
-rSPL = randrange(70, 300, 5)
-# rozstawStrzemionPIerszegorzęduPrawa
-rSPP = randrange(70, 300, 5)
+    @staticmethod
+    def bar_bending(diameter: int):
+        '''Obliczanie wygięcia pręta związanego ze średnicą pręta'''
+        if diameter <= 16:
+            return diameter * 2.5
+        else:
+            return diameter * 4.0
 
-# # rozpietoscBelki
-# rB = int(input("wpisz rozpiętość belki w świetle [mm]: "))
-# # wysokoscBelki
-# wB = int(input("wpisz wysokoSC belki [mm]: "))
-# # szerokoscBelki
-# sB = int(input("wpisz szerokosc belki [mm]: "))
-# # szerokoscPodporyLewej
-# sPL = int(input("Wpisz szerokość podpory z lewej strony [mm]: "))
-# # szerokoscPodporyPrawej
-# sPP = int(input("Wpisz szerokość podpory z prawej strony [mm]: "))
-# # srednicaPretaGlownegoGornego
-# sPGG = int(input("Wpisz średnice prętów głównych górą [mm]: "))
-# # srednicaPretaGlownegoDolnego
-# sPGD = int(input("Wpisz średnice prętów głównych dołem [mm]: "))
-# średnicaStrzemienia
-# sS = int(input("Wpisz średnice strzemion [mm]: "))
-# # otulinaGorna
-# oG = int(input("Otulina górą [mm]: "))
-# # otulinaDolna
-# oD = int(input("Otulina dołem [mm]: "))
-# # otulinaBocznaLewa
-# oBL = int(input("Otulina boczną lewą [mm]: "))
-# # otulinaBocznaPrawa
-# oBP = int(input("Otulina boczną prawą [mm]: "))
+    def initial_drawing(self, LTSCALE: int = 50, INSUNITS: int = 4, MEASUREMENT: int = 1):
+        '''Inicjalizacja pliku rysunku cad
+        LTSCALE - skala rysunku powizana z liniami, default=50
+        INSUNITS - jednostki rysunkowe, default=4 (mm)
+        '''
+        self.drawing.header['$LTSCALE'] = LTSCALE
+        self.drawing.header['$INSUNITS'] = INSUNITS
+        self.drawing.header['$MEASUREMENT'] = MEASUREMENT
+        return self.drawing
 
-# wyokragleniePretagornego
-if sPGG <= 16:
-    wPG = sPGG * 2.5
-else:
-    wPG = sPGG * 4.0
-# strzalkaWyoblenia
-sW1 = ezdxf.math.arc_to_bulge((wPG, 0), pi, pi / 2, wPG)
-sW = -1 / sW1[2]
-# Obrys belki
-pointsObrys = [(0, 0), (sPL, 0), ((sPL + rB), 0), ((sPL + rB + sPP), 0), ((sPL + rB + sPP), wB), (0, wB)]
-msp.add_lwpolyline(pointsObrys, dxfattribs={'closed': True, 'layer': 'KONEC-Obrys'})
+    def layer_element(self,
+                      counter: str = 'KONEC-Obrys', color_counter: int = 3,
+                      bar: str = 'KONEC-Prety', color_bar: int = 1,
+                      stirrup: str = 'KONEC-Strzemiona', color_stirrup: int = 6,
+                      hatch: str = 'KONEC-Kreskowanie', color_hatch: int = 7,
+                      dimension: str = 'KONEC-Wymiary', color_dimension: int = 4,
+                      hidden: str = 'KONEC-Przerywana', color_hidden: int = 8,
+                      dim_name: str = 'KONEC_1_20', dim_scale: int = 20,
+                      text: str = 'KONEC-Tekst', font_text: str = 'Arial.ttf'):
+        '''Tworzenie warstw, styli teksty i wymiarowania'''
+        self.counter = counter
+        self.bar = bar
+        self.stirrup = stirrup
+        self.hatch = hatch
+        self.dimension = dimension
+        self.hidden = hidden
+        self.dim_name = dim_name
+        self.text = text
 
-# Geometria pręta górnego
-pointsPretG = [((oBL + 0.5 * sPGG), oD, sPGG, sPGG),
-               ((oBL + 0.5 * sPGG), (wB - oG - sS - 0.5 * sPGG - wPG), sPGG, sPGG, sW),
-               ((oBL + 0.5 * sPGG + wPG), (wB - oG - sS - 0.5 * sPGG), sPGG, sPGG),
-               ((sPL + rB + sPP - oBP - 0.5 * sPGG - wPG), (wB - oG - sS - 0.5 * sPGG), sPGG, sPGG, sW),
-               ((sPL + rB + sPP - oBP - 0.5 * sPGG), (wB - oG - sS - 0.5 * sPGG - wPG), sPGG, sPGG),
-               ((sPL + rB + sPP - oBP - 0.5 * sPGG), oD)]
-msp.add_lwpolyline(pointsPretG, dxfattribs={'layer': 'KONEC-Prety'})
-# Geometria pręta dolnego
-pointsPretD = [(oBL, (oD + sS + 0.5 * sPGD), sPGD, sPGD), (sPL + rB + sPP - oBP, (oD + sS + 0.5 * sPGD))]
-msp.add_lwpolyline(pointsPretD, dxfattribs={'layer': 'KONEC-Prety'})
+        self.drawing.layers.new(self.counter, dxfattribs={'color': color_counter})
+        self.drawing.layers.new(bar, dxfattribs={'color': color_bar})
+        self.drawing.layers.new(stirrup, dxfattribs={'color': color_stirrup})
+        self.drawing.layers.new(hatch, dxfattribs={'color': color_hatch})
+        self.drawing.layers.new(dimension, dxfattribs={'color': color_dimension})
+        self.drawing.layers.new(hidden, dxfattribs={'color': color_hidden, 'linetype': 'DASHED'})
+        self.drawing.styles.new(text, dxfattribs={'font': font_text})
+        self.drawing.dimstyles.new(dim_name,
+                                   dxfattribs={'dimjust': 0, 'dimscale': dim_scale, 'dimblk': 'OBLIQUE',
+                                               'dimtxsty': text})
 
-# # strzemiona
-# # rozstawStrzemion
-# rS = floor(rB / 200)
-# # pierwszeStrzemieDrugorzedne
-# pSD = 0.5 * (rB - rS * 200)
-# for a in range(rS + 1):
-#     pointsStrzemie = [((sPL + pSD + a * 200), oD, sS, sS), ((sPL + pSD + a * 200), (wB - oG))]
-#     msp.add_lwpolyline(pointsStrzemie, dxfattribs={'layer': 'KONEC-Strzemiona'})
+    def save(self):
+        '''Zapisywanie do pliku'''
+        self.drawing.saveas(f'{self.name}.dxf')
 
-# strzemiona
-# punktyStrzemion
-pS = []
+    def bar_bulge(self, diameter):
+        '''funkcja potrzebna aby wyliczyć promień łuku dla wyoblenia'''
+        bulge = self.bar_bending(diameter)
+        math_bulge = ezdxf.math.arc_to_bulge((bulge, 0), pi, pi / 2, bulge)
+        return -1 / math_bulge[2]
 
-rDS = math.floor(min(0.75 * wB * 0.9, 400) / 5) * 5
+    def beam_outline(self):
+        '''generowanie obrysu belki'''
+        points = [(self.start_point_x, self.start_point_y),
+                  (self.start_point_x + self.width_support_left, self.start_point_y),
+                  ((self.start_point_x + self.width_support_left + self.beam_span), self.start_point_y),
+                  ((self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right),
+                   self.start_point_y),
+                  ((self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right),
+                   self.start_point_y + self.beam_height),
+                  (self.start_point_x, self.start_point_y + self.beam_height)]
+        return self.msp.add_lwpolyline(points, dxfattribs={'closed': True, 'layer': self.counter})
 
-oOP = rB - (math.ceil(zSPL / rSPL) * rSPL + math.ceil(zSPP / rSPP) * rSPP + math.floor(
-    (rB - (math.ceil(zSPL / rSPL) * rSPL + math.ceil(zSPP / rSPP) * rSPP)) / rDS) * rDS)
+    def view_top_bar(self):
+        '''generowanie pręta górnego'''
+        bugle = self.bar_bulge(self.diameter_main_top)
+        bending = self.bar_bending(self.diameter_main_top)
+        points = [((self.start_point_x + self.cover_view_left + 0.5 * self.diameter_main_top),
+                   self.start_point_y + self.cover_bottom, self.diameter_main_top,
+                   self.diameter_main_top),
+                  ((self.start_point_x + self.cover_view_left + 0.5 * self.diameter_main_top),
+                   (
+                           self.start_point_y + self.beam_height - self.cover_top - self.diameter_stirrup - 0.5 * self.diameter_main_top - bending),
+                   self.diameter_main_top, self.diameter_main_top, bugle),
+                  ((self.start_point_x + self.cover_view_left + 0.5 * self.diameter_main_top + bending),
+                   (
+                           self.start_point_y + self.beam_height - self.cover_top - self.diameter_stirrup - 0.5 * self.diameter_main_top),
+                   self.diameter_main_top,
+                   self.diameter_main_top),
+                  ((
+                           self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right - self.cover_view_right - 0.5 * self.diameter_main_top - bending),
+                   (
+                           self.start_point_y + self.beam_height - self.cover_top - self.diameter_stirrup - 0.5 * self.diameter_main_top),
+                   self.diameter_main_top,
+                   self.diameter_main_top, bugle),
+                  ((
+                           self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right - self.cover_view_right - 0.5 * self.diameter_main_top),
+                   (
+                           self.start_point_y + self.beam_height - self.cover_top - self.diameter_stirrup - 0.5 * self.diameter_main_top - bending),
+                   self.diameter_main_top, self.diameter_main_top),
+                  ((
+                           self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right - self.cover_view_right - 0.5 * self.diameter_main_top),
+                   self.start_point_y + self.cover_bottom)]
+        return self.msp.add_lwpolyline(points, dxfattribs={'closed': False, 'layer': self.bar})
 
-# print(oOP, 'start')
-while oOP > 60:
-    rDS -= 5
-    oOP = rB - (math.ceil(zSPL / rSPL) * rSPL + math.ceil(zSPP / rSPP) * rSPP + math.floor(
-        (rB - (math.ceil(zSPL / rSPL) * rSPL + math.ceil(zSPP / rSPP) * rSPP)) / rDS) * rDS)
-if oOP > 60:
-    while oOP > 60:
-        rDS -= 5
-        oOP = rB - (math.ceil(zSPL / rSPL) * rSPL + math.ceil(zSPP / rSPP) * rSPP + math.floor(
-            (rB - (math.ceil(zSPL / rSPL) * rSPL + math.ceil(zSPP / rSPP) * rSPP)) / rDS) * rDS)
-
-for i in range(int(math.ceil(zSPL / rSPL) + 1)):
-    pS.append(oOP / 2 + i * rSPL)
-
-ostatnieStrzemieLewa = pS[-1]
-
-for i in range(int(math.ceil(zSPP / rSPP) + 1)):
-    pS.append(rB - oOP / 2 - i * rSPP)
-
-ostatnieStrzemiePrawa = pS[-1]
-
-for i in range(1, int((rB - ostatnieStrzemieLewa - (rB - ostatnieStrzemiePrawa)) / rDS)):
-    pS.append(ostatnieStrzemieLewa + i * rDS)
-
-# ilośćRozstawuDrugiego Rzędu
-iRDR = math.ceil((ostatnieStrzemiePrawa-ostatnieStrzemieLewa)/rDS)
-
-for a in pS:
-    pointsStrzemie = [((sPL + a), oD, sS, sS), ((sPL + a), (wB - oG))]
-    msp.add_lwpolyline(pointsStrzemie, dxfattribs={'layer': 'KONEC-Strzemiona'})
-
-# podpory
-wysokosc_podpory = 200
-hatch1 = msp.add_hatch(dxfattribs={'layer': 'KONEC-Kreskowanie'})
-hatch1.set_pattern_fill('ANSI33', scale=20, color=-1)
-hatch1.paths.add_polyline_path(
-    [(0, 0), (0, -wysokosc_podpory), (sPL, -wysokosc_podpory), (sPL, 0)]
-)
-
-hatch2 = msp.add_hatch(dxfattribs={'layer': 'KONEC-Kreskowanie'})
-hatch2.set_pattern_fill('ANSI31', scale=20, color=-1)
-hatch2.paths.add_polyline_path(
-    [(sPL + rB, 0), (sPL + rB, -wysokosc_podpory), (sPL + rB + sPP, -wysokosc_podpory), (sPL + rB + sPP, 0)]
-)
-
-punkty_podpor = (0, sPL, sPL + rB, sPL + rB + sPP)
-for a in punkty_podpor:
-    punkty = [(a, 0), (a, -wysokosc_podpory)]
-    msp.add_lwpolyline(punkty, dxfattribs={'layer': 'KONEC-Obrys'})
-
-linia_1 = [(0 - 200, -wysokosc_podpory), (sPL + 200, -wysokosc_podpory)]
-msp.add_lwpolyline(linia_1, dxfattribs={'layer': 'KONEC-Przerywana'})
-linia_2 = [(sPL + rB - 200, -wysokosc_podpory), (sPL + rB + sPP + 200, -wysokosc_podpory)]
-msp.add_lwpolyline(linia_2, dxfattribs={'layer': 'KONEC-Przerywana'})
-
-# wymiarowanie
-dim1 = msp.add_linear_dim(base=(0, -wysokosc_podpory - 200), p1=(0, -wysokosc_podpory), p2=(sPL, -wysokosc_podpory),
-                          dimstyle='KONEC_1_20', dxfattribs={'layer': 'KONEC-Wymiary'})
-dim2 = msp.add_linear_dim(base=(0, -wysokosc_podpory - 200), p1=(sPL, -wysokosc_podpory),
-                          p2=(sPL + rB, -wysokosc_podpory),
-                          dimstyle='KONEC_1_20', dxfattribs={'layer': 'KONEC-Wymiary'})
-dim3 = msp.add_linear_dim(base=(0, -wysokosc_podpory - 200), p1=(sPL + rB, -wysokosc_podpory),
-                          p2=(sPL + rB + sPP, -wysokosc_podpory),
-                          dimstyle='KONEC_1_20', dxfattribs={'layer': 'KONEC-Wymiary'})
-
-dim4 = msp.add_linear_dim(base=(-100, 0), p1=(0, 0), p2=(0, wB), angle=90,
-                          dimstyle='KONEC_1_20', dxfattribs={'layer': 'KONEC-Wymiary'})
+    def view_bottom_bar(self):
+        '''generowanie pręta dolnego'''
+        points = [((self.start_point_x + self.cover_view_left),
+                   (self.start_point_y + self.cover_bottom + self.diameter_stirrup + 0.5 * self.diameter_main_bottom),
+                   self.diameter_main_bottom, self.diameter_main_bottom),
+                  (
+                      self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right - self.cover_view_right,
+                      (
+                                  self.start_point_y + self.cover_bottom + self.diameter_stirrup + 0.5 * self.diameter_main_bottom))]
+        return self.msp.add_lwpolyline(points, dxfattribs={'closed': False, 'layer': self.bar})
 
 
-
-
-# wymiarowanie strzemion
-dim5 = msp.add_linear_dim(base=(0, -wysokosc_podpory - 100), p1=(sPL, -wysokosc_podpory),
-                          p2=(sPL + pS[0], -wysokosc_podpory),
-                          dimstyle='KONEC_1_20', dxfattribs={'layer': 'KONEC-Wymiary'})
-
-pS.sort()
-
-dim6 = msp.add_linear_dim(base=(0, -wysokosc_podpory - 100), p1=(sPL + pS[0], -wysokosc_podpory),
-                          p2=(sPL + ostatnieStrzemieLewa, -wysokosc_podpory),
-                          dimstyle='KONEC_1_20', dxfattribs={'layer': 'KONEC-Wymiary'},
-                          text=f'{math.ceil(zSPL / rSPL)} x {rSPL} = <>')
-
-dim7 = msp.add_linear_dim(base=(0, -wysokosc_podpory - 100), p1=(sPL + ostatnieStrzemieLewa, -wysokosc_podpory),
-                          p2=(sPL + ostatnieStrzemiePrawa, -wysokosc_podpory),
-                          dimstyle='KONEC_1_20', dxfattribs={'layer': 'KONEC-Wymiary'},
-                          text=f'{iRDR} x {rDS} = <>')
-
-dim8 = msp.add_linear_dim(base=(0, -wysokosc_podpory - 100), p1=(sPL + ostatnieStrzemiePrawa, -wysokosc_podpory),
-                          p2=(sPL + pS[-1], -wysokosc_podpory),
-                          dimstyle='KONEC_1_20', dxfattribs={'layer': 'KONEC-Wymiary'},
-                          text=f'{math.ceil(zSPP / rSPP)} x {rSPP} = <>')
-
-dim9 = msp.add_linear_dim(base=(0, -wysokosc_podpory - 100), p1=(sPL + pS[-1], -wysokosc_podpory),
-                          p2=(sPL + rB, -wysokosc_podpory),
-                          dimstyle='KONEC_1_20', dxfattribs={'layer': 'KONEC-Wymiary'})
-
-# przekrój
-startPrzekroj = sPL + rB + sPP + 500
-
-pointsPrzekroj = [(startPrzekroj, 0), (startPrzekroj + sB, 0), (startPrzekroj + sB, wB), (startPrzekroj, wB)]
-msp.add_lwpolyline(pointsPrzekroj, dxfattribs={'closed': True, 'layer': 'KONEC-Obrys'})
-
-# przekrój strzemie
-# wyokragleniePretagornego
-wPS = 0
-if sS <= 16:
-    wPS = sS * 2.5
-else:
-    wPS = sS * 4.0
-
-zakotwieniePretaStrzemienia = 80
-# strzalkaWyoblenia
-sW1 = ezdxf.math.arc_to_bulge((wPG, 0), pi, pi / 2, wPG)
-sW = -1 / sW1[2]
-
-# Geometria strzemienia
-pointsStrzemiePrzekroj = [
-    (startPrzekroj + oBLP + 0.5 * sS, wB - oG - 0.5 * sS - wPS - zakotwieniePretaStrzemienia, sS, sS),
-    (startPrzekroj + oBLP + 0.5 * sS, wB - oG - 0.5 * sS - wPS, sS, sS, sW),
-    (startPrzekroj + oBLP + 0.5 * sS + wPS, wB - oG - 0.5 * sS, sS, sS),
-    (startPrzekroj + sB - oBPP - 0.5 * sS - wPS, wB - oG - 0.5 * sS, sS, sS, sW),
-    (startPrzekroj + sB - oBPP - 0.5 * sS, wB - oG - 0.5 * sS - wPS, sS, sS),
-    (startPrzekroj + sB - oBPP - 0.5 * sS, oD + 0.5 * sS + wPS, sS, sS, sW),
-    (startPrzekroj + sB - oBPP - 0.5 * sS - wPS, oD + 0.5 * sS, sS, sS),
-    (startPrzekroj + oBLP + 0.5 * sS + wPS, oD + 0.5 * sS, sS, sS, sW),
-    (startPrzekroj + oBLP + 0.5 * sS, oD + 0.5 * sS + wPS, sS, sS),
-    (startPrzekroj + oBLP + 0.5 * sS, wB - oG - 0.5 * sS - wPS, sS, sS, sW),
-    (startPrzekroj + oBLP + 0.5 * sS + wPS, wB - oG - 0.5 * sS, sS, sS),
-    (startPrzekroj + oBLP + 0.5 * sS + wPS + zakotwieniePretaStrzemienia, wB - oG - 0.5 * sS, sS, sS)
-]
-
-# print(msp.add_lwpolyline(pointsStrzemiePrzekroj).get_app_data('Length'))
-# print(sprawdzenie_dlugosci.get_contro)
-
-
-msp.add_lwpolyline(pointsStrzemiePrzekroj, dxfattribs={'layer': 'KONEC-Prety'})
-
-msp.add_circle([startPrzekroj + oBLP + 0.5 * sS + wPS, wB - oG - sS - 0.5 * sPGG], 0.5 * sPGG)
-# msp.add_hatch()
-
-hatch3 = msp.add_hatch(dxfattribs={'layer': 'KONEC-Kreskowanie'})
-path_hatch3 = hatch3.paths.add_edge_path()
-hatch3.set_solid_fill(color=-1)
-path_hatch3.add_arc(center=(startPrzekroj + oBLP + 0.5 * sS + wPS, wB - oG - sS - 0.5 * sPGG), radius=0.5 * sPGG)
-
-msp.add_circle([startPrzekroj + sB - oBPP - 0.5 * sS - wPS, wB - oG - sS - 0.5 * sPGG], 0.5 * sPGG)
-# msp.add_hatch()
-
-hatch3 = msp.add_hatch(dxfattribs={'layer': 'KONEC-Kreskowanie'})
-path_hatch3 = hatch3.paths.add_edge_path()
-hatch3.set_solid_fill(color=-1)
-path_hatch3.add_arc(center=(startPrzekroj + sB - oBPP - 0.5 * sS - wPS, wB - oG - sS - 0.5 * sPGG), radius=0.5 * sPGG)
-
-msp.add_circle([startPrzekroj + oBLP + 0.5 * sS + wPS, oD + sS + 0.5 * sPGD], 0.5 * sPGD)
-
-
-hatch3 = msp.add_hatch(dxfattribs={'layer': 'KONEC-Kreskowanie'})
-path_hatch3 = hatch3.paths.add_edge_path()
-hatch3.set_solid_fill(color=-1)
-path_hatch3.add_arc(center=(startPrzekroj + oBLP + 0.5 * sS + wPS, oD + sS + 0.5 * sPGD), radius=0.5 * sPGD)
-
-msp.add_circle([startPrzekroj + sB - oBPP - 0.5 * sS - wPS, oD + sS + 0.5 * sPGD], 0.5 * sPGD)
-
-
-hatch3 = msp.add_hatch(dxfattribs={'layer': 'KONEC-Kreskowanie'})
-path_hatch3 = hatch3.paths.add_edge_path()
-hatch3.set_solid_fill(color=-1)
-path_hatch3.add_arc(center=(startPrzekroj + sB - oBPP - 0.5 * sS - wPS, oD + sS + 0.5 * sPGD), radius=0.5 * sPGD)
-
-dim10 = msp.add_linear_dim(base=(startPrzekroj, -wysokosc_podpory - 100), p1=(startPrzekroj, 0),
-                           p2=(startPrzekroj + sB, 0),
-                           dimstyle='KONEC_1_20', dxfattribs={'layer': 'KONEC-Wymiary'})
-
-dim11 = msp.add_linear_dim(base=(startPrzekroj + sB + 200, 0), p1=(startPrzekroj + sB, 0),
-                           p2=(startPrzekroj + sB, wB), angle=90,
-                           dimstyle='KONEC_1_20', dxfattribs={'layer': 'KONEC-Wymiary'})
-
-#
-# def zestawienie_formatowanie(pozycjaX, pozycjaY, text):
-#     textPret = msp.add_text(f'{45 + 56}', dxfattribs={'layer': 'KONEC-Wymiary'}).set_pos((5, 5), align="CENTER")
-#
-
-
-drawing.saveas('test.dxf')
+draw = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35)
+# draw.initial_drawing(LTSCALE=20, INSUNITS=0)

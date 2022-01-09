@@ -68,17 +68,18 @@ class DxfElement:
 
     @staticmethod
     def bar_bending(diameter: int):
-        '''Obliczanie wygięcia pręta związanego ze średnicą pręta'''
+        """Obliczanie wygięcia pręta związanego ze średnicą pręta"""
         if diameter <= 16:
             return diameter * 2.5
         else:
             return diameter * 4.0
 
     def initial_drawing(self, LTSCALE: int = 50, INSUNITS: int = 4, MEASUREMENT: int = 1):
-        '''Inicjalizacja pliku rysunku cad
+        """
+        Inicjalizacja pliku rysunku cad
         LTSCALE - skala rysunku powizana z liniami, default=50
         INSUNITS - jednostki rysunkowe, default=4 (mm)
-        '''
+        """
         self.drawing.header['$LTSCALE'] = LTSCALE
         self.drawing.header['$INSUNITS'] = INSUNITS
         self.drawing.header['$MEASUREMENT'] = MEASUREMENT
@@ -93,7 +94,7 @@ class DxfElement:
                       hidden: str = 'KONEC-Przerywana', color_hidden: int = 8,
                       dim_name: str = 'KONEC_1_20', dim_scale: int = 20,
                       text: str = 'KONEC-Tekst', font_text: str = 'Arial.ttf'):
-        '''Tworzenie warstw, styli teksty i wymiarowania'''
+        """Tworzenie warstw, styli teksty i wymiarowania"""
         self.counter = counter
         self.bar = bar
         self.stirrup = stirrup
@@ -115,17 +116,17 @@ class DxfElement:
                                                'dimtxsty': text})
 
     def save(self):
-        '''Zapisywanie do pliku'''
+        """Zapisywanie do pliku"""
         self.drawing.saveas(f'{self.name}.dxf')
 
     def bar_bulge(self, diameter):
-        '''funkcja potrzebna aby wyliczyć promień łuku dla wyoblenia'''
+        """funkcja potrzebna aby wyliczyć promień łuku dla wyoblenia"""
         bulge = self.bar_bending(diameter)
         math_bulge = ezdxf.math.arc_to_bulge((bulge, 0), pi, pi / 2, bulge)
         return -1 / math_bulge[2]
 
     def beam_outline(self):
-        '''generowanie obrysu belki'''
+        """generowanie obrysu belki"""
         points = [(self.start_point_x, self.start_point_y),
                   (self.start_point_x + self.width_support_left, self.start_point_y),
                   ((self.start_point_x + self.width_support_left + self.beam_span), self.start_point_y),
@@ -137,7 +138,7 @@ class DxfElement:
         return self.msp.add_lwpolyline(points, dxfattribs={'closed': True, 'layer': self.counter})
 
     def view_top_bar(self):
-        '''generowanie pręta górnego'''
+        """generowanie pręta górnego"""
         bugle = self.bar_bulge(self.diameter_main_top)
         bending = self.bar_bending(self.diameter_main_top)
         points = [((self.start_point_x + self.cover_view_left + 0.5 * self.diameter_main_top),
@@ -169,14 +170,14 @@ class DxfElement:
         return self.msp.add_lwpolyline(points, dxfattribs={'closed': False, 'layer': self.bar})
 
     def view_bottom_bar(self):
-        '''generowanie pręta dolnego'''
+        """generowanie pręta dolnego"""
         points = [((self.start_point_x + self.cover_view_left),
                    (self.start_point_y + self.cover_bottom + self.diameter_stirrup + 0.5 * self.diameter_main_bottom),
                    self.diameter_main_bottom, self.diameter_main_bottom),
                   (
                       self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right - self.cover_view_right,
                       (
-                                  self.start_point_y + self.cover_bottom + self.diameter_stirrup + 0.5 * self.diameter_main_bottom))]
+                              self.start_point_y + self.cover_bottom + self.diameter_stirrup + 0.5 * self.diameter_main_bottom))]
         return self.msp.add_lwpolyline(points, dxfattribs={'closed': False, 'layer': self.bar})
 
 

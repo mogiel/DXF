@@ -1,5 +1,5 @@
 import math
-
+import re
 import ezdxf
 import ezdxf.math
 from ezdxf.tools.standards import linetypes
@@ -9,8 +9,8 @@ from random import randrange, choice
 
 class DxfElement:
     def __init__(self,
-                 beam_span: int,
-                 beam_height: int,
+                 beam_span: int, # rozpiętość belki
+                 beam_height: int, # wysokość belki
                  beam_width: int,
                  width_support_left: int,
                  width_support_right: int,
@@ -29,7 +29,7 @@ class DxfElement:
                  first_row_stirrup_spacing_right: int,
                  secondary_stirrup_spacing: int,
                  name: str = "Belka",
-                 dxfversion: str = 'R2018',
+                 dxfversion: str = 'R2004',
                  start_point_x: int = 0,
                  start_point_y: int = 0):
 
@@ -38,7 +38,7 @@ class DxfElement:
         self.first_row_stirrup_spacing_left = self._is_valid_value(first_row_stirrup_spacing_left, 10, 400)
         self.first_row_stirrup_range_right = self._is_valid_value(first_row_stirrup_range_right, 0, 15000)
         self.first_row_stirrup_range_left = self._is_valid_value(first_row_stirrup_range_left, 0, 15000)
-        self.name = name
+        self.name = self._is_valid_path_name(name)
         self.cover_right = self._is_valid_value(cover_right, 5, 100)
         self.cover_left = self._is_valid_value(cover_left, 5, 100)
         self.beam_width = self._is_valid_value(beam_width, 100, 1000)
@@ -53,7 +53,8 @@ class DxfElement:
         self.start_point_x = start_point_x
         self.width_support_right = self._is_valid_value(width_support_right, 50, 1000)
         self.width_support_left = self._is_valid_value(width_support_left, 50, 1000)
-        self.beam_span = self._is_valid_value(beam_span, 300, 15000)
+        self.beam_span = self._is_valid_value_beam(beam_span, first_row_stirrup_range_left,
+                                                   first_row_stirrup_range_right, 300, 15000)
         self.beam_height = self._is_valid_value(beam_height, 100, 1500)
 
         self.counter = None
@@ -74,6 +75,7 @@ class DxfElement:
         self.view_top_bar()
         self.view_bottom_bar()
         self.secondary_stirrup_spacing_min()
+        self.layoutsNew()
         self.save()
 
     """Część sprawdzająca poprawnośc danych"""
@@ -82,6 +84,19 @@ class DxfElement:
         if type(value) != int or value <= min_value or value > max_value:
             raise ValueError(f"{value} max is {max_value}[m]")
         return value
+
+    def _is_valid_value_beam(self, value, range_left, range_right, min_value=0, max_value=99999):
+        if type(value) != int or value <= min_value or value > max_value or value - range_left - range_right < 0:
+            raise ValueError(f"{value} max is {max_value}[m]")
+        return value
+
+    def _is_valid_path_name(self, name):
+        """todo: poprawić regex, bo wywala błąd"""
+        # regex = "^(?:[^/]*(?:/(?:/[^/]*/?)?)?([^?]+)(?:\??.+)?)$"
+        regex = "/\\:*?\"<>|"
+        if not re.match(regex, name) or name.__len__() > 20:
+            raise ValueError("name is not regular expression for os")
+        return name
 
     @staticmethod
     def bar_bending(diameter: int):
@@ -139,6 +154,7 @@ class DxfElement:
 
     def save(self):
         """Zapisywanie do pliku"""
+        print(f"Zapisuje {self.name}.dxf")
         self.drawing.saveas(f'{self.name}.dxf')
 
     def bar_bulge(self, diameter):
@@ -204,10 +220,23 @@ class DxfElement:
 
     def stirrupSpacing(self):
         """rozstaw strzemion w belce"""
+        "todo: dokonczyc"
         localization_stirrups = []
         if self.first_row_stirrup_range_left > 0:
             pass
 
+    def layoutsNew(self):
+        """layauty, początki"""
+        name = f"{self.name}"
+        if name in self.drawing.layouts:
+            layout = self.drawing.layouts.get(name)
+        else:
+            layout = self.drawing.layouts.new(name)
 
-draw = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 1000, 250, 150, 400)
+        layout.page_setup(
+            size=(420, 297), margins=(0.5, 0.5, 0.5, 0.5), units="mm", scale=50
+        )
+
+
+draw = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 1000, 250, 150, 400, name="BŻ-1")
 # draw.initial_drawing(LTSCALE=20, INSUNITS=0)

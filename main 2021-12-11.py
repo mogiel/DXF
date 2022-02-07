@@ -6,7 +6,7 @@ from ezdxf.tools.standards import linetypes
 from math import pi, floor
 from random import randrange, choice
 
-drawing = ezdxf.new(dxfversion='R2018', setup=["linetypes"])
+drawing = ezdxf.new(dxfversion='R12', setup=["linetypes"])
 drawing.header['$LTSCALE'] = 50
 drawing.header['$INSUNITS'] = 4
 drawing.header['$MEASUREMENT'] = 1
@@ -135,6 +135,7 @@ while oOP > 60:
     rDS -= 5
     oOP = rB - (math.ceil(zSPL / rSPL) * rSPL + math.ceil(zSPP / rSPP) * rSPP + math.floor(
         (rB - (math.ceil(zSPL / rSPL) * rSPL + math.ceil(zSPP / rSPP) * rSPP)) / rDS) * rDS)
+
 if oOP > 60:
     while oOP > 60:
         rDS -= 5

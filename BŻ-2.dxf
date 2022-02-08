@@ -449,7 +449,7 @@ $SKPOLY
   9
 $TDCREATE
  40
-2459619.7319444446
+2459619.845775463
   9
 $TDUCREATE
  40
@@ -457,7 +457,7 @@ $TDUCREATE
   9
 $TDUPDATE
  40
-2459619.7319444446
+2459619.845775463
   9
 $TDUUPDATE
  40
@@ -509,7 +509,7 @@ $SPLINESEGS
   9
 $HANDSEED
   5
-70
+79
   9
 $SURFTAB1
  70
@@ -889,11 +889,11 @@ $PSTYLEMODE
   9
 $FINGERPRINTGUID
   2
-{378F5420-115C-42F2-BFCC-1077F25A772D}
+{E8D3B324-B08A-48D0-ABDE-2AAE5D9D75B3}
   9
 $VERSIONGUID
   2
-{BFD524A4-4F37-479D-BFB7-CA99B2BD7D72}
+{3D8BC6FC-D4EE-4BA1-9263-A812F7EB7EB1}
   9
 $EXTNAMES
 290
@@ -2385,7 +2385,7 @@ ACAD
   0
 APPID
   5
-6D
+76
 330
 3
 100
@@ -2399,7 +2399,7 @@ HATCHBACKGROUNDCOLOR
   0
 APPID
   5
-6E
+77
 330
 3
 100
@@ -2689,7 +2689,7 @@ KONEC_1_20
 340
 47
 342
-70
+79
 371
 -2
 372
@@ -2753,7 +2753,7 @@ AcDbBlockTableRecord
   0
 BLOCK_RECORD
   5
-70
+79
 330
 9
 100
@@ -2991,9 +2991,9 @@ AcDbBlockEnd
   0
 BLOCK
   5
-71
+7A
 330
-70
+79
 100
 AcDbEntity
   8
@@ -3017,9 +3017,9 @@ _OBLIQUE
   0
 LINE
   5
-73
+7C
 330
-70
+79
 100
 AcDbEntity
   8
@@ -3045,9 +3045,9 @@ AcDbLine
   0
 ENDBLK
   5
-72
+7B
 330
-70
+79
 100
 AcDbEntity
   8
@@ -4097,6 +4097,402 @@ AcDbPolyline
  20
 -200.0
   0
+DIMENSION
+  5
+6D
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Wymiary
+100
+AcDbDimension
+  3
+KONEC_1_20
+ 10
+0.0
+ 20
+-400.0
+ 30
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+0.0
+ 23
+-400.0
+ 33
+0.0
+ 14
+250.0
+ 24
+-400.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
+  0
+DIMENSION
+  5
+6E
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Wymiary
+100
+AcDbDimension
+  3
+KONEC_1_20
+ 10
+0.0
+ 20
+-400.0
+ 30
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+250.0
+ 23
+-400.0
+ 33
+0.0
+ 14
+3250.0
+ 24
+-400.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
+  0
+DIMENSION
+  5
+6F
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Wymiary
+100
+AcDbDimension
+  3
+KONEC_1_20
+ 10
+0.0
+ 20
+-400.0
+ 30
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+3250.0
+ 23
+-400.0
+ 33
+0.0
+ 14
+3500.0
+ 24
+-400.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
+  0
+DIMENSION
+  5
+70
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Wymiary
+100
+AcDbDimension
+  3
+KONEC_1_20
+ 10
+-200.0
+ 20
+0.0
+ 30
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+0.0
+ 23
+0.0
+ 33
+0.0
+ 14
+0.0
+ 24
+500.0
+ 34
+0.0
+ 50
+90.0
+100
+AcDbRotatedDimension
+  0
+DIMENSION
+  5
+71
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Wymiary
+100
+AcDbDimension
+  3
+KONEC_1_20
+ 10
+0.0
+ 20
+-300.0
+ 30
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+250.0
+ 23
+-300.0
+ 33
+0.0
+ 14
+265.0
+ 24
+-300.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
+  0
+DIMENSION
+  5
+72
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Wymiary
+100
+AcDbDimension
+  3
+KONEC_1_20
+ 10
+0.0
+ 20
+-300.0
+ 30
+0.0
+ 70
+32
+ 71
+5
+  1
+4 x 250 = <>
+100
+AcDbAlignedDimension
+ 13
+265.0
+ 23
+-300.0
+ 33
+0.0
+ 14
+1265.0
+ 24
+-300.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
+  0
+DIMENSION
+  5
+73
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Wymiary
+100
+AcDbDimension
+  3
+KONEC_1_20
+ 10
+0.0
+ 20
+-300.0
+ 30
+0.0
+ 70
+32
+ 71
+5
+  1
+13 x 100 = <>
+100
+AcDbAlignedDimension
+ 13
+3235.0
+ 23
+-300.0
+ 33
+0.0
+ 14
+1935.0
+ 24
+-300.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
+  0
+DIMENSION
+  5
+74
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Wymiary
+100
+AcDbDimension
+  3
+KONEC_1_20
+ 10
+0.0
+ 20
+-300.0
+ 30
+0.0
+ 70
+32
+ 71
+5
+  1
+335 x 2 = <>
+100
+AcDbAlignedDimension
+ 13
+1265.0
+ 23
+-300.0
+ 33
+0.0
+ 14
+1935.0
+ 24
+-300.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
+  0
+DIMENSION
+  5
+75
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Wymiary
+100
+AcDbDimension
+  3
+KONEC_1_20
+ 10
+0.0
+ 20
+-300.0
+ 30
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+3250.0
+ 23
+-300.0
+ 33
+0.0
+ 14
+3235.0
+ 24
+-300.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
+  0
 ENDSEC
   0
 SECTION
@@ -5095,7 +5491,7 @@ CREATED_BY_EZDXF
   3
 WRITTEN_BY_EZDXF
 350
-6F
+78
   0
 DICTIONARYVAR
   5
@@ -5107,7 +5503,7 @@ DictionaryVariables
 280
 0
   1
-0.17.1 @ 2022-02-08T16:34:00.251779+00:00
+0.17.1 @ 2022-02-08T19:17:55.509557+00:00
   0
 LAYOUT
   5
@@ -5239,7 +5635,7 @@ B\U+017b-2
   0
 DICTIONARYVAR
   5
-6F
+78
 330
 2D
 100
@@ -5247,7 +5643,7 @@ DictionaryVariables
 280
 0
   1
-0.17.1 @ 2022-02-08T16:34:00.272771+00:00
+0.17.1 @ 2022-02-08T19:17:55.520560+00:00
   0
 ENDSEC
   0

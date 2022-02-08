@@ -6,7 +6,7 @@ from ezdxf.tools.standards import linetypes
 from math import pi, floor
 from random import randrange, choice
 
-drawing = ezdxf.new(dxfversion='R12', setup=["linetypes"])
+drawing = ezdxf.new(dxfversion='R2000', setup=["linetypes"])
 drawing.header['$LTSCALE'] = 50
 drawing.header['$INSUNITS'] = 4
 drawing.header['$MEASUREMENT'] = 1
@@ -125,10 +125,10 @@ msp.add_lwpolyline(pointsPretD, dxfattribs={'layer': 'KONEC-Prety'})
 # punktyStrzemion
 pS = []
 
-rDS = math.floor(min(0.75 * wB * 0.9, 400) / 5) * 5
+rDS = math.floor(min(0.75 * wB * 0.9, 300) / 5) * 5
 
 oOP = rB - (math.ceil(zSPL / rSPL) * rSPL + math.ceil(zSPP / rSPP) * rSPP + math.floor(
-    (rB - (math.ceil(zSPL / rSPL) * rSPL + math.ceil(zSPP / rSPP) * rSPP)) / rDS) * rDS)
+        (rB - (math.ceil(zSPL / rSPL) * rSPL + math.ceil(zSPP / rSPP) * rSPP)) / rDS) * rDS)
 
 # print(oOP, 'start')
 while oOP > 60:
@@ -156,7 +156,7 @@ for i in range(1, int((rB - ostatnieStrzemieLewa - (rB - ostatnieStrzemiePrawa))
     pS.append(ostatnieStrzemieLewa + i * rDS)
 
 # ilośćRozstawuDrugiego Rzędu
-iRDR = math.ceil((ostatnieStrzemiePrawa-ostatnieStrzemieLewa)/rDS)
+iRDR = math.ceil((ostatnieStrzemiePrawa - ostatnieStrzemieLewa) / rDS)
 
 for a in pS:
     pointsStrzemie = [((sPL + a), oD, sS, sS), ((sPL + a), (wB - oG))]
@@ -198,9 +198,6 @@ dim3 = msp.add_linear_dim(base=(0, -wysokosc_podpory - 200), p1=(sPL + rB, -wyso
 
 dim4 = msp.add_linear_dim(base=(-100, 0), p1=(0, 0), p2=(0, wB), angle=90,
                           dimstyle='KONEC_1_20', dxfattribs={'layer': 'KONEC-Wymiary'})
-
-
-
 
 # wymiarowanie strzemion
 dim5 = msp.add_linear_dim(base=(0, -wysokosc_podpory - 100), p1=(sPL, -wysokosc_podpory),
@@ -287,14 +284,12 @@ path_hatch3.add_arc(center=(startPrzekroj + sB - oBPP - 0.5 * sS - wPS, wB - oG 
 
 msp.add_circle([startPrzekroj + oBLP + 0.5 * sS + wPS, oD + sS + 0.5 * sPGD], 0.5 * sPGD)
 
-
 hatch3 = msp.add_hatch(dxfattribs={'layer': 'KONEC-Kreskowanie'})
 path_hatch3 = hatch3.paths.add_edge_path()
 hatch3.set_solid_fill(color=-1)
 path_hatch3.add_arc(center=(startPrzekroj + oBLP + 0.5 * sS + wPS, oD + sS + 0.5 * sPGD), radius=0.5 * sPGD)
 
 msp.add_circle([startPrzekroj + sB - oBPP - 0.5 * sS - wPS, oD + sS + 0.5 * sPGD], 0.5 * sPGD)
-
 
 hatch3 = msp.add_hatch(dxfattribs={'layer': 'KONEC-Kreskowanie'})
 path_hatch3 = hatch3.paths.add_edge_path()

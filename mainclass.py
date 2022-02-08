@@ -9,8 +9,8 @@ from random import randrange, choice
 
 class DxfElement:
     def __init__(self,
-                 beam_span: int, # rozpiętość belki
-                 beam_height: int, # wysokość belki
+                 beam_span: int,
+                 beam_height: int,
                  beam_width: int,
                  width_support_left: int,
                  width_support_right: int,
@@ -33,9 +33,8 @@ class DxfElement:
                  start_point_x: int = 0,
                  start_point_y: int = 0):
 
-        self.secondary_stirrup_spacing = self._is_valid_value(secondary_stirrup_spacing, 0, 400)
-        self.first_row_stirrup_spacing_right = self._is_valid_value(first_row_stirrup_spacing_right, 10, 400)
-        self.first_row_stirrup_spacing_left = self._is_valid_value(first_row_stirrup_spacing_left, 10, 400)
+        self.first_row_stirrup_spacing_right = self._is_valid_value(first_row_stirrup_spacing_right, 0, 400)
+        self.first_row_stirrup_spacing_left = self._is_valid_value(first_row_stirrup_spacing_left, 0, 400)
         self.first_row_stirrup_range_right = self._is_valid_value(first_row_stirrup_range_right, 0, 15000)
         self.first_row_stirrup_range_left = self._is_valid_value(first_row_stirrup_range_left, 0, 15000)
         self.name = self._is_valid_path_name(name)
@@ -57,6 +56,9 @@ class DxfElement:
                                                    first_row_stirrup_range_right, 300, 15000)
         self.beam_height = self._is_valid_value(beam_height, 100, 1500)
 
+        self.secondary_stirrup_spacing = math.floor(
+            min(0.75 * self.beam_height * 0.9, self._is_valid_value(secondary_stirrup_spacing, 0, 400)) / 5) * 5
+
         self.counter = None
         self.bar = None
         self.stirrup = None
@@ -75,13 +77,16 @@ class DxfElement:
         self.view_top_bar()
         self.view_bottom_bar()
         self.secondary_stirrup_spacing_min()
-        self.layoutsNew()
+        self.layout_new()
+        self.stirrup_spacing()
+        self.supports(self.start_point_x, self.start_point_x + self.width_support_left)
+        self.supports(self.start_point_x + self.width_support_left + self.beam_span, self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right)
         self.save()
 
     """Część sprawdzająca poprawnośc danych"""
 
     def _is_valid_value(self, value, min_value=0, max_value=99999):
-        if type(value) != int or value <= min_value or value > max_value:
+        if type(value) != int or value < min_value or value > max_value:
             raise ValueError(f"{value} max is {max_value}[m]")
         return value
 
@@ -218,14 +223,75 @@ class DxfElement:
                               self.start_point_y + self.cover_bottom + self.diameter_stirrup + 0.5 * self.diameter_main_bottom))]
         return self.msp.add_lwpolyline(points, dxfattribs={'closed': False, 'layer': self.bar})
 
-    def stirrupSpacing(self):
+    def distance_from_supports(self, distance):
+        value = 0
+
+        if self.first_row_stirrup_range_left != 0 and self.first_row_stirrup_spacing_left != 0:
+            value += math.ceil(
+                self.first_row_stirrup_range_left / self.first_row_stirrup_spacing_left) * self.first_row_stirrup_spacing_left
+        else:
+            value += 0
+
+        if self.first_row_stirrup_range_right != 0 and self.first_row_stirrup_spacing_right != 0:
+            value += math.ceil(
+                self.first_row_stirrup_range_right / self.first_row_stirrup_spacing_right) * self.first_row_stirrup_spacing_right
+        else:
+            value += 0
+
+        return self.beam_span - (value + math.floor((self.beam_span - value) / distance) * distance)
+
+    def stirrup_spacing(self):
         """rozstaw strzemion w belce"""
         "todo: dokonczyc"
+        last_stirrup_left = 0
+        last_stirrup_right = 0
         localization_stirrups = []
-        if self.first_row_stirrup_range_left > 0:
-            pass
+        range_first_row = self.distance_from_supports(self.secondary_stirrup_spacing)
 
-    def layoutsNew(self):
+        while range_first_row > 60:
+            self.secondary_stirrup_spacing -= 5
+            range_first_row = self.distance_from_supports(self.secondary_stirrup_spacing)
+
+        if self.first_row_stirrup_range_left != 0 and self.first_row_stirrup_spacing_left != 0:
+            for i in range(int(math.ceil(self.first_row_stirrup_range_left / self.first_row_stirrup_spacing_left) + 1)):
+                localization_stirrups.append(range_first_row / 2 + i * self.first_row_stirrup_spacing_left)
+            last_stirrup_left = localization_stirrups[-1]
+
+        if self.first_row_stirrup_range_right != 0 and self.first_row_stirrup_spacing_right != 0:
+            for i in range(
+                    int(math.ceil(self.first_row_stirrup_range_right / self.first_row_stirrup_spacing_right) + 1)):
+                localization_stirrups.append(
+                    self.beam_span - range_first_row / 2 - i * self.first_row_stirrup_spacing_right)
+            last_stirrup_right = localization_stirrups[-1]
+
+        for i in range(int((self.beam_span - last_stirrup_left - (
+                (
+                        self.beam_span - last_stirrup_right) if last_stirrup_right > 0 else 0)) / self.secondary_stirrup_spacing)):
+            localization_stirrups.append((
+                                             last_stirrup_left if last_stirrup_left > 0 else range_first_row / 2) + i * self.secondary_stirrup_spacing)
+
+        localization_stirrups = list(dict.fromkeys(localization_stirrups))
+        localization_stirrups.sort()
+        global Number_of_stirrups_of_the_second_row
+        Number_of_stirrups_of_the_second_row = math.ceil(
+            (last_stirrup_right - last_stirrup_left) / self.secondary_stirrup_spacing)
+        for i in localization_stirrups:
+            points_stirrups = [
+                ((self.width_support_left + i), self.cover_bottom, self.diameter_stirrup, self.diameter_stirrup),
+                ((self.width_support_left + i), (self.beam_height - self.cover_top))]
+            self.msp.add_lwpolyline(points_stirrups, dxfattribs={'layer': self.stirrup})
+
+    def supports(self, value_left: int, value_right: int, height: int = 200):
+        hatch = self.msp.add_hatch(dxfattribs={'layer': self.hatch})
+        hatch.set_pattern_fill('ANSI33', scale=20, color=-1)
+        hatch.paths.add_polyline_path(
+            [(value_left, self.start_point_y), (value_left, -height), (value_right, -height), (value_right, self.start_point_y)]
+        )
+
+
+
+
+    def layout_new(self):
         """layauty, początki"""
         name = f"{self.name}"
         if name in self.drawing.layouts:
@@ -238,5 +304,24 @@ class DxfElement:
         )
 
 
-draw = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 1000, 250, 150, 400, name="BŻ-1")
+# testy plików
+# draw = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 0, 250, 0, 400, name="BŻ-1")
+draw1 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 1250, 250, 100, 400, name="BŻ-2")
+# draw4 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 300, name="BŻ-21")
+# draw41 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 310,
+#                     name="BŻ-22")
+# draw42 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 320,
+#                     name="BŻ-23")
+# draw43 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 330,
+#                     name="BŻ-24")
+# draw44 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 340,
+#                     name="BŻ-25")
+# draw45 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 350,
+#                     name="BŻ-26")
+# draw46 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 360,
+#                     name="BŻ-27")
+# draw5 = DxfElement(3020, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 600, 600, 150, 150, 200, name="BŻ-22")
+# draw2 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 0, 1250, 110, 100, 400, name="BŻ-3")
+# draw3 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 0, 0, 110, 100, 400, name="BŻ-4")
+# draw = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 0, 250, 0, 400, name="BŻ-1")
 # draw.initial_drawing(LTSCALE=20, INSUNITS=0)

@@ -80,7 +80,8 @@ class DxfElement:
         self.layout_new()
         self.stirrup_spacing()
         self.supports(self.start_point_x, self.start_point_x + self.width_support_left)
-        self.supports(self.start_point_x + self.width_support_left + self.beam_span, self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right)
+        self.supports(self.start_point_x + self.width_support_left + self.beam_span,
+                      self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right)
         self.save()
 
     """Część sprawdzająca poprawnośc danych"""
@@ -285,9 +286,19 @@ class DxfElement:
         hatch = self.msp.add_hatch(dxfattribs={'layer': self.hatch})
         hatch.set_pattern_fill('ANSI33', scale=20, color=-1)
         hatch.paths.add_polyline_path(
-            [(value_left, self.start_point_y), (value_left, -height), (value_right, -height), (value_right, self.start_point_y)]
+            [(value_left, self.start_point_y), (value_left, self.start_point_y - height),
+             (value_right, self.start_point_y - height), (value_right, self.start_point_y)]
         )
 
+        line_point_left = [(value_left, self.start_point_y), (value_left, self.start_point_y - height)]
+        line_point_right = [(value_right, self.start_point_y), (value_right, self.start_point_y - height)]
+
+        self.msp.add_lwpolyline(line_point_left, dxfattribs={'layer': self.counter})
+        self.msp.add_lwpolyline(line_point_right, dxfattribs={'layer': self.counter})
+
+        line_hidden = [(value_left - 200, self.start_point_y - height), (value_right + 200, self.start_point_y - height)]
+
+        self.msp.add_lwpolyline(line_hidden, dxfattribs={'layer': self.hidden})
 
 
 

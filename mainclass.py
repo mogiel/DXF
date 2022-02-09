@@ -33,7 +33,6 @@ class DxfElement:
                  start_point_x: int = 0,
                  start_point_y: int = 0):
 
-
         self.first_row_stirrup_spacing_right = self._is_valid_value(first_row_stirrup_spacing_right, 0, 400)
         self.first_row_stirrup_spacing_left = self._is_valid_value(first_row_stirrup_spacing_left, 0, 400)
         self.first_row_stirrup_range_right = self._is_valid_value(first_row_stirrup_range_right, 0, 15000)
@@ -59,7 +58,7 @@ class DxfElement:
 
         self.secondary_stirrup_spacing = math.floor(
             min(0.75 * self.beam_height * 0.9, self._is_valid_value(secondary_stirrup_spacing, 0, 400)) / 5) * 5
-        self.dimension_points = [0, self.beam_span]
+        self.dimension_points = [0.0, float(self.beam_span)]
         self.number_of_stirrups_of_the_second_row = None
 
         self.counter = None
@@ -91,17 +90,20 @@ class DxfElement:
 
     """Część sprawdzająca poprawnośc danych"""
 
-    def _is_valid_value(self, value, min_value=0, max_value=99999):
+    @staticmethod
+    def _is_valid_value(value, min_value=0, max_value=99999):
         if type(value) != int or value < min_value or value > max_value:
             raise ValueError(f"{value} max is {max_value}[m]")
         return value
 
-    def _is_valid_value_beam(self, value, range_left, range_right, min_value=0, max_value=99999):
+    @staticmethod
+    def _is_valid_value_beam(value, range_left, range_right, min_value=0, max_value=99999):
         if type(value) != int or value <= min_value or value > max_value or value - range_left - range_right < 0:
             raise ValueError(f"{value} max is {max_value}[m]")
         return value
 
-    def _is_valid_path_name(self, name):
+    @staticmethod
+    def _is_valid_path_name(name):
         """todo: poprawić regex, bo wywala błąd"""
         # regex = "^(?:[^/]*(?:/(?:/[^/]*/?)?)?([^?]+)(?:\??.+)?)$"
         regex = "/\\:*?\"<>|"
@@ -250,7 +252,7 @@ class DxfElement:
         """rozstaw strzemion w belce"""
         "todo: dokonczyc"
         last_stirrup_left: int = 0
-        last_stirrup_right: int = 0
+        last_stirrup_right: int = self.beam_span
         localization_stirrups = []
         range_first_row = self.distance_from_supports(self.secondary_stirrup_spacing)
 
@@ -275,16 +277,21 @@ class DxfElement:
         self.dimension_points.append(range_first_row / 2)
         self.dimension_points.append(self.beam_span - range_first_row / 2)
 
+        self.dimension_points = list(dict.fromkeys(self.dimension_points))
+        self.dimension_points.sort()
+
         for i in range(int((self.beam_span - last_stirrup_left - (
                 (
-                        self.beam_span - last_stirrup_right) if last_stirrup_right > 0 else 0)) / self.secondary_stirrup_spacing)):
+                        self.beam_span - last_stirrup_right) if last_stirrup_right > 0 else 0)) / self.secondary_stirrup_spacing) + 1):
             localization_stirrups.append((
                                              last_stirrup_left if last_stirrup_left > 0 else range_first_row / 2) + i * self.secondary_stirrup_spacing)
 
         localization_stirrups = list(dict.fromkeys(localization_stirrups))
         localization_stirrups.sort()
+
         self.number_of_stirrups_of_the_second_row = math.ceil(
             (last_stirrup_right - last_stirrup_left) / self.secondary_stirrup_spacing)
+
         for i in localization_stirrups:
             points_stirrups = [
                 ((self.width_support_left + i), self.cover_bottom, self.diameter_stirrup, self.diameter_stirrup),
@@ -310,7 +317,7 @@ class DxfElement:
 
         self.msp.add_lwpolyline(line_hidden, dxfattribs={'layer': self.hidden})
 
-    def dimension_generator(self, base: tuple, p1: tuple, p2: tuple, angle: float = 0, text: str = "<>"):
+    def dimension_generator(self, base: tuple, p1: tuple, p2: tuple, angle: float = 0, text: str = "<>") -> object:
         return self.msp.add_linear_dim(base=base, p1=p1, p2=p2, angle=angle, dimstyle=self.dim_name,
                                        dxfattribs={'layer': self.dimension},
                                        text=text)
@@ -331,7 +338,8 @@ class DxfElement:
         self.dimension_generator(
             (self.start_point_x, self.start_point_y - height),
             (self.start_point_x + self.width_support_left + self.beam_span, self.start_point_y - height),
-            (self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right, self.start_point_y - height)
+            (self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right,
+             self.start_point_y - height)
         )
 
         self.dimension_generator(
@@ -342,41 +350,109 @@ class DxfElement:
         )
 
     def dimension_stirrup(self, height: float = 300):
-        self.dimension_points.sort()
-        self.dimension_generator(
-            (self.start_point_x, self.start_point_y - height),
-            (self.start_point_x + self.width_support_left + self.dimension_points[0], self.start_point_y - height),
-            (self.start_point_x + self.width_support_left + self.dimension_points[1], self.start_point_y - height)
-        )
+        """todo: należy poprawić:
+        1. gdy pierwsze wartosci sa rowne zero
+        2. gdy pozostaja tylko strzemiona z rozstawy drugorzednego"""
+
+        value1, value2, value3, value4, value5, value6 = 0, 0, 0, 0, 0, self.beam_span
+        start_end_dimension: bool = False
+
+        print(self.dimension_points)
+        if len(self.dimension_points) == 2:
+            value3 = 0
+            value4 = self.beam_span
+            self.number_of_stirrups_of_the_second_row += 1
+        elif len(
+                self.dimension_points) == 3 and self.first_row_stirrup_range_left != 0 and self.first_row_stirrup_spacing_left != 0:
+            value3 = 0
+            value4 = self.dimension_points[1]
+            value5 = self.beam_span
+        elif len(
+                self.dimension_points) == 3 and self.first_row_stirrup_range_right != 0 and self.first_row_stirrup_spacing_right != 0:
+            value2 = 0
+            value3 = self.dimension_points[1]
+            value4 = self.beam_span
+        elif len(self.dimension_points) == 4 and (self.dimension_points[1] - self.dimension_points[0]) > 30:
+            value2 = self.dimension_points[0]
+            value3 = self.dimension_points[1]
+            value4 = self.dimension_points[2]
+            value5 = self.dimension_points[3]
+        elif len(self.dimension_points) == 4:
+            value2 = self.dimension_points[1]
+            value3 = self.dimension_points[1]
+            value4 = self.dimension_points[2]
+            value5 = self.dimension_points[2]
+            start_end_dimension = True
+            self.number_of_stirrups_of_the_second_row -= 1
+        elif len(
+                self.dimension_points) == 5 and self.first_row_stirrup_range_left != 0 and self.first_row_stirrup_spacing_left != 0:
+            value2 = self.dimension_points[1]
+            value3 = self.dimension_points[2]
+            value4 = self.dimension_points[3]
+            value5 = self.dimension_points[3]
+            start_end_dimension = True
+            self.number_of_stirrups_of_the_second_row -= 1
+        elif len(
+                self.dimension_points) == 5 and self.first_row_stirrup_range_right != 0 and self.first_row_stirrup_spacing_right != 0:
+            value2 = self.dimension_points[1]
+            value3 = self.dimension_points[1]
+            value4 = self.dimension_points[2]
+            value5 = self.dimension_points[3]
+            start_end_dimension = True
+            self.number_of_stirrups_of_the_second_row -= 1
+        elif len(self.dimension_points) == 6:
+            value2 = self.dimension_points[1]
+            value3 = self.dimension_points[2]
+            value4 = self.dimension_points[3]
+            value5 = self.dimension_points[4]
+            start_end_dimension = True
+        else:
+            print('error 1. Błąd generatora wumiarowania', self.dimension_points)
+
+        if start_end_dimension:
+            self.dimension_generator(
+                (self.start_point_x, self.start_point_y - height),
+                (self.start_point_x + self.width_support_left + value1, self.start_point_y - height),
+                (self.start_point_x + self.width_support_left + value2, self.start_point_y - height)
+            )
+
+            self.dimension_generator(
+                (self.start_point_x, self.start_point_y - height),
+                (self.start_point_x + self.width_support_left + value5, self.start_point_y - height),
+                (self.start_point_x + self.width_support_left + value6, self.start_point_y - height)
+            )
 
         if self.first_row_stirrup_range_left != 0 and self.first_row_stirrup_spacing_left != 0:
             self.dimension_generator(
                 (self.start_point_x, self.start_point_y - height),
-                (self.start_point_x + self.width_support_left + self.dimension_points[1], self.start_point_y - height),
-                (self.start_point_x + self.width_support_left + self.dimension_points[2], self.start_point_y - height),
-                text=f'{math.ceil((self.dimension_points[2] - self.dimension_points[1]) / self.first_row_stirrup_spacing_left)} x {self.first_row_stirrup_spacing_left} = <>'
+                (self.start_point_x + self.width_support_left + value2,
+                 self.start_point_y - height),
+                (self.start_point_x + self.width_support_left + value3,
+                 self.start_point_y - height),
+                text=f'{math.ceil((value3 - value2) / self.first_row_stirrup_spacing_left)} x {self.first_row_stirrup_spacing_left} = <>'
             )
 
         if self.first_row_stirrup_range_right != 0 and self.first_row_stirrup_spacing_right != 0:
             self.dimension_generator(
                 (self.start_point_x, self.start_point_y - height),
-                (self.start_point_x + self.width_support_left + self.dimension_points[-2], self.start_point_y - height),
-                (self.start_point_x + self.width_support_left + self.dimension_points[-3], self.start_point_y - height),
-                text=f'{math.ceil((self.dimension_points[-2] - self.dimension_points[-3]) / self.first_row_stirrup_spacing_right)} x {self.first_row_stirrup_spacing_right} = <>'
+                (self.start_point_x + self.width_support_left + value5,
+                 self.start_point_y - height),
+                (self.start_point_x + self.width_support_left + value4,
+                 self.start_point_y - height),
+                text=f'{math.ceil((value5 - value4) / self.first_row_stirrup_spacing_right)} x {self.first_row_stirrup_spacing_right} = <>'
             )
 
-        self.dimension_generator(
-            (self.start_point_x, self.start_point_y - height),
-            (self.start_point_x + self.width_support_left + self.dimension_points[2], self.start_point_y - height),
-            (self.start_point_x + self.width_support_left + self.dimension_points[-3], self.start_point_y - height),
-            text=f'{math.ceil((self.dimension_points[-3] - self.dimension_points[2]) / self.number_of_stirrups_of_the_second_row)} x {self.number_of_stirrups_of_the_second_row} = <>'
-        )
+        print(self.number_of_stirrups_of_the_second_row)
 
-        self.dimension_generator(
-            (self.start_point_x, self.start_point_y - height),
-            (self.start_point_x + self.width_support_left + self.dimension_points[-1], self.start_point_y - height),
-            (self.start_point_x + self.width_support_left + self.dimension_points[-2], self.start_point_y - height)
-        )
+        if self.number_of_stirrups_of_the_second_row != 0:
+            self.dimension_generator(
+                (self.start_point_x, self.start_point_y - height),
+                (self.start_point_x + self.width_support_left + value3,
+                 self.start_point_y - height),
+                (self.start_point_x + self.width_support_left + value4,
+                 self.start_point_y - height),
+                text=f'{math.ceil((value4 - value3) / (self.number_of_stirrups_of_the_second_row))} x {self.number_of_stirrups_of_the_second_row} = <>'
+            )
 
     def layout_new(self):
         """layauty, początki"""
@@ -392,23 +468,12 @@ class DxfElement:
 
 
 # testy plików
-# draw = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 0, 250, 0, 400, name="BŻ-1")
+draw = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 0, 250, 0, 400, name="BŻ-1")
 draw1 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 1250, 250, 100, 400, name="BŻ-2")
-# draw4 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 300, name="BŻ-21")
-# draw41 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 310,
-#                     name="BŻ-22")
-# draw42 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 320,
-#                     name="BŻ-23")
-# draw43 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 330,
-#                     name="BŻ-24")
-# draw44 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 340,
-#                     name="BŻ-25")
-# draw45 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 350,
-#                     name="BŻ-26")
-# draw46 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 360,
-#                     name="BŻ-27")
-# draw5 = DxfElement(3020, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 600, 600, 150, 150, 200, name="BŻ-22")
-# draw2 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 0, 1250, 110, 100, 400, name="BŻ-3")
-# draw3 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 0, 0, 110, 100, 400, name="BŻ-4")
-# draw = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 0, 250, 0, 400, name="BŻ-1")
+draw4 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 300, name="BŻ-21")
+draw41 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 310, name="BŻ-23")
+draw5 = DxfElement(3020, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 600, 600, 150, 150, 200, name="BŻ-22")
+draw2 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 0, 1250, 110, 100, 400, name="BŻ-3")
+draw3 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 0, 0, 110, 100, 400, name="BŻ-4")
+draw31 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 0, 250, 0, 400, name="BŻ-5")
 # draw.initial_drawing(LTSCALE=20, INSUNITS=0)

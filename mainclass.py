@@ -29,7 +29,7 @@ class DxfElement:
                  first_row_stirrup_spacing_right: int,
                  secondary_stirrup_spacing: int,
                  name: str = "Belka",
-                 dxfversion: str = 'R2004',
+                 dxfversion: str = 'R2000',
                  start_point_x: int = 0,
                  start_point_y: int = 0):
 
@@ -86,6 +86,8 @@ class DxfElement:
                       self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right)
         self.dimension_main()
         self.dimension_stirrup()
+        self.beam_section_rectangular()
+
         self.save()
 
     """Część sprawdzająca poprawnośc danych"""
@@ -112,14 +114,14 @@ class DxfElement:
         return name
 
     @staticmethod
-    def bar_bending(diameter: int):
+    def bar_bending(diameter: int) -> float:
         """Obliczanie wygięcia pręta związanego ze średnicą pręta"""
         if diameter <= 16:
             return diameter * 2.5
         else:
             return diameter * 4.0
 
-    def secondary_stirrup_spacing_min(self):
+    def secondary_stirrup_spacing_min(self) -> float:
         self.secondary_stirrup_spacing = math.floor(
             min(self.secondary_stirrup_spacing, 400, (self.beam_height * 0.75)) / 5) * 5
         return self.secondary_stirrup_spacing
@@ -350,10 +352,6 @@ class DxfElement:
         )
 
     def dimension_stirrup(self, height: float = 300):
-        """todo: należy poprawić:
-        1. gdy pierwsze wartosci sa rowne zero
-        2. gdy pozostaja tylko strzemiona z rozstawy drugorzednego"""
-
         value1, value2, value3, value4, value5, value6 = 0, 0, 0, 0, 0, self.beam_span
         start_end_dimension: bool = False
 
@@ -442,8 +440,6 @@ class DxfElement:
                 text=f'{math.ceil((value5 - value4) / self.first_row_stirrup_spacing_right)} x {self.first_row_stirrup_spacing_right} = <>'
             )
 
-        print(self.number_of_stirrups_of_the_second_row)
-
         if self.number_of_stirrups_of_the_second_row != 0:
             self.dimension_generator(
                 (self.start_point_x, self.start_point_y - height),
@@ -453,6 +449,40 @@ class DxfElement:
                  self.start_point_y - height),
                 text=f'{math.ceil((value4 - value3) / (self.number_of_stirrups_of_the_second_row))} x {self.number_of_stirrups_of_the_second_row} = <>'
             )
+
+    def beam_section_rectangular(self, between_element: float = 500):
+        start_point_x = self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right + between_element
+        start_point_y = self.start_point_y
+
+        points_beam_section = [(start_point_x, start_point_y),
+                               (start_point_x + self.beam_width, start_point_y),
+                               (start_point_x + self.beam_width, start_point_y + self.beam_height),
+                               (start_point_x, start_point_y + self.beam_height)]
+
+        self.msp.add_lwpolyline(points_beam_section, dxfattribs={'closed': True, 'layer': self.counter})
+        self.view_stirrups_type_1(start_point_x, start_point_y)
+
+    def view_stirrups_type_1(self, start_point_x: float, start_point_y: float, anchoring_stirrup: float = 80):
+
+        bending_stirrup = self.bar_bending(self.diameter_stirrup)
+        bending_arrow = self.bar_bulge(bending_stirrup)
+
+        points_stirrup = [
+            (start_point_x + self.cover_view_left + 0.5 * self.diameter_stirrup, start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup - bending_stirrup - anchoring_stirrup, self.diameter_stirrup, self.diameter_stirrup),
+            (start_point_x + self.cover_view_left + 0.5 * self.diameter_stirrup, start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup - bending_stirrup, self.diameter_stirrup, self.diameter_stirrup, bending_arrow),
+            (start_point_x + self.cover_view_left + 0.5 * self.diameter_stirrup + bending_stirrup, start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup, self.diameter_stirrup, self.diameter_stirrup),
+            (start_point_x + self.beam_width - self.cover_view_right - 0.5 * self.diameter_stirrup - bending_stirrup, start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup, self.diameter_stirrup, self.diameter_stirrup, bending_arrow),
+            (start_point_x + self.beam_width - self.cover_view_right - 0.5 * self.diameter_stirrup, start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup - bending_stirrup, self.diameter_stirrup, self.diameter_stirrup),
+            (start_point_x + self.beam_width - self.cover_view_right - 0.5 * self.diameter_stirrup, start_point_y + self.cover_bottom + 0.5 * self.diameter_stirrup + bending_stirrup, self.diameter_stirrup, self.diameter_stirrup, bending_arrow),
+            (start_point_x + self.beam_width - self.cover_view_right - 0.5 * self.diameter_stirrup - bending_stirrup, start_point_y + self.cover_bottom + 0.5 * self.diameter_stirrup, self.diameter_stirrup, self.diameter_stirrup),
+            (start_point_x + self.cover_view_left + 0.5 * self.diameter_stirrup + bending_stirrup, start_point_y + self.cover_bottom + 0.5 * self.diameter_stirrup, self.diameter_stirrup, self.diameter_stirrup, bending_arrow),
+            (start_point_x + self.cover_view_left + 0.5 * self.diameter_stirrup, start_point_y + self.cover_bottom + 0.5 * self.diameter_stirrup + bending_stirrup, self.diameter_stirrup, self.diameter_stirrup),
+            (start_point_x + self.cover_view_left + 0.5 * self.diameter_stirrup, start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup - bending_stirrup, self.diameter_stirrup, self.diameter_stirrup, bending_arrow),
+            (start_point_x + self.cover_view_left + 0.5 * self.diameter_stirrup + bending_stirrup, start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup, self.diameter_stirrup, self.diameter_stirrup),
+            (start_point_x + self.cover_view_left + 0.5 * self.diameter_stirrup + bending_stirrup + anchoring_stirrup, start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup, self.diameter_stirrup, self.diameter_stirrup)
+        ]
+
+        self.msp.add_lwpolyline(points_stirrup, dxfattribs={'layer': self.bar})
 
     def layout_new(self):
         """layauty, początki"""
@@ -468,12 +498,12 @@ class DxfElement:
 
 
 # testy plików
-draw = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 0, 250, 0, 400, name="BŻ-1")
-draw1 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 1250, 250, 100, 400, name="BŻ-2")
-draw4 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 300, name="BŻ-21")
-draw41 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 310, name="BŻ-23")
-draw5 = DxfElement(3020, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 600, 600, 150, 150, 200, name="BŻ-22")
-draw2 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 0, 1250, 110, 100, 400, name="BŻ-3")
-draw3 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 0, 0, 110, 100, 400, name="BŻ-4")
-draw31 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 0, 250, 0, 400, name="BŻ-5")
+draw = DxfElement(3450, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 1350, 250, 125, 400, name="BŻ-3")
+# draw1 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 1250, 250, 100, 400, name="BŻ-2")
+# draw4 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 300, name="BŻ-21")
+# draw41 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 310, name="BŻ-23")
+# draw5 = DxfElement(3020, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 600, 600, 150, 150, 200, name="BŻ-22")
+# draw2 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 0, 1250, 110, 100, 400, name="BŻ-3")
+# draw3 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 0, 0, 110, 100, 400, name="BŻ-4")
+# draw31 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 0, 250, 0, 400, name="BŻ-5")
 # draw.initial_drawing(LTSCALE=20, INSUNITS=0)

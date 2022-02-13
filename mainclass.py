@@ -1,11 +1,22 @@
+# todo: należy poprawić importy, dwa razy importuje math...
 import math
 import re
 import ezdxf
 import ezdxf.math
 from ezdxf.tools.standards import linetypes
-from math import pi, floor
+from math import pi, floor, sin, cos, radians
 from random import randrange, choice
 
+
+def point_position(x0: float, y0: float, distance: float, theta: float = 60):
+    """theta zgodna z ruchem wskazowek zegara. godzina 12:00 to 0st, 3:00 to 90st, 6:00 to 180st, 9:00 to 270st"""
+    theta_rad = pi / 2 - radians(theta)
+    return x0 + distance * cos(theta_rad), y0 + distance * sin(theta_rad)
+
+"""todo: zastanawiam sie na zmianą wymiarowania prętów z dimension na text,
+lub stworzyć osobne styl wymiarowania
+https://ezdxf.readthedocs.io/en/stable/tutorials/linear_dimension.html
+"""
 
 class DxfElement:
     def __init__(self,
@@ -29,7 +40,7 @@ class DxfElement:
                  first_row_stirrup_spacing_right: int,
                  secondary_stirrup_spacing: int,
                  name: str = "Belka",
-                 dxfversion: str = 'R2000',
+                 dxfversion: str = 'R2018',
                  start_point_x: int = 0,
                  start_point_y: int = 0):
 
@@ -77,7 +88,9 @@ class DxfElement:
         self.msp = self.drawing.modelspace()
         self.beam_outline()
         self.view_top_bar()
+        self.view_top_bar(dimension=True, start_point_y=-2 * self.beam_height - 300)
         self.view_bottom_bar()
+        self.view_bottom_bar(dimension=True, start_point_y=-2 * self.beam_height - 500)
         self.secondary_stirrup_spacing_min()
         self.layout_new()
         self.stirrup_spacing()
@@ -87,7 +100,7 @@ class DxfElement:
         self.dimension_main()
         self.dimension_stirrup()
         self.beam_section_rectangular()
-
+        self.view_stirrups_type_2(start_point_x=5000, start_point_y=0)
         self.save()
 
     """Część sprawdzająca poprawnośc danych"""
@@ -190,48 +203,92 @@ class DxfElement:
                   (self.start_point_x, self.start_point_y + self.beam_height)]
         return self.msp.add_lwpolyline(points, dxfattribs={'closed': True, 'layer': self.counter})
 
-    def view_top_bar(self):
+    def length_bar(self, points: list, diameter: int, angle: int = 90) -> float:
+        """angle jest to kąt pod jakim zmieniają się proste"""
+        arc_radius = self.bar_bending(diameter)
+        total_length_bar = 0
+        for i in range(len(points) - 1):
+            if len(points[i]) == 5:
+                total_length_bar += 2 * (angle / 360) * pi * arc_radius
+                continue
+            total_length_bar += ((points[i][0] - points[i + 1][0]) ** 2 + (points[i][1] - points[i + 1][1]) ** 2) ** 0.5
+        return round(total_length_bar)
+
+    def view_top_bar(self, dimension: bool = False, start_point_x: float = None, start_point_y: float = None):
         """generowanie pręta górnego"""
+
+        if start_point_x is None:
+            start_point_x = self.start_point_x
+        if start_point_y is None:
+            start_point_y = self.start_point_y
+
         bugle = self.bar_bulge(self.diameter_main_top)
         bending = self.bar_bending(self.diameter_main_top)
-        points = [((self.start_point_x + self.cover_view_left + 0.5 * self.diameter_main_top),
-                   self.start_point_y + self.cover_bottom, self.diameter_main_top,
+        points = [((start_point_x + self.cover_view_left + 0.5 * self.diameter_main_top),
+                   start_point_y + self.cover_bottom, self.diameter_main_top,
                    self.diameter_main_top),
-                  ((self.start_point_x + self.cover_view_left + 0.5 * self.diameter_main_top),
+                  ((start_point_x + self.cover_view_left + 0.5 * self.diameter_main_top),
                    (
-                           self.start_point_y + self.beam_height - self.cover_top - self.diameter_stirrup - 0.5 * self.diameter_main_top - bending),
+                           start_point_y + self.beam_height - self.cover_top - self.diameter_stirrup - 0.5 * self.diameter_main_top - bending),
                    self.diameter_main_top, self.diameter_main_top, bugle),
-                  ((self.start_point_x + self.cover_view_left + 0.5 * self.diameter_main_top + bending),
+                  ((start_point_x + self.cover_view_left + 0.5 * self.diameter_main_top + bending),
                    (
-                           self.start_point_y + self.beam_height - self.cover_top - self.diameter_stirrup - 0.5 * self.diameter_main_top),
+                           start_point_y + self.beam_height - self.cover_top - self.diameter_stirrup - 0.5 * self.diameter_main_top),
                    self.diameter_main_top,
                    self.diameter_main_top),
                   ((
-                           self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right - self.cover_view_right - 0.5 * self.diameter_main_top - bending),
+                           start_point_x + self.width_support_left + self.beam_span + self.width_support_right - self.cover_view_right - 0.5 * self.diameter_main_top - bending),
                    (
-                           self.start_point_y + self.beam_height - self.cover_top - self.diameter_stirrup - 0.5 * self.diameter_main_top),
+                           start_point_y + self.beam_height - self.cover_top - self.diameter_stirrup - 0.5 * self.diameter_main_top),
                    self.diameter_main_top,
                    self.diameter_main_top, bugle),
                   ((
-                           self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right - self.cover_view_right - 0.5 * self.diameter_main_top),
+                           start_point_x + self.width_support_left + self.beam_span + self.width_support_right - self.cover_view_right - 0.5 * self.diameter_main_top),
                    (
-                           self.start_point_y + self.beam_height - self.cover_top - self.diameter_stirrup - 0.5 * self.diameter_main_top - bending),
+                           start_point_y + self.beam_height - self.cover_top - self.diameter_stirrup - 0.5 * self.diameter_main_top - bending),
                    self.diameter_main_top, self.diameter_main_top),
                   ((
-                           self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right - self.cover_view_right - 0.5 * self.diameter_main_top),
-                   self.start_point_y + self.cover_bottom)]
-        return self.msp.add_lwpolyline(points, dxfattribs={'closed': False, 'layer': self.bar})
+                           start_point_x + self.width_support_left + self.beam_span + self.width_support_right - self.cover_view_right - 0.5 * self.diameter_main_top),
+                   start_point_y + self.cover_bottom)]
+        self.msp.add_lwpolyline(points, dxfattribs={'closed': False, 'layer': self.bar})
 
-    def view_bottom_bar(self):
+        length_bar = self.length_bar(points=points, diameter=self.diameter_main_top)
+
+        if dimension:
+            half = 0.5 * self.diameter_main_top
+            self.dimension_generator(
+                (points[0][0] - 50, points[0][1]), points[0][:2], (points[2][0], points[2][1] + half), angle=90
+            )
+            self.dimension_generator(
+                (points[3][0], points[3][1] - 100), (points[1][0] - half, points[1][1]), (points[4][0] + half, points[4][1])
+            )
+            self.dimension_generator(
+                (points[5][0] + 100, points[5][1]), (points[3][0], points[3][1] + half), points[5][:2], angle=90
+            )
+
+
+    def view_bottom_bar(self, dimension: bool = False, start_point_x: float = None, start_point_y: float = None):
         """generowanie pręta dolnego"""
-        points = [((self.start_point_x + self.cover_view_left),
-                   (self.start_point_y + self.cover_bottom + self.diameter_stirrup + 0.5 * self.diameter_main_bottom),
+
+        if start_point_x is None:
+            start_point_x = self.start_point_x
+        if start_point_y is None:
+            start_point_y = self.start_point_y
+
+        points = [((start_point_x + self.cover_view_left),
+                   (start_point_y + self.cover_bottom + self.diameter_stirrup + 0.5 * self.diameter_main_bottom),
                    self.diameter_main_bottom, self.diameter_main_bottom),
                   (
-                      self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right - self.cover_view_right,
-                      (
-                              self.start_point_y + self.cover_bottom + self.diameter_stirrup + 0.5 * self.diameter_main_bottom))]
-        return self.msp.add_lwpolyline(points, dxfattribs={'closed': False, 'layer': self.bar})
+                  start_point_x + self.width_support_left + self.beam_span + self.width_support_right - self.cover_view_right,
+                  (start_point_y + self.cover_bottom + self.diameter_stirrup + 0.5 * self.diameter_main_bottom))]
+        self.msp.add_lwpolyline(points, dxfattribs={'closed': False, 'layer': self.bar})
+
+        length_bar = self.length_bar(points=points, diameter=self.diameter_main_bottom)
+
+        if dimension:
+            self.dimension_generator(
+                (points[0][0], points[0][1] - 100), points[0][:2], points[1][:2]
+            )
 
     def distance_from_supports(self, distance):
         value = 0
@@ -355,7 +412,6 @@ class DxfElement:
         value1, value2, value3, value4, value5, value6 = 0, 0, 0, 0, 0, self.beam_span
         start_end_dimension: bool = False
 
-        print(self.dimension_points)
         if len(self.dimension_points) == 2:
             value3 = 0
             value4 = self.beam_span
@@ -467,22 +523,141 @@ class DxfElement:
         bending_stirrup = self.bar_bending(self.diameter_stirrup)
         bending_arrow = self.bar_bulge(bending_stirrup)
 
-        points_stirrup = [
-            (start_point_x + self.cover_view_left + 0.5 * self.diameter_stirrup, start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup - bending_stirrup - anchoring_stirrup, self.diameter_stirrup, self.diameter_stirrup),
-            (start_point_x + self.cover_view_left + 0.5 * self.diameter_stirrup, start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup - bending_stirrup, self.diameter_stirrup, self.diameter_stirrup, bending_arrow),
-            (start_point_x + self.cover_view_left + 0.5 * self.diameter_stirrup + bending_stirrup, start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup, self.diameter_stirrup, self.diameter_stirrup),
-            (start_point_x + self.beam_width - self.cover_view_right - 0.5 * self.diameter_stirrup - bending_stirrup, start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup, self.diameter_stirrup, self.diameter_stirrup, bending_arrow),
-            (start_point_x + self.beam_width - self.cover_view_right - 0.5 * self.diameter_stirrup, start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup - bending_stirrup, self.diameter_stirrup, self.diameter_stirrup),
-            (start_point_x + self.beam_width - self.cover_view_right - 0.5 * self.diameter_stirrup, start_point_y + self.cover_bottom + 0.5 * self.diameter_stirrup + bending_stirrup, self.diameter_stirrup, self.diameter_stirrup, bending_arrow),
-            (start_point_x + self.beam_width - self.cover_view_right - 0.5 * self.diameter_stirrup - bending_stirrup, start_point_y + self.cover_bottom + 0.5 * self.diameter_stirrup, self.diameter_stirrup, self.diameter_stirrup),
-            (start_point_x + self.cover_view_left + 0.5 * self.diameter_stirrup + bending_stirrup, start_point_y + self.cover_bottom + 0.5 * self.diameter_stirrup, self.diameter_stirrup, self.diameter_stirrup, bending_arrow),
-            (start_point_x + self.cover_view_left + 0.5 * self.diameter_stirrup, start_point_y + self.cover_bottom + 0.5 * self.diameter_stirrup + bending_stirrup, self.diameter_stirrup, self.diameter_stirrup),
-            (start_point_x + self.cover_view_left + 0.5 * self.diameter_stirrup, start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup - bending_stirrup, self.diameter_stirrup, self.diameter_stirrup, bending_arrow),
-            (start_point_x + self.cover_view_left + 0.5 * self.diameter_stirrup + bending_stirrup, start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup, self.diameter_stirrup, self.diameter_stirrup),
-            (start_point_x + self.cover_view_left + 0.5 * self.diameter_stirrup + bending_stirrup + anchoring_stirrup, start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup, self.diameter_stirrup, self.diameter_stirrup)
+        points = [
+            (start_point_x + self.cover_left + 0.5 * self.diameter_stirrup,
+             start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup - bending_stirrup - anchoring_stirrup,
+             self.diameter_stirrup, self.diameter_stirrup),
+            (start_point_x + self.cover_left + 0.5 * self.diameter_stirrup,
+             start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup - bending_stirrup,
+             self.diameter_stirrup, self.diameter_stirrup, bending_arrow),
+            (start_point_x + self.cover_left + 0.5 * self.diameter_stirrup + bending_stirrup,
+             start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup, self.diameter_stirrup,
+             self.diameter_stirrup),
+            (start_point_x + self.beam_width - self.cover_right - 0.5 * self.diameter_stirrup - bending_stirrup,
+             start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup, self.diameter_stirrup,
+             self.diameter_stirrup, bending_arrow),
+            (start_point_x + self.beam_width - self.cover_right - 0.5 * self.diameter_stirrup,
+             start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup - bending_stirrup,
+             self.diameter_stirrup, self.diameter_stirrup),
+            (start_point_x + self.beam_width - self.cover_right - 0.5 * self.diameter_stirrup,
+             start_point_y + self.cover_bottom + 0.5 * self.diameter_stirrup + bending_stirrup, self.diameter_stirrup,
+             self.diameter_stirrup, bending_arrow),
+            (start_point_x + self.beam_width - self.cover_right - 0.5 * self.diameter_stirrup - bending_stirrup,
+             start_point_y + self.cover_bottom + 0.5 * self.diameter_stirrup, self.diameter_stirrup,
+             self.diameter_stirrup),
+            (start_point_x + self.cover_left + 0.5 * self.diameter_stirrup + bending_stirrup,
+             start_point_y + self.cover_bottom + 0.5 * self.diameter_stirrup, self.diameter_stirrup,
+             self.diameter_stirrup, bending_arrow),
+            (start_point_x + self.cover_left + 0.5 * self.diameter_stirrup,
+             start_point_y + self.cover_bottom + 0.5 * self.diameter_stirrup + bending_stirrup, self.diameter_stirrup,
+             self.diameter_stirrup),
+            (start_point_x + self.cover_left + 0.5 * self.diameter_stirrup,
+             start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup - bending_stirrup,
+             self.diameter_stirrup, self.diameter_stirrup, bending_arrow),
+            (start_point_x + self.cover_left + 0.5 * self.diameter_stirrup + bending_stirrup,
+             start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup, self.diameter_stirrup,
+             self.diameter_stirrup),
+            (start_point_x + self.cover_left + 0.5 * self.diameter_stirrup + bending_stirrup + anchoring_stirrup,
+             start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup, self.diameter_stirrup,
+             self.diameter_stirrup)
         ]
 
-        self.msp.add_lwpolyline(points_stirrup, dxfattribs={'layer': self.bar})
+        self.msp.add_lwpolyline(points, dxfattribs={'layer': self.bar})
+
+    def view_stirrups_type_2(self, start_point_x: float, start_point_y: float, anchoring_stirrup: float = (10 * 8)):
+        bending_stirrup = self.bar_bending(self.diameter_stirrup)
+
+        theta = 60
+
+        point_1 = point_position(start_point_x + self.cover_left + 0.5 * self.diameter_stirrup,
+                                 start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup,
+                                 self.beam_width - self.diameter_stirrup - self.cover_left - self.cover_right, theta)
+
+        point_2 = point_position(point_1[0], point_1[1], bending_stirrup + anchoring_stirrup, 90 + theta)
+
+        points = [(
+            start_point_x + self.beam_width - self.cover_left - 0.5 * self.diameter_stirrup - bending_stirrup - anchoring_stirrup,
+            start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup,
+            self.diameter_stirrup,
+            self.diameter_stirrup),
+            (start_point_x + self.beam_width - self.cover_left - 0.5 * self.diameter_stirrup,
+             start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup,
+             self.diameter_stirrup,
+             self.diameter_stirrup),
+            (start_point_x + self.beam_width - self.cover_left - 0.5 * self.diameter_stirrup,
+             start_point_y + self.cover_bottom + 0.5 * self.diameter_stirrup,
+             self.diameter_stirrup,
+             self.diameter_stirrup
+             ),
+            (start_point_x + self.cover_left + 0.5 * self.diameter_stirrup,
+             start_point_y + self.cover_bottom + 0.5 * self.diameter_stirrup,
+             self.diameter_stirrup,
+             self.diameter_stirrup
+             ),
+            (start_point_x + self.cover_left + 0.5 * self.diameter_stirrup,
+             start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup,
+             self.diameter_stirrup,
+             self.diameter_stirrup
+             ),
+            (start_point_x + self.cover_left + 0.5 * self.diameter_stirrup,
+             start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup,
+             self.diameter_stirrup,
+             self.diameter_stirrup
+             ),
+            (
+                point_1[0],
+                point_1[1],
+                self.diameter_stirrup,
+                self.diameter_stirrup
+            ),
+            (
+                point_2[0],
+                point_2[1],
+                self.diameter_stirrup,
+                self.diameter_stirrup
+            )
+
+        ]
+
+        self.msp.add_lwpolyline(points, dxfattribs={'layer': self.bar})
+
+        # dim_bottom = self.dimension_generator((start_point_x, start_point_y - 50),
+        #                                       (start_point_x + self.cover_left, start_point_y + self.cover_bottom),
+        #                                       (start_point_x + self.beam_width - self.cover_right, start_point_y + self.cover_bottom),
+        #                                       )
+        # dim_bottom.set_extline1(disable=True)
+        #
+        # dim_bottom.set_extline2(disable=True)
+        # dim_bottom.set_dimline_format(disable1=True, disable2=True)
+        # # dim_bottom.render()
+
+        dim_bottom = self.msp.add_linear_dim((start_point_x, start_point_y - 50),
+                                             (start_point_x + self.cover_left, start_point_y + self.cover_bottom), (
+                                                 start_point_x + self.beam_width - self.cover_right,
+                                                 start_point_y + self.cover_bottom), dimstyle=self.dim_name,
+                                             dxfattribs={'layer': self.dimension}, angle=0, text='<>')
+
+        dim_bottom.set_extline1(disable=True)
+        dim_bottom.set_extline2(disable=True)
+        dim_bottom.set_dimline_format(disable1=True, disable2=True)
+        dim_bottom.render(discard=False)
+
+        dim_right = self.msp.add_linear_dim(
+            (start_point_x + 500, start_point_y),
+            (start_point_x + self.beam_width - self.cover_right, start_point_y + self.cover_bottom),
+            (start_point_x + self.beam_width - self.cover_right, start_point_y + self.beam_height - self.cover_top),
+            dimstyle=self.dim_name,
+            dxfattribs={'layer': self.dimension}, angle=90, text='<>')
+
+        dim_right.set_extline1(disable=True)
+        dim_right.set_extline2(disable=True)
+        dim_right.set_dimline_format(disable1=True, disable2=True)
+        dim_right.render()
+
+    # def dimension_generator(self, base: tuple, p1: tuple, p2: tuple, angle: float = 0, text: str = "<>") -> object:
+    #     return self.msp.add_linear_dim(base=base, p1=p1, p2=p2, angle=angle, dimstyle=self.dim_name,
+    #                                    dxfattribs={'layer': self.dimension},
+    #                                    text=text)
 
     def layout_new(self):
         """layauty, początki"""

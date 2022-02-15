@@ -4,3 +4,5 @@ sum = 0
 for i in b:
     sum += float(i)
 print(sum)
+
+

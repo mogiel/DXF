@@ -13,10 +13,9 @@ def point_position(x0: float, y0: float, distance: float, theta: float = 60):
     theta_rad = pi / 2 - radians(theta)
     return x0 + distance * cos(theta_rad), y0 + distance * sin(theta_rad)
 
-"""todo: zastanawiam sie na zmianą wymiarowania prętów z dimension na text,
-lub stworzyć osobne styl wymiarowania
-https://ezdxf.readthedocs.io/en/stable/tutorials/linear_dimension.html
-"""
+# todo: 1. przekrój. generator odstępów między prętami oraz pręty w dwóch warstwach
+# todo: 3. Generacja tabel zbrojenia
+
 
 class DxfElement:
     def __init__(self,
@@ -79,7 +78,10 @@ class DxfElement:
         self.dimension = None
         self.hidden = None
         self.dim_name = None
+        self.dim_name_bar = None
         self.text = None
+        self.steel_bill = []
+        self.count_stirrups = 0
 
         self.dxfversion = dxfversion
         self.drawing = ezdxf.new(dxfversion=self.dxfversion, setup=["linetypes"])
@@ -87,9 +89,9 @@ class DxfElement:
         self.layer_element()
         self.msp = self.drawing.modelspace()
         self.beam_outline()
+        self.view_bottom_bar()
         self.view_top_bar()
         self.view_top_bar(dimension=True, start_point_y=-2 * self.beam_height - 300)
-        self.view_bottom_bar()
         self.view_bottom_bar(dimension=True, start_point_y=-2 * self.beam_height - 500)
         self.secondary_stirrup_spacing_min()
         self.layout_new()
@@ -101,6 +103,7 @@ class DxfElement:
         self.dimension_stirrup()
         self.beam_section_rectangular()
         self.view_stirrups_type_2(start_point_x=5000, start_point_y=0)
+        self.create_table()
         self.save()
 
     """Część sprawdzająca poprawnośc danych"""
@@ -158,6 +161,7 @@ class DxfElement:
                       dimension: str = 'KONEC-Wymiary', color_dimension: int = 4,
                       hidden: str = 'KONEC-Przerywana', color_hidden: int = 8,
                       dim_name: str = 'KONEC_1_20', dim_scale: int = 20,
+                      dim_name_bar: str = 'KONEC_BAR_1_20',
                       text: str = 'KONEC-Tekst', font_text: str = 'Arial.ttf'):
         """Tworzenie warstw, styli teksty i wymiarowania"""
         self.counter = counter
@@ -167,6 +171,7 @@ class DxfElement:
         self.dimension = dimension
         self.hidden = hidden
         self.dim_name = dim_name
+        self.dim_name_bar = dim_name_bar
         self.text = text
 
         self.drawing.layers.new(self.counter, dxfattribs={'color': color_counter})
@@ -178,7 +183,11 @@ class DxfElement:
         self.drawing.styles.new(text, dxfattribs={'font': font_text})
         self.drawing.dimstyles.new(dim_name,
                                    dxfattribs={'dimjust': 0, 'dimscale': dim_scale, 'dimblk': 'OBLIQUE',
-                                               'dimtxsty': text})
+                                               'dimtxsty': text, 'dimtad': 1})
+        self.drawing.dimstyles.new(dim_name_bar,
+                                   dxfattribs={'dimjust': 0, 'dimscale': dim_scale, 'dimblk': 'NONE', 'dimtxsty': text,
+                                               'dimtad': 1,
+                                               'dimse1': 1, 'dimse2': 1, 'dimsd1': 1, 'dimsd2': 1, 'dimdle': 0})
 
     def save(self):
         """Zapisywanie do pliku"""
@@ -213,6 +222,28 @@ class DxfElement:
                 continue
             total_length_bar += ((points[i][0] - points[i + 1][0]) ** 2 + (points[i][1] - points[i + 1][1]) ** 2) ** 0.5
         return round(total_length_bar)
+
+    def list_bar(self, diameter: float = None, quantity_bar: int = None, length: float = None, steel_grade: str = None, name: str = None):
+        # def sorted_dict_in_list(e):
+        #     return e['number']
+        #
+        # self.steel_bill.sort(key=sorted_dict_in_list)
+        self.steel_bill.sort(key=(lambda x: x['number']))
+        self.steel_bill = [dict(t) for t in {tuple(d.items()) for d in self.steel_bill}]
+
+        bar = {
+            'name_element': self.name if name is None else self._is_valid_path_name(name),
+            'number': len(self.steel_bill) + 1,
+            'diameter': diameter,
+            'quantity_bar': quantity_bar,
+            'length': length,
+            'steel_grade': steel_grade,
+        }
+
+        self.steel_bill.append(bar)
+
+        print(self.steel_bill)
+        return self.steel_bill
 
     def view_top_bar(self, dimension: bool = False, start_point_x: float = None, start_point_y: float = None):
         """generowanie pręta górnego"""
@@ -254,18 +285,22 @@ class DxfElement:
 
         length_bar = self.length_bar(points=points, diameter=self.diameter_main_top)
 
+
         if dimension:
+            self.list_bar(diameter=self.diameter_main_top, quantity_bar=2, length=length_bar, steel_grade='B500SP')
             half = 0.5 * self.diameter_main_top
             self.dimension_generator(
-                (points[0][0] - 50, points[0][1]), points[0][:2], (points[2][0], points[2][1] + half), angle=90
+                (points[0][0] - 25, points[0][1]), points[0][:2], (points[2][0], points[2][1] + half), angle=90,
+                dimstyle=self.dim_name_bar
             )
             self.dimension_generator(
-                (points[3][0], points[3][1] - 100), (points[1][0] - half, points[1][1]), (points[4][0] + half, points[4][1])
+                (points[3][0], points[3][1] - 100), (points[1][0] - half, points[1][1]),
+                (points[4][0] + half, points[4][1]), dimstyle=self.dim_name_bar
             )
             self.dimension_generator(
-                (points[5][0] + 100, points[5][1]), (points[3][0], points[3][1] + half), points[5][:2], angle=90
+                (points[5][0] + 100, points[5][1]), (points[3][0], points[3][1] + half), points[5][:2], angle=90,
+                dimstyle=self.dim_name_bar
             )
-
 
     def view_bottom_bar(self, dimension: bool = False, start_point_x: float = None, start_point_y: float = None):
         """generowanie pręta dolnego"""
@@ -279,15 +314,18 @@ class DxfElement:
                    (start_point_y + self.cover_bottom + self.diameter_stirrup + 0.5 * self.diameter_main_bottom),
                    self.diameter_main_bottom, self.diameter_main_bottom),
                   (
-                  start_point_x + self.width_support_left + self.beam_span + self.width_support_right - self.cover_view_right,
-                  (start_point_y + self.cover_bottom + self.diameter_stirrup + 0.5 * self.diameter_main_bottom))]
+                      start_point_x + self.width_support_left + self.beam_span + self.width_support_right - self.cover_view_right,
+                      (start_point_y + self.cover_bottom + self.diameter_stirrup + 0.5 * self.diameter_main_bottom))]
         self.msp.add_lwpolyline(points, dxfattribs={'closed': False, 'layer': self.bar})
 
         length_bar = self.length_bar(points=points, diameter=self.diameter_main_bottom)
 
+
+
         if dimension:
+            self.list_bar(diameter=self.diameter_main_bottom, quantity_bar=3, length=length_bar, steel_grade='B500SP')
             self.dimension_generator(
-                (points[0][0], points[0][1] - 100), points[0][:2], points[1][:2]
+                (points[0][0], points[0][1] - 100), points[0][:2], points[1][:2], dimstyle=self.dim_name_bar
             )
 
     def distance_from_supports(self, distance):
@@ -356,6 +394,7 @@ class DxfElement:
                 ((self.width_support_left + i), self.cover_bottom, self.diameter_stirrup, self.diameter_stirrup),
                 ((self.width_support_left + i), (self.beam_height - self.cover_top))]
             self.msp.add_lwpolyline(points_stirrups, dxfattribs={'layer': self.stirrup})
+        self.count_stirrups = len(localization_stirrups)
 
     def supports(self, value_left: int, value_right: int, height: int = 200):
         hatch = self.msp.add_hatch(dxfattribs={'layer': self.hatch})
@@ -376,8 +415,11 @@ class DxfElement:
 
         self.msp.add_lwpolyline(line_hidden, dxfattribs={'layer': self.hidden})
 
-    def dimension_generator(self, base: tuple, p1: tuple, p2: tuple, angle: float = 0, text: str = "<>") -> object:
-        return self.msp.add_linear_dim(base=base, p1=p1, p2=p2, angle=angle, dimstyle=self.dim_name,
+    def dimension_generator(self, base: tuple, p1: tuple, p2: tuple, angle: float = 0, text: str = "<>",
+                            dimstyle=None) -> object:
+        if dimstyle is None:
+            dimstyle = self.dim_name
+        return self.msp.add_linear_dim(base=base, p1=p1, p2=p2, angle=angle, dimstyle=dimstyle,
                                        dxfattribs={'layer': self.dimension},
                                        text=text)
 
@@ -561,6 +603,9 @@ class DxfElement:
              start_point_y + self.beam_height - self.cover_top - 0.5 * self.diameter_stirrup, self.diameter_stirrup,
              self.diameter_stirrup)
         ]
+        length_bar = self.length_bar(points=points, diameter=self.diameter_stirrup)
+
+        self.list_bar(diameter=self.diameter_stirrup, quantity_bar=self.count_stirrups, length=length_bar, steel_grade='B500A')
 
         self.msp.add_lwpolyline(points, dxfattribs={'layer': self.bar})
 
@@ -621,43 +666,38 @@ class DxfElement:
 
         self.msp.add_lwpolyline(points, dxfattribs={'layer': self.bar})
 
-        # dim_bottom = self.dimension_generator((start_point_x, start_point_y - 50),
-        #                                       (start_point_x + self.cover_left, start_point_y + self.cover_bottom),
-        #                                       (start_point_x + self.beam_width - self.cover_right, start_point_y + self.cover_bottom),
-        #                                       )
-        # dim_bottom.set_extline1(disable=True)
-        #
-        # dim_bottom.set_extline2(disable=True)
-        # dim_bottom.set_dimline_format(disable1=True, disable2=True)
-        # # dim_bottom.render()
-
-        dim_bottom = self.msp.add_linear_dim((start_point_x, start_point_y - 50),
-                                             (start_point_x + self.cover_left, start_point_y + self.cover_bottom), (
-                                                 start_point_x + self.beam_width - self.cover_right,
-                                                 start_point_y + self.cover_bottom), dimstyle=self.dim_name,
-                                             dxfattribs={'layer': self.dimension}, angle=0, text='<>')
-
-        dim_bottom.set_extline1(disable=True)
-        dim_bottom.set_extline2(disable=True)
-        dim_bottom.set_dimline_format(disable1=True, disable2=True)
-        dim_bottom.render(discard=False)
-
-        dim_right = self.msp.add_linear_dim(
-            (start_point_x + 500, start_point_y),
-            (start_point_x + self.beam_width - self.cover_right, start_point_y + self.cover_bottom),
-            (start_point_x + self.beam_width - self.cover_right, start_point_y + self.beam_height - self.cover_top),
-            dimstyle=self.dim_name,
+        self.msp.add_linear_dim((start_point_x, start_point_y - 50),
+                                (start_point_x + self.cover_left, start_point_y + self.cover_bottom), (
+                                    start_point_x + self.beam_width - self.cover_right,
+                                    start_point_y + self.cover_bottom), dimstyle=self.dim_name_bar,
+                                dxfattribs={'layer': self.dimension}, angle=0, text='<>')
+        # dimension left
+        self.msp.add_linear_dim(
+            (start_point_x + self.cover_left - 25, start_point_y),
+            (start_point_x + self.cover_left, start_point_y + self.cover_bottom),
+            (start_point_x + self.cover_left, start_point_y + self.beam_height - self.cover_top),
+            dimstyle=self.dim_name_bar,
             dxfattribs={'layer': self.dimension}, angle=90, text='<>')
 
-        dim_right.set_extline1(disable=True)
-        dim_right.set_extline2(disable=True)
-        dim_right.set_dimline_format(disable1=True, disable2=True)
-        dim_right.render()
+    def create_table(self, start_point_x: float = None, start_point_y: float = None, **kwargs: dict):
+        for i in kwargs:
+            print(i)
 
-    # def dimension_generator(self, base: tuple, p1: tuple, p2: tuple, angle: float = 0, text: str = "<>") -> object:
-    #     return self.msp.add_linear_dim(base=base, p1=p1, p2=p2, angle=angle, dimstyle=self.dim_name,
-    #                                    dxfattribs={'layer': self.dimension},
-    #                                    text=text)
+        column_width = [15, 1, 1, 1, 1, 1, 1, 1]
+        row_height = [5]
+        scale = 20
+        start_point_x = -5000
+        start_point_y = 0
+
+        points = [(start_point_x, start_point_y),
+                  (start_point_x + column_width[0] * scale, start_point_y),
+                  (start_point_x + column_width[0] * scale, start_point_y - row_height[0] * scale),
+                  (start_point_x, start_point_y - row_height[0] * scale)]
+
+        self.msp.add_lwpolyline(points, dxfattribs={'closed': True, 'layer': self.counter})
+        self.msp.add_text('B500SP',
+                          dxfattribs={'style': self.text, 'height': scale * 2.5, 'layer': self.counter})\
+            .set_pos(p1=(tuple(map(lambda x: sum(x) / float(len(x)), zip(*points[:3:2])))), align='MIDDLE')
 
     def layout_new(self):
         """layauty, początki"""

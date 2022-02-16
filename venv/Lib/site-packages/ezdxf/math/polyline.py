@@ -1,13 +1,41 @@
 #  Copyright (c) 2021, Manfred Moitzi
 #  License: MIT License
-from typing import Iterable, List, TYPE_CHECKING, Tuple, Iterator, Sequence
-from ezdxf.math import Vec3, linspace, NULLVEC
+from typing import (
+    Iterable,
+    List,
+    TYPE_CHECKING,
+    Tuple,
+    Iterator,
+    Sequence,
+    Dict,
+)
+import abc
+from typing_extensions import Protocol
+from ezdxf.math import (
+    Vec2,
+    Vec3,
+    linspace,
+    NULLVEC,
+    Vertex,
+    intersection_line_line_2d,
+    BoundingBox2d,
+    intersection_line_line_3d,
+    BoundingBox,
+    AbstractBoundingBox,
+)
+
+
 import bisect
 
 if TYPE_CHECKING:
     from ezdxf.math import Vertex
 
-__all__ = ["ConstructionPolyline"]
+__all__ = [
+    "ConstructionPolyline",
+    "ApproxParamT",
+    "intersect_polylines_2d",
+    "intersect_polylines_3d",
+]
 
 REL_TOL = 1e-9
 
@@ -37,10 +65,13 @@ class ConstructionPolyline(Sequence):
             # get dividing points with a distance of 1.0 drawing unit to each other
             points = list(polyline.divide_by_length(1.0))
 
+    .. versionadded:: 0.18
+
     """
+
     def __init__(
         self,
-        vertices: Iterable["Vertex"],
+        vertices: Iterable[Vertex],
         close: bool = False,
         rel_tol: float = REL_TOL,
     ):
@@ -102,6 +133,21 @@ class ConstructionPolyline(Sequence):
         vertex = vertices[index]
         return current_distance, current_distance - prev_distance, vertex
 
+    def index_at(self, distance: float) -> int:
+        """Returns the data index of the exact or next data entry for the given
+        `distance`. Returns the index of last entry if `distance` > :attr:`length`.
+
+        """
+        if distance <= 0.0:
+            return 0
+        if distance >= self.length:
+            return max(0, len(self) - 1)
+        return self._index_at(distance)
+
+    def _index_at(self, distance: float) -> int:
+        # fast method without any checks
+        return bisect.bisect_left(self._distances, distance)
+
     def vertex_at(self, distance: float) -> Vec3:
         """Returns the interpolated vertex at the given `distance` from the
         start of the polyline.
@@ -116,7 +162,7 @@ class ConstructionPolyline(Sequence):
         # fast method without any checks
         vertices = self._vertices
         distances = self._distances
-        index1 = bisect.bisect_left(distances, distance)
+        index1 = self._index_at(distance)
         if index1 == 0:
             return vertices[0]
         index0 = index1 - 1
@@ -186,3 +232,251 @@ def _distances(vertices: Iterable[Vec3]) -> List[float]:
             distances.append(current_station)
         prev_vertex = vertex
     return distances
+
+
+class SupportsPointMethod(Protocol):
+    def point(self, t: float) -> Vertex:
+        ...
+
+
+class ApproxParamT:
+    """Approximation tool for parametrized curves.
+
+    - approximate parameter `t` for a given distance from the start of the curve
+    - approximate the distance for a given parameter `t` from the start of the curve
+
+    This approximations can be applied to all parametrized curves which provide
+    a :meth:`point` method, like :class:`Bezier4P`, :class:`Bezier3P` and
+    :class:`BSpline`.
+
+    The approximation is based on equally spaced parameters from 0 to `max_t`
+    for a given segment count.
+    The :meth:`flattening` method can not be used for the curve approximation,
+    because the required parameter `t` is not logged by the flattening process.
+
+    Args:
+        curve: curve object, requires a method :meth:`point`
+        max_t: the max. parameter value
+        segments: count of approximation segments
+
+    .. versionadded:: 0.18
+
+    """
+
+    def __init__(
+        self,
+        curve: SupportsPointMethod,
+        *,
+        max_t: float = 1.0,
+        segments: int = 100,
+    ):
+        assert hasattr(curve, "point")
+        assert segments > 0
+        self._polyline = ConstructionPolyline(
+            curve.point(t) for t in linspace(0.0, max_t, segments + 1)
+        )
+        self._max_t = max_t
+        self._step = max_t / segments
+
+    @property
+    def max_t(self) -> float:
+        return self._max_t
+
+    @property
+    def polyline(self) -> ConstructionPolyline:
+        return self._polyline
+
+    def param_t(self, distance: float):
+        """Approximate parameter t for the given `distance` from the start of
+        the curve.
+        """
+        poly = self._polyline
+        if distance >= poly.length:
+            return self._max_t
+
+        t_step = self._step
+        i = poly.index_at(distance)
+        station, d0, _ = poly.data(i)
+        t = t_step * i  # t for station
+        if d0 > 1e-12:
+            t -= t_step * (station - distance) / d0
+        return min(self._max_t, t)
+
+    def distance(self, t: float) -> float:
+        """Approximate the distance from the start of the curve to the point
+        `t` on the curve.
+        """
+        if t <= 0.0:
+            return 0.0
+        poly = self._polyline
+        if t >= self._max_t:
+            return poly.length
+
+        step = self._step
+        index = int(t / step) + 1
+        station, d0, _ = poly.data(index)
+        return station - d0 * (step * index - t) / step
+
+
+def intersect_polylines_2d(
+    p1: Sequence[Vec2], p2: Sequence[Vec2], abs_tol=1e-10
+) -> List[Vec2]:
+    """Returns the intersection points for two polylines as list of :class:`Vec2`
+    objects, the list is empty if no intersection points exist.
+    Does not return self intersection points of `p1` or `p2`.
+    Duplicate intersection points are removed from the result list, but the list
+    does not have a particular order! You can sort the result list by
+    :code:`result.sort()` to introduce an order.
+
+    Args:
+        p1: first polyline as sequence of :class:`Vec2` objects
+        p2: second polyline as sequence of :class:`Vec2` objects
+        abs_tol: absolute tolerance for comparisons
+
+    .. versionadded:: 0.17.2
+
+    """
+    intersect = _PolylineIntersection2d(p1, p2, abs_tol)
+    intersect.execute()
+    return intersect.intersections
+
+
+def intersect_polylines_3d(
+    p1: Sequence[Vec3], p2: Sequence[Vec3], abs_tol=1e-10
+) -> List[Vec3]:
+    """Returns the intersection points for two polylines as list of :class:`Vec3`
+    objects, the list is empty if no intersection points exist.
+    Does not return self intersection points of `p1` or `p2`.
+    Duplicate intersection points are removed from the result list, but the list
+    does not have a particular order! You can sort the result list by
+    :code:`result.sort()` to introduce an order.
+
+    Args:
+        p1: first polyline as sequence of :class:`Vec3` objects
+        p2: second polyline as sequence of :class:`Vec3` objects
+        abs_tol: absolute tolerance for comparisons
+
+    .. versionadded:: 0.17.2
+
+    """
+    intersect = _PolylineIntersection3d(p1, p2, abs_tol)
+    intersect.execute()
+    return intersect.intersections
+
+
+def divide(a: int, b: int) -> Tuple[int, int, int, int]:
+    m = (a + b) // 2
+    return a, m, m, b
+
+
+TCache = Dict[Tuple[int, int, int], AbstractBoundingBox]
+
+
+class _PolylineIntersection:
+    p1: Sequence
+    p2: Sequence
+
+    def __init__(self):
+        # At each recursion level the bounding box for each half of the
+        # polyline will be created two times, using a cache is an advantage:
+        self.bbox_cache: TCache = {}
+
+    @abc.abstractmethod
+    def bbox(self, points: Sequence) -> AbstractBoundingBox:
+        ...
+
+    @abc.abstractmethod
+    def line_intersection(self, s1: int, e1: int, s2: int, e2: int) -> None:
+        ...
+
+    def execute(self) -> None:
+        l1: int = len(self.p1)
+        l2: int = len(self.p2)
+        if l1 < 2 or l2 < 2:  # polylines with only one vertex
+            return
+        self.intersect(0, l1 - 1, 0, l2 - 1)
+
+    def overlap(self, s1: int, e1: int, s2: int, e2: int) -> bool:
+        e1 += 1
+        e2 += 1
+        # If one part of the polylines has less than 2 vertices no intersection
+        # calculation is required:
+        if e1 - s1 < 2 or e2 - s2 < 2:
+            return False
+
+        cache = self.bbox_cache
+        key1 = (1, s1, e1)
+        bbox1 = cache.get(key1)
+        if bbox1 is None:
+            bbox1 = self.bbox(self.p1[s1:e1])
+            cache[key1] = bbox1
+
+        key2 = (2, s2, e2)
+        bbox2 = cache.get(key2)
+        if bbox2 is None:
+            bbox2 = self.bbox(self.p2[s2:e2])
+            cache[key2] = bbox2
+        return bbox1.overlap(bbox2)
+
+    def intersect(self, s1: int, e1: int, s2: int, e2: int) -> None:
+        assert e1 > s1 and e2 > s2
+        if e1 - s1 == 1 and e2 - s2 == 1:
+            self.line_intersection(s1, e1, s2, e2)
+            return
+        s1_a, e1_b, s1_c, e1_d = divide(s1, e1)
+        s2_a, e2_b, s2_c, e2_d = divide(s2, e2)
+
+        if self.overlap(s1_a, e1_b, s2_a, e2_b):
+            self.intersect(s1_a, e1_b, s2_a, e2_b)
+        if self.overlap(s1_a, e1_b, s2_c, e2_d):
+            self.intersect(s1_a, e1_b, s2_c, e2_d)
+        if self.overlap(s1_c, e1_d, s2_a, e2_b):
+            self.intersect(s1_c, e1_d, s2_a, e2_b)
+        if self.overlap(s1_c, e1_d, s2_c, e2_d):
+            self.intersect(s1_c, e1_d, s2_c, e2_d)
+
+
+class _PolylineIntersection2d(_PolylineIntersection):
+    def __init__(self, p1: Sequence[Vec2], p2: Sequence[Vec2], abs_tol=1e-10):
+        super().__init__()
+        self.p1 = p1
+        self.p2 = p2
+        self.intersections: List[Vec2] = []
+        self.abs_tol = abs_tol
+
+    def bbox(self, points: Sequence) -> AbstractBoundingBox:
+        return BoundingBox2d(points)
+
+    def line_intersection(self, s1: int, e1: int, s2: int, e2: int) -> None:
+        line1 = self.p1[s1], self.p1[e1]
+        line2 = self.p2[s2], self.p2[e2]
+        p = intersection_line_line_2d(
+            line1, line2, virtual=False, abs_tol=self.abs_tol
+        )
+        if p is not None and not any(
+            p.isclose(ip, abs_tol=self.abs_tol) for ip in self.intersections
+        ):
+            self.intersections.append(p)
+
+
+class _PolylineIntersection3d(_PolylineIntersection):
+    def __init__(self, p1: Sequence[Vec3], p2: Sequence[Vec3], abs_tol=1e-10):
+        super().__init__()
+        self.p1 = p1
+        self.p2 = p2
+        self.intersections: List[Vec3] = []
+        self.abs_tol = abs_tol
+
+    def bbox(self, points: Sequence) -> AbstractBoundingBox:
+        return BoundingBox(points)
+
+    def line_intersection(self, s1: int, e1: int, s2: int, e2: int) -> None:
+        line1 = self.p1[s1], self.p1[e1]
+        line2 = self.p2[s2], self.p2[e2]
+        p = intersection_line_line_3d(
+            line1, line2, virtual=False, abs_tol=self.abs_tol
+        )
+        if p is not None and not any(
+            p.isclose(ip, abs_tol=self.abs_tol) for ip in self.intersections
+        ):
+            self.intersections.append(p)

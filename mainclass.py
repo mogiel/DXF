@@ -1,17 +1,62 @@
-# todo: należy poprawić importy, dwa razy importuje math...
 import math
 import re
 import ezdxf
 import ezdxf.math
-from ezdxf.tools.standards import linetypes
-from math import pi, floor, sin, cos, radians
-from random import randrange, choice
+
+lang = 'pl'
+
+LANG_PL = {
+    'bending_schedule': 'WYKAZ ZBROJENIA',
+    'mark': 'Poz.\nnr',
+    'dia': 'Średnica\n%%c',
+    'lenght_bar': 'Długość',
+    'number_in_element': 'Liczba w\n1 elem.',
+    'total_number': 'Liczba\nogólna',
+    'tolat_lenght': 'Długość całkowita',
+    'mass_1m': 'Masa 1m pręta',
+    'mass_according_dia': 'Masa prętów wg średnic',
+    'mass_total': 'Masa całkowita',
+    'element:': 'Element:',
+    'comments': 'Uwagi',
+    'make': 'Wykonac',
+    'pcs': '[szt.]',
+    'mass': '[kg]',
+    'lenght_m': '[m]',
+    'lenght_mm': '[mm]',
+}
+LANG_ENG = {
+    'bending_schedule': 'BENDING SCHEDULE',
+    'mark': 'Mark',
+    'dia': 'DIA',
+}
+
+LANG_DE = {
+    'bending_schedule': 'STAHLLISTE',
+    'mark': 'Pos.\nNR.',
+    'dia': '%%c',
+}
+LANG = dict()
+if lang == 'pl':
+    LANG = LANG_PL
+elif lang == 'eng':
+    LANG = LANG_ENG
+elif lang == 'de':
+    LANG = LANG_DE
+else:
+    LANG = LANG_ENG
 
 
-def point_position(x0: float, y0: float, distance: float, theta: float = 60):
+# from ezdxf.tools.standards import linetypes
+
+def point_position(x0: float, y0: float, distance: float, theta: float = 60) -> tuple[float, float]:
     """theta zgodna z ruchem wskazowek zegara. godzina 12:00 to 0st, 3:00 to 90st, 6:00 to 180st, 9:00 to 270st"""
-    theta_rad = pi / 2 - radians(theta)
-    return x0 + distance * cos(theta_rad), y0 + distance * sin(theta_rad)
+    theta_rad = math.pi / 2 - math.radians(theta)
+    return x0 + distance * math.cos(theta_rad), y0 + distance * math.sin(theta_rad)
+
+
+def tuple_dest(tuple_start: tuple[float, float], width: float = 0, height: float = 0) -> tuple[float, float]:
+    return tuple_start[0] + width, tuple_start[1] + height
+
 
 # todo: 1. przekrój. generator odstępów między prętami oraz pręty w dwóch warstwach
 # todo: 3. Generacja tabel zbrojenia
@@ -19,9 +64,9 @@ def point_position(x0: float, y0: float, distance: float, theta: float = 60):
 
 class DxfElement:
     def __init__(self,
-                 beam_span: int,
-                 beam_height: int,
-                 beam_width: int,
+                 beam_span: float,
+                 beam_height: float,
+                 beam_width: float,
                  width_support_left: int,
                  width_support_right: int,
                  diameter_main_top: int,
@@ -38,16 +83,18 @@ class DxfElement:
                  first_row_stirrup_spacing_left: int,
                  first_row_stirrup_spacing_right: int,
                  secondary_stirrup_spacing: int,
+                 number_of_elements: int = 1,
                  name: str = "Belka",
                  dxfversion: str = 'R2018',
-                 start_point_x: int = 0,
-                 start_point_y: int = 0):
+                 start_point_x: float = 0,
+                 start_point_y: float = 0):
 
         self.first_row_stirrup_spacing_right = self._is_valid_value(first_row_stirrup_spacing_right, 0, 400)
         self.first_row_stirrup_spacing_left = self._is_valid_value(first_row_stirrup_spacing_left, 0, 400)
         self.first_row_stirrup_range_right = self._is_valid_value(first_row_stirrup_range_right, 0, 15000)
         self.first_row_stirrup_range_left = self._is_valid_value(first_row_stirrup_range_left, 0, 15000)
         self.name = self._is_valid_path_name(name)
+        self.number_of_elements = self._is_valid_value(number_of_elements, 1, 1000)
         self.cover_right = self._is_valid_value(cover_right, 5, 100)
         self.cover_left = self._is_valid_value(cover_left, 5, 100)
         self.beam_width = self._is_valid_value(beam_width, 100, 1000)
@@ -103,25 +150,26 @@ class DxfElement:
         self.dimension_stirrup()
         self.beam_section_rectangular()
         self.view_stirrups_type_2(start_point_x=5000, start_point_y=0)
-        self.create_table()
+        self.create_table(steel_bill=self.steel_bill)
         self.save()
 
     """Część sprawdzająca poprawnośc danych"""
 
     @staticmethod
-    def _is_valid_value(value, min_value=0, max_value=99999):
+    def _is_valid_value(value: float, min_value: float = 0, max_value: float = 99999):
         if type(value) != int or value < min_value or value > max_value:
             raise ValueError(f"{value} max is {max_value}[m]")
         return value
 
     @staticmethod
-    def _is_valid_value_beam(value, range_left, range_right, min_value=0, max_value=99999):
+    def _is_valid_value_beam(value: float, range_left: float, range_right: float, min_value: float = 0,
+                             max_value: float = 99999) -> float or ValueError:
         if type(value) != int or value <= min_value or value > max_value or value - range_left - range_right < 0:
             raise ValueError(f"{value} max is {max_value}[m]")
         return value
 
     @staticmethod
-    def _is_valid_path_name(name):
+    def _is_valid_path_name(name: str) -> str or ValueError:
         """todo: poprawić regex, bo wywala błąd"""
         # regex = "^(?:[^/]*(?:/(?:/[^/]*/?)?)?([^?]+)(?:\??.+)?)$"
         regex = "/\\:*?\"<>|"
@@ -130,7 +178,7 @@ class DxfElement:
         return name
 
     @staticmethod
-    def bar_bending(diameter: int) -> float:
+    def bar_bending(diameter: float) -> float:
         """Obliczanie wygięcia pręta związanego ze średnicą pręta"""
         if diameter <= 16:
             return diameter * 2.5
@@ -139,7 +187,7 @@ class DxfElement:
 
     def secondary_stirrup_spacing_min(self) -> float:
         self.secondary_stirrup_spacing = math.floor(
-            min(self.secondary_stirrup_spacing, 400, (self.beam_height * 0.75)) / 5) * 5
+            min(self.secondary_stirrup_spacing, 400, int(self.beam_height * 0.75)) / 5) * 5
         return self.secondary_stirrup_spacing
 
     def initial_drawing(self, LTSCALE: int = 50, INSUNITS: int = 4, MEASUREMENT: int = 1):
@@ -197,7 +245,7 @@ class DxfElement:
     def bar_bulge(self, diameter):
         """funkcja potrzebna aby wyliczyć promień łuku dla wyoblenia"""
         bulge = self.bar_bending(diameter)
-        math_bulge = ezdxf.math.arc_to_bulge((bulge, 0), pi, pi / 2, bulge)
+        math_bulge = ezdxf.math.arc_to_bulge((bulge, 0), math.pi, math.pi / 2, bulge)
         return -1 / math_bulge[2]
 
     def beam_outline(self):
@@ -212,23 +260,19 @@ class DxfElement:
                   (self.start_point_x, self.start_point_y + self.beam_height)]
         return self.msp.add_lwpolyline(points, dxfattribs={'closed': True, 'layer': self.counter})
 
-    def length_bar(self, points: list, diameter: int, angle: int = 90) -> float:
+    def length_bar(self, points: list, diameter: float, angle: int = 90) -> float:
         """angle jest to kąt pod jakim zmieniają się proste"""
         arc_radius = self.bar_bending(diameter)
         total_length_bar = 0
         for i in range(len(points) - 1):
             if len(points[i]) == 5:
-                total_length_bar += 2 * (angle / 360) * pi * arc_radius
+                total_length_bar += 2 * (angle / 360) * math.pi * arc_radius
                 continue
             total_length_bar += ((points[i][0] - points[i + 1][0]) ** 2 + (points[i][1] - points[i + 1][1]) ** 2) ** 0.5
         return round(total_length_bar)
 
-    def list_bar(self, diameter: float = None, quantity_bar: int = None, length: float = None, steel_grade: str = None, name: str = None):
-        # def sorted_dict_in_list(e):
-        #     return e['number']
-        #
-        # self.steel_bill.sort(key=sorted_dict_in_list)
-        self.steel_bill.sort(key=(lambda x: x['number']))
+    def list_bar(self, diameter: float = None, quantity_bar: int = None, length: float = None, steel_grade: str = None,
+                 name: str = None):
         self.steel_bill = [dict(t) for t in {tuple(d.items()) for d in self.steel_bill}]
 
         bar = {
@@ -239,11 +283,8 @@ class DxfElement:
             'length': length,
             'steel_grade': steel_grade,
         }
-
         self.steel_bill.append(bar)
-
-        print(self.steel_bill)
-        return self.steel_bill
+        self.steel_bill.sort(key=(lambda x: x['number']))
 
     def view_top_bar(self, dimension: bool = False, start_point_x: float = None, start_point_y: float = None):
         """generowanie pręta górnego"""
@@ -285,7 +326,6 @@ class DxfElement:
 
         length_bar = self.length_bar(points=points, diameter=self.diameter_main_top)
 
-
         if dimension:
             self.list_bar(diameter=self.diameter_main_top, quantity_bar=2, length=length_bar, steel_grade='B500SP')
             half = 0.5 * self.diameter_main_top
@@ -320,8 +360,6 @@ class DxfElement:
 
         length_bar = self.length_bar(points=points, diameter=self.diameter_main_bottom)
 
-
-
         if dimension:
             self.list_bar(diameter=self.diameter_main_bottom, quantity_bar=3, length=length_bar, steel_grade='B500SP')
             self.dimension_generator(
@@ -348,8 +386,8 @@ class DxfElement:
     def stirrup_spacing(self):
         """rozstaw strzemion w belce"""
         "todo: dokonczyc"
-        last_stirrup_left: int = 0
-        last_stirrup_right: int = self.beam_span
+        last_stirrup_left: float = 0
+        last_stirrup_right: float = self.beam_span
         localization_stirrups = []
         range_first_row = self.distance_from_supports(self.secondary_stirrup_spacing)
 
@@ -396,7 +434,7 @@ class DxfElement:
             self.msp.add_lwpolyline(points_stirrups, dxfattribs={'layer': self.stirrup})
         self.count_stirrups = len(localization_stirrups)
 
-    def supports(self, value_left: int, value_right: int, height: int = 200):
+    def supports(self, value_left: float, value_right: float, height: int = 200):
         hatch = self.msp.add_hatch(dxfattribs={'layer': self.hatch})
         hatch.set_pattern_fill('ANSI33', scale=20, color=-1)
         hatch.paths.add_polyline_path(
@@ -605,7 +643,8 @@ class DxfElement:
         ]
         length_bar = self.length_bar(points=points, diameter=self.diameter_stirrup)
 
-        self.list_bar(diameter=self.diameter_stirrup, quantity_bar=self.count_stirrups, length=length_bar, steel_grade='B500A')
+        self.list_bar(diameter=self.diameter_stirrup, quantity_bar=self.count_stirrups, length=length_bar,
+                      steel_grade='B500A')
 
         self.msp.add_lwpolyline(points, dxfattribs={'layer': self.bar})
 
@@ -679,25 +718,190 @@ class DxfElement:
             dimstyle=self.dim_name_bar,
             dxfattribs={'layer': self.dimension}, angle=90, text='<>')
 
-    def create_table(self, start_point_x: float = None, start_point_y: float = None, **kwargs: dict):
-        for i in kwargs:
-            print(i)
+    # def generate_cell(self, points: list[tuple[float, float]], scale: int = 20, text: str = "__"):
 
-        column_width = [15, 1, 1, 1, 1, 1, 1, 1]
-        row_height = [5]
-        scale = 20
-        start_point_x = -5000
-        start_point_y = 0
+    def generate_cell(self, point_top_left: tuple[float, float], width: float, height: float, scale: int = 20,
+                      text: str = "__", height_text: float = 2.5):
 
-        points = [(start_point_x, start_point_y),
-                  (start_point_x + column_width[0] * scale, start_point_y),
-                  (start_point_x + column_width[0] * scale, start_point_y - row_height[0] * scale),
-                  (start_point_x, start_point_y - row_height[0] * scale)]
+        """ MTEXT_TOP_LEFT	1
+            MTEXT_TOP_CENTER	2
+            MTEXT_TOP_RIGHT	3
+            MTEXT_MIDDLE_LEFT	4
+            MTEXT_MIDDLE_CENTER	5
+            MTEXT_MIDDLE_RIGHT	6
+            MTEXT_BOTTOM_LEFT	7
+            MTEXT_BOTTOM_CENTER	8
+            MTEXT_BOTTOM_RIGHT	9
+        """
+
+        points = [point_top_left,
+                  (point_top_left[0] + width * scale, point_top_left[1]),
+                  (point_top_left[0] + width * scale, point_top_left[1] - height * scale),
+                  (point_top_left[0], point_top_left[1] - height * scale)]
 
         self.msp.add_lwpolyline(points, dxfattribs={'closed': True, 'layer': self.counter})
-        self.msp.add_text('B500SP',
-                          dxfattribs={'style': self.text, 'height': scale * 2.5, 'layer': self.counter})\
-            .set_pos(p1=(tuple(map(lambda x: sum(x) / float(len(x)), zip(*points[:3:2])))), align='MIDDLE')
+
+        self.msp.add_mtext(text,
+                           dxfattribs={'style': self.text,
+                                       'char_height': scale * height_text,
+                                       'attachment_point': 4,
+                                       'layer': self.counter}) \
+            .set_location((tuple(map(lambda x: sum(x) / float(len(x)), zip(*points[:3:2])))))
+
+    def create_table(self, steel_bill: list, start_point_x: float = None, start_point_y: float = None, scale: int = 20):
+        start_point_x = \
+            (
+                    self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right + 2000 + self.beam_width * 2) \
+                if start_point_x is None \
+                else start_point_x
+        start_point_y = self.start_point_y if start_point_y is None else start_point_y
+
+        steel_grade = {}
+        for i in steel_bill:
+            value_grade = i['steel_grade']
+            if value_grade not in steel_grade:
+                steel_grade[value_grade] = []
+
+        for i in steel_bill:
+            value_diameter = i['diameter']
+            value_grade = i['steel_grade']
+            for j in steel_grade:
+                if value_grade == j:
+                    if value_diameter not in steel_grade[value_grade]:
+                        steel_grade[value_grade].append(value_diameter)
+
+        count_column = sum(len(value) for value in steel_grade.values())
+        count_row = len(steel_bill)
+
+        column_width = [10, 15, 30, 15, 15, 15 * count_column, 20]
+        row_height = [10, 5, 5, 5, 5, 5 * count_row, 5]
+
+        start_point = (start_point_x, start_point_y)
+
+        # title
+        self.generate_cell(point_top_left=start_point, width=sum(column_width), height=row_height[0],
+                           text=LANG['bending_schedule'], height_text=5)
+        # header
+        self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                     height=-sum(row_height[:1]) * scale),
+                           width=column_width[0],
+                           height=sum(row_height[1:4]),
+                           text=LANG['mark'])
+
+        self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                     height=-sum(row_height[:1]) * scale,
+                                                     width=sum(column_width[:1]) * scale),
+                           width=column_width[1],
+                           height=sum(row_height[1:3]),
+                           text=LANG['dia'])
+
+        self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                     height=-sum(row_height[:3]) * scale,
+                                                     width=sum(column_width[:1]) * scale),
+                           width=column_width[1],
+                           height=sum(row_height[3:4]),
+                           text=LANG['lenght_mm'])
+
+        self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                     height=-sum(row_height[:1]) * scale,
+                                                     width=sum(column_width[:2]) * scale),
+                           width=column_width[2],
+                           height=sum(row_height[1:3]),
+                           text=LANG['lenght_bar'])
+
+        self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                     height=-sum(row_height[:3]) * scale,
+                                                     width=sum(column_width[:2]) * scale),
+                           width=column_width[2],
+                           height=sum(row_height[3:4]),
+                           text=LANG['lenght_mm'])
+
+        self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                     height=-sum(row_height[:1]) * scale,
+                                                     width=sum(column_width[:3]) * scale),
+                           width=column_width[3],
+                           height=sum(row_height[1:3]),
+                           text=LANG['number_in_element'])
+
+        self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                     height=-sum(row_height[:3]) * scale,
+                                                     width=sum(column_width[:3]) * scale),
+                           width=column_width[3],
+                           height=sum(row_height[3:4]),
+                           text=LANG['pcs'])
+
+        self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                     height=-sum(row_height[:1]) * scale,
+                                                     width=sum(column_width[:4]) * scale),
+                           width=column_width[4],
+                           height=sum(row_height[1:3]),
+                           text=LANG['total_number'])
+
+        self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                     height=-sum(row_height[:3]) * scale,
+                                                     width=sum(column_width[:4]) * scale),
+                           width=column_width[4],
+                           height=sum(row_height[3:4]),
+                           text=LANG['pcs'])
+
+        self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                     height=-sum(row_height[:1]) * scale,
+                                                     width=sum(column_width[:5]) * scale),
+                           width=column_width[5],
+                           height=sum(row_height[3:4]),
+                           text=LANG['tolat_lenght'])
+
+        # nie należy tak tworzyć tablic, listy należy tworzyć przez list comprechention
+        # array_bending_schedule = count_column * [count_row * [0]]
+
+        array_bending_schedule = [[0 for i in range(count_column)] for j in range(count_row)]
+        count_count_grade_value = 0
+
+        for i in steel_grade:
+            count_column_grade = column_width[5] * count_count_grade_value / count_column
+
+            self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                         height=-sum(row_height[:2]) * scale,
+                                                         width=(sum(column_width[:5]) + count_column_grade) * scale),
+                               width=column_width[5] / count_column * len(steel_grade[i]),
+                               height=sum(row_height[3:4]),
+                               text=i)
+
+            for j in range(len(steel_grade[i])):
+                self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                             height=-sum(row_height[:3]) * scale,
+                                                             width=(sum(column_width[
+                                                                        :5]) + column_width[
+                                                                        5] * count_count_grade_value / count_column) * scale),
+                                   width=column_width[5] / count_column,
+                                   height=sum(row_height[4:5]),
+                                   text=f'%%c{steel_grade[i][j]}')
+
+                for k in range(len(steel_bill)):
+                    if steel_bill[k]['steel_grade'] == i and steel_bill[k]['diameter'] == steel_grade[i][j]:
+                        array_bending_schedule[k][count_count_grade_value] = round(
+                            steel_bill[k]['length'] / 1000 * steel_bill[k]['quantity_bar'] * self.number_of_elements, 2)
+
+                count_count_grade_value += 1
+
+        if column_width[6] > 0:
+            self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                         height=-sum(row_height[:1]) * scale,
+                                                         width=sum(column_width[:6]) * scale),
+                               width=column_width[6],
+                               height=sum(row_height[1:4]),
+                               text=LANG['comments'])
+
+        self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                     height=-sum(row_height[:4]) * scale),
+                           width=sum(column_width[:]),
+                           height=sum(row_height[4:5]),
+                           text=f"{LANG['element:']} {self.name}")
+
+        # self.generate_cell(point_top_left=start_point, width=sum(column_width[:5]) * scale, height=-sum(row_height[:5]) * scale,
+        #                    text=LANG['element'], height_text=5)
+        print(array_bending_schedule)
+        print(steel_bill)
 
     def layout_new(self):
         """layauty, początki"""
@@ -713,7 +917,8 @@ class DxfElement:
 
 
 # testy plików
-draw = DxfElement(3450, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 1350, 250, 125, 400, name="BŻ-3")
+draw = DxfElement(3450, 500, 250, 250, 250, 16, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 1350, 250, 125, 400, name="BŻ-3",
+                  number_of_elements=4)
 # draw1 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 1250, 250, 100, 400, name="BŻ-2")
 # draw4 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 300, name="BŻ-21")
 # draw41 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 310, name="BŻ-23")

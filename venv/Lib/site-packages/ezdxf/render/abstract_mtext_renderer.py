@@ -9,14 +9,17 @@ from typing import List, Sequence, Dict, Tuple, Optional
 import abc
 from ezdxf.lldxf import const
 from ezdxf.entities.mtext import MText, MTextColumns
+from ezdxf.enums import (
+    MTextParagraphAlignment,
+)
 from ezdxf.tools import text_layout as tl, fonts
 from ezdxf.tools.text import (
     MTextParser,
     MTextContext,
     TokenType,
-    MTextParagraphAlignment,
     ParagraphProperties,
     AbstractFont,
+    estimate_mtext_extents,
 )
 
 __all__ = ["AbstractMTextRenderer"]
@@ -145,11 +148,9 @@ def super_glue():
 
 
 def defined_width(mtext: MText) -> float:
-    width = mtext.dxf.get("width", 0.0)  # optional without default value
-    if width < 1e-6:  # no defined width
-        content = mtext.plain_text(split=True, fast=True)
-        max_line_length = max(len(t) for t in content)
-        width = max_line_length * mtext.dxf.char_height
+    width = mtext.dxf.get("width", 0.0)
+    if width < 1e-6:
+        width, height = estimate_mtext_extents(mtext)
     return width
 
 

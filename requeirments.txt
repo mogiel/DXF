@@ -1,2 +1,2 @@
-ezdxf==0.16.3
+ezdxf==0.17.2
 pyparsing==2.4.7

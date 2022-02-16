@@ -140,6 +140,9 @@ class DxfElement:
         self.view_top_bar()
         self.view_top_bar(dimension=True, start_point_y=-2 * self.beam_height - 300)
         self.view_bottom_bar(dimension=True, start_point_y=-2 * self.beam_height - 500)
+        self.view_bottom_bar(dimension=True, start_point_y=-2 * self.beam_height - 500)
+        self.view_bottom_bar(dimension=True, start_point_y=-2 * self.beam_height - 500)
+        self.view_bottom_bar(dimension=True, start_point_y=-2 * self.beam_height - 500)
         self.secondary_stirrup_spacing_min()
         self.layout_new()
         self.stirrup_spacing()
@@ -184,6 +187,10 @@ class DxfElement:
             return diameter * 2.5
         else:
             return diameter * 4.0
+
+    @staticmethod
+    def mass_1m_bar(radius: float, mass: float = 7850) -> float:
+        return round(mass * math.pi * ((radius/2)/1000)**2, 3)
 
     def secondary_stirrup_spacing_min(self) -> float:
         self.secondary_stirrup_spacing = math.floor(
@@ -583,7 +590,7 @@ class DxfElement:
                  self.start_point_y - height),
                 (self.start_point_x + self.width_support_left + value4,
                  self.start_point_y - height),
-                text=f'{math.ceil((value4 - value3) / (self.number_of_stirrups_of_the_second_row))} x {self.number_of_stirrups_of_the_second_row} = <>'
+                text=f'{math.ceil((value4 - value3) / self.number_of_stirrups_of_the_second_row)} x {self.number_of_stirrups_of_the_second_row} = <>'
             )
 
     def beam_section_rectangular(self, between_element: float = 500):
@@ -721,17 +728,17 @@ class DxfElement:
     # def generate_cell(self, points: list[tuple[float, float]], scale: int = 20, text: str = "__"):
 
     def generate_cell(self, point_top_left: tuple[float, float], width: float, height: float, scale: int = 20,
-                      text: str = "__", height_text: float = 2.5):
+                      text: str = "__", height_text: float = 2.5, attachment_point: int = 5):
 
-        """ MTEXT_TOP_LEFT	1
-            MTEXT_TOP_CENTER	2
-            MTEXT_TOP_RIGHT	3
-            MTEXT_MIDDLE_LEFT	4
-            MTEXT_MIDDLE_CENTER	5
-            MTEXT_MIDDLE_RIGHT	6
-            MTEXT_BOTTOM_LEFT	7
-            MTEXT_BOTTOM_CENTER	8
-            MTEXT_BOTTOM_RIGHT	9
+        """ MTEXT_TOP_LEFT          1
+            MTEXT_TOP_CENTER        2
+            MTEXT_TOP_RIGHT         3
+            MTEXT_MIDDLE_LEFT       4
+            MTEXT_MIDDLE_CENTER     5
+            MTEXT_MIDDLE_RIGHT      6
+            MTEXT_BOTTOM_LEFT       7
+            MTEXT_BOTTOM_CENTER     8
+            MTEXT_BOTTOM_RIGHT      9
         """
 
         points = [point_top_left,
@@ -741,19 +748,26 @@ class DxfElement:
 
         self.msp.add_lwpolyline(points, dxfattribs={'closed': True, 'layer': self.counter})
 
+        if attachment_point == 5:
+            location = (tuple(map(lambda x: sum(x) / float(len(x)), zip(*points[:3:2]))))
+        elif attachment_point == 4:
+            location = (point_top_left[0] + 1 * scale, point_top_left[1] - height / 2 * scale)
+        elif attachment_point == 6:
+            location = (point_top_left[0] + (width - 1) * scale, point_top_left[1] - height / 2 * scale)
+        else:
+            location = (tuple(map(lambda x: sum(x) / float(len(x)), zip(*points[:3:2]))))
+
         self.msp.add_mtext(text,
                            dxfattribs={'style': self.text,
                                        'char_height': scale * height_text,
-                                       'attachment_point': 4,
+                                       'attachment_point': attachment_point,
                                        'layer': self.counter}) \
-            .set_location((tuple(map(lambda x: sum(x) / float(len(x)), zip(*points[:3:2])))))
+            .set_location(location)
 
     def create_table(self, steel_bill: list, start_point_x: float = None, start_point_y: float = None, scale: int = 20):
         start_point_x = \
             (
-                    self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right + 2000 + self.beam_width * 2) \
-                if start_point_x is None \
-                else start_point_x
+                        self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right + 2000 + self.beam_width * 2) if start_point_x is None else start_point_x
         start_point_y = self.start_point_y if start_point_y is None else start_point_y
 
         steel_grade = {}
@@ -773,7 +787,7 @@ class DxfElement:
         count_column = sum(len(value) for value in steel_grade.values())
         count_row = len(steel_bill)
 
-        column_width = [10, 15, 30, 15, 15, 15 * count_column, 20]
+        column_width = [10, 15, 15, 15, 15, 15 * count_column, 20]
         row_height = [10, 5, 5, 5, 5, 5 * count_row, 5]
 
         start_point = (start_point_x, start_point_y)
@@ -854,7 +868,7 @@ class DxfElement:
         # nie należy tak tworzyć tablic, listy należy tworzyć przez list comprechention
         # array_bending_schedule = count_column * [count_row * [0]]
 
-        array_bending_schedule = [[0 for i in range(count_column)] for j in range(count_row)]
+        array_bending_schedule = [['-' for i in range(count_column)] for j in range(count_row)]
         count_count_grade_value = 0
 
         for i in steel_grade:
@@ -892,15 +906,101 @@ class DxfElement:
                                height=sum(row_height[1:4]),
                                text=LANG['comments'])
 
-        self.generate_cell(point_top_left=tuple_dest(start_point,
-                                                     height=-sum(row_height[:4]) * scale),
-                           width=sum(column_width[:]),
-                           height=sum(row_height[4:5]),
-                           text=f"{LANG['element:']} {self.name}")
+        elements = []
+        for i in steel_bill:
+            value_element = i['name_element']
+            if value_element not in elements:
+                elements.append(value_element)
+        elements.sort()
 
-        # self.generate_cell(point_top_left=start_point, width=sum(column_width[:5]) * scale, height=-sum(row_height[:5]) * scale,
-        #                    text=LANG['element'], height_text=5)
+        for i in range(len(elements)):
+            self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                         height=-sum(row_height[:4]) * scale),
+                               width=sum(column_width[:]),
+                               height=sum(row_height[4:5]),
+                               attachment_point=4,
+                               text=f"{LANG['element:']} {self.name}")
+            self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                         height=-sum(row_height[:4]) * scale),
+                               width=sum(column_width[:]),
+                               height=sum(row_height[4:5]),
+                               attachment_point=6,
+                               text=f"{LANG['make']} {self.number_of_elements} {LANG['pcs']}")
+            for j in range(count_row):
+                self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                             height=-(sum(row_height[:5]) + row_height[
+                                                                 5] * j / count_row) * scale),
+                                   width=column_width[0],
+                                   height=row_height[5] / count_row,
+                                   text=steel_bill[j]['number'])
+
+                self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                             height=-(sum(row_height[:5]) + row_height[
+                                                                 5] * j / count_row) * scale,
+                                                             width=sum(column_width[:1]) * scale),
+
+                                   width=column_width[1],
+                                   height=row_height[5] / count_row,
+                                   text=f"%%c {steel_bill[j]['diameter']}")
+
+                self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                             height=-(sum(row_height[:5]) + row_height[
+                                                                 5] * j / count_row) * scale,
+                                                             width=sum(column_width[:2]) * scale),
+
+                                   width=column_width[2],
+                                   height=row_height[5] / count_row,
+                                   text=steel_bill[j]['length'])
+
+                self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                             height=-(sum(row_height[:5]) + row_height[
+                                                                 5] * j / count_row) * scale,
+                                                             width=sum(column_width[:3]) * scale),
+
+                                   width=column_width[3],
+                                   height=row_height[5] / count_row,
+                                   text=steel_bill[j]['quantity_bar'])
+
+                self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                             height=-(sum(row_height[:5]) + row_height[
+                                                                 5] * j / count_row) * scale,
+                                                             width=sum(column_width[:4]) * scale),
+
+                                   width=column_width[4],
+                                   height=row_height[5] / count_row,
+                                   text=f"{steel_bill[j]['quantity_bar'] * self.number_of_elements}")
+
+                for k in range(count_column):
+                    self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                                 height=-(sum(row_height[:5]) + row_height[
+                                                                     5] * j / count_row) * scale,
+                                                                 width=(sum(column_width[:5]) + column_width[
+                                                                     5] * k / count_column) * scale),
+
+                                       width=column_width[5] / count_column,
+                                       height=row_height[5] / count_row,
+                                       text=f"{array_bending_schedule[j][k]}")
+
+                if column_width[6] > 0:
+                    self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                                 height=-(sum(row_height[:5]) + row_height[
+                                                                     5] * j / count_row) * scale,
+                                                                 width=sum(column_width[:6]) * scale),
+                                       width=column_width[6],
+                                       height=row_height[5] / count_row,
+                                       text='')
+        # footer
+        array_total_mass = [[0 for i in range(count_column)] if j < 3 else [] for j in range(4)]
         print(array_bending_schedule)
+        # todo: zrobić generkę dla stopki
+        for i in range(len(array_bending_schedule[0])):
+            for j in array_bending_schedule:
+                print(j)
+                if type(j[i]) is not str:
+                    pass
+
+
+        print(array_total_mass)
         print(steel_bill)
 
     def layout_new(self):

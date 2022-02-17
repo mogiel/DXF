@@ -12,9 +12,10 @@ LANG_PL = {
     'lenght_bar': 'Długość',
     'number_in_element': 'Liczba w\n1 elem.',
     'total_number': 'Liczba\nogólna',
-    'tolat_lenght': 'Długość całkowita',
+    'tolat_lenght': 'Długość całkowita [m]',
+    'tolat_lenght_dia': 'Długość ogólna wg średnic',
     'mass_1m': 'Masa 1m pręta',
-    'mass_according_dia': 'Masa prętów wg średnic',
+    'mass_according_dia': 'Masa ogólna wg średnic',
     'mass_total': 'Masa całkowita',
     'element:': 'Element:',
     'comments': 'Uwagi',
@@ -24,6 +25,7 @@ LANG_PL = {
     'lenght_m': '[m]',
     'lenght_mm': '[mm]',
 }
+
 LANG_ENG = {
     'bending_schedule': 'BENDING SCHEDULE',
     'mark': 'Mark',
@@ -59,8 +61,6 @@ def tuple_dest(tuple_start: tuple[float, float], width: float = 0, height: float
 
 
 # todo: 1. przekrój. generator odstępów między prętami oraz pręty w dwóch warstwach
-# todo: 3. Generacja tabel zbrojenia
-
 
 class DxfElement:
     def __init__(self,
@@ -140,9 +140,6 @@ class DxfElement:
         self.view_top_bar()
         self.view_top_bar(dimension=True, start_point_y=-2 * self.beam_height - 300)
         self.view_bottom_bar(dimension=True, start_point_y=-2 * self.beam_height - 500)
-        self.view_bottom_bar(dimension=True, start_point_y=-2 * self.beam_height - 500)
-        self.view_bottom_bar(dimension=True, start_point_y=-2 * self.beam_height - 500)
-        self.view_bottom_bar(dimension=True, start_point_y=-2 * self.beam_height - 500)
         self.secondary_stirrup_spacing_min()
         self.layout_new()
         self.stirrup_spacing()
@@ -189,8 +186,8 @@ class DxfElement:
             return diameter * 4.0
 
     @staticmethod
-    def mass_1m_bar(radius: float, mass: float = 7850) -> float:
-        return round(mass * math.pi * ((radius/2)/1000)**2, 3)
+    def mass_1m_bar(diameter: float, mass: float = 7850) -> float:
+        return round(mass * math.pi * ((diameter / 2) / 1000) ** 2, 3)
 
     def secondary_stirrup_spacing_min(self) -> float:
         self.secondary_stirrup_spacing = math.floor(
@@ -290,6 +287,17 @@ class DxfElement:
             'length': length,
             'steel_grade': steel_grade,
         }
+
+        # test1 = {
+        #     'name_element': self.name if name is None else self._is_valid_path_name(name),
+        #     'number': len(self.steel_bill) + 2,
+        #     'diameter': 20,
+        #     'quantity_bar': 6,
+        #     'length': 4500,
+        #     'steel_grade': "B500SP",
+        # }
+        # self.steel_bill.append(test1)
+
         self.steel_bill.append(bar)
         self.steel_bill.sort(key=(lambda x: x['number']))
 
@@ -767,7 +775,7 @@ class DxfElement:
     def create_table(self, steel_bill: list, start_point_x: float = None, start_point_y: float = None, scale: int = 20):
         start_point_x = \
             (
-                        self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right + 2000 + self.beam_width * 2) if start_point_x is None else start_point_x
+                    self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right + 2000 + self.beam_width * 2) if start_point_x is None else start_point_x
         start_point_y = self.start_point_y if start_point_y is None else start_point_y
 
         steel_grade = {}
@@ -990,18 +998,59 @@ class DxfElement:
                                        height=row_height[5] / count_row,
                                        text='')
         # footer
-        array_total_mass = [[0 for i in range(count_column)] if j < 3 else [] for j in range(4)]
-        print(array_bending_schedule)
-        # todo: zrobić generkę dla stopki
+        array_total_mass = [[0 for i in range(count_column)] if j < 3 else [0] for j in range(4)]
+
         for i in range(len(array_bending_schedule[0])):
             for j in array_bending_schedule:
-                print(j)
-                if type(j[i]) is not str:
-                    pass
+                if type(j[i]) is float:
+                    value = j[i]
 
+                    array_total_mass[0][i] += round(value, 1)
 
-        print(array_total_mass)
-        print(steel_bill)
+        count_count_grade_value = 0
+        for i in steel_grade:
+            for j in range(len(steel_grade[i])):
+                for k in range(len(steel_bill)):
+                    if steel_bill[k]['steel_grade'] == i and steel_bill[k]['diameter'] == steel_grade[i][j]:
+                        array_total_mass[1][count_count_grade_value] = self.mass_1m_bar(steel_bill[k]['diameter'])
+                count_count_grade_value += 1
+
+        for i in range(len(array_total_mass[2])):
+            value = array_total_mass[0][i] * array_total_mass[1][i]
+            array_total_mass[2][i] = round(value, 1)
+            array_total_mass[3][0] += round(value, 1)
+
+        array_footer = [
+            [(LANG['tolat_lenght_dia'], 4), (LANG['lenght_m'], 6)],
+            [(LANG['mass_1m'], 4), (LANG['mass'], 6)],
+            [(LANG['mass_according_dia'], 4), (LANG['mass'], 6)],
+            [(LANG['mass_total'], 4), (LANG['mass'], 6)]
+        ]
+
+        for i in range(len(array_footer)):
+            for j in range(len(array_footer[i])):
+                self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                             height=-(sum(row_height[:6]) + row_height[6] * i) * scale),
+                                   height=row_height[6],
+                                   width=sum(column_width[:5]),
+                                   attachment_point=array_footer[i][j][1],
+                                   text=f"{array_footer[i][j][0]}")
+            for j in range(len(array_total_mass[i])):
+                self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                             height=-(sum(row_height[:6]) + row_height[6] * i) * scale,
+                                                             width=(sum(column_width[:5]) + column_width[5] * j / count_column) * scale),
+                                   height=row_height[6],
+                                   width=column_width[5] / (count_column if len(array_total_mass[i]) > 1 else 1),
+                                   attachment_point=6 if len(array_total_mass[i]) > 1 else 5,
+                                   text=f"{array_total_mass[i][j]}")
+            if column_width[6] > 0:
+                self.generate_cell(point_top_left=tuple_dest(start_point,
+                                                             height=-(sum(row_height[:6]) + row_height[6] * i) * scale,
+                                                             width=sum(column_width[:6]) * scale),
+                                   height=row_height[6],
+                                   width=column_width[6],
+                                   text='')
+        # todo: dodać pod tabelą uwagi
 
     def layout_new(self):
         """layauty, początki"""

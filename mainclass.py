@@ -2,6 +2,7 @@ import math
 import re
 import ezdxf
 import ezdxf.math
+from ezdxf.enums import TextEntityAlignment
 
 lang = 'pl'
 
@@ -151,6 +152,9 @@ class DxfElement:
         self.beam_section_rectangular()
         self.view_stirrups_type_2(start_point_x=5000, start_point_y=0)
         self.create_table(steel_bill=self.steel_bill)
+
+        self.generate()
+
         self.save()
 
     """Część sprawdzająca poprawnośc danych"""
@@ -240,6 +244,9 @@ class DxfElement:
                                    dxfattribs={'dimjust': 0, 'dimscale': dim_scale, 'dimblk': 'NONE', 'dimtxsty': text,
                                                'dimtad': 1,
                                                'dimse1': 1, 'dimse2': 1, 'dimsd1': 1, 'dimsd2': 1, 'dimdle': 0})
+
+        # In this place must create all blocks
+        self._create_block_reinforcement_description()
 
     def save(self):
         """Zapisywanie do pliku"""
@@ -756,6 +763,8 @@ class DxfElement:
 
         self.msp.add_lwpolyline(points, dxfattribs={'closed': True, 'layer': self.counter})
 
+
+
         if attachment_point == 5:
             location = (tuple(map(lambda x: sum(x) / float(len(x)), zip(*points[:3:2]))))
         elif attachment_point == 4:
@@ -1051,6 +1060,25 @@ class DxfElement:
                                    width=column_width[6],
                                    text='')
         # todo: dodać pod tabelą uwagi
+
+    def _create_block_reinforcement_description(self):
+        name = "reinforcement_description"
+        if name in self.drawing.blocks:
+            block = self.drawing.blocks.get(name)
+        else:
+            block = self.drawing.blocks.new(name)
+
+        block.add_circle((0, 0), 4)
+        block.add_attdef('NUMBER', (0, 0), dxfattribs={"height": 2.5, 'style': self.text}).set_placement((0, 0), align=TextEntityAlignment.MIDDLE_CENTER)
+
+        # "MIDDLE_CENTER": (TextHAlign.CENTER, TextVAlign.MIDDLE),
+        # .set_align("MIDDLE_CENTER")
+
+        # .set_pos((0, 0), align="MIDDLE_CENTER").
+
+    def generate(self):
+        self.msp.add_auto_blockref("reinforcement_description", (0, 2000), {"NUMBER": "888"}, dxfattribs={"layer": self.counter}).set_scale(20)
+
 
     def layout_new(self):
         """layauty, początki"""

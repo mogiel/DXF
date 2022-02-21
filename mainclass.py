@@ -1,3 +1,6 @@
+# Copyright (c) 2021-2022, Mogielski Mateusz - KONEC
+# Copyright (c) 2011-2022, Manfred Moitzi - EZDXF
+
 import math
 import re
 import ezdxf
@@ -130,31 +133,28 @@ class DxfElement:
         self.text = None
         self.steel_bill = []
         self.count_stirrups = 0
+        self.position = {}
 
         self.dxfversion = dxfversion
         self.drawing = ezdxf.new(dxfversion=self.dxfversion, setup=["linetypes"])
         self.initial_drawing()
         self.layer_element()
+        self.start_points(-5000, -600)
         self.msp = self.drawing.modelspace()
         self.beam_outline()
-        self.view_bottom_bar()
-        self.view_top_bar()
-        self.view_top_bar(dimension=True, start_point_y=-2 * self.beam_height - 300)
-        self.view_bottom_bar(dimension=True, start_point_y=-2 * self.beam_height - 500)
+        self.view_top_bar(quantity_bar=2, steel_grade='B500SP')
+        self.view_top_bar(quantity_bar=2, steel_grade='B500SP', dimension=True)
+        self.view_bottom_bar(quantity_bar=3, steel_grade='B500SP')
+        self.view_bottom_bar(quantity_bar=3, steel_grade='B500SP', dimension=True)
         self.secondary_stirrup_spacing_min()
         self.layout_new()
         self.stirrup_spacing()
-        self.supports(self.start_point_x, self.start_point_x + self.width_support_left)
-        self.supports(self.start_point_x + self.width_support_left + self.beam_span,
-                      self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right)
         self.dimension_main()
         self.dimension_stirrup()
         self.beam_section_rectangular()
-        self.view_stirrups_type_2(start_point_x=5000, start_point_y=0)
+        self.view_stirrups_type_2()
         self.create_table(steel_bill=self.steel_bill)
-
-        self.generate()
-
+        self.generate_block()
         self.save()
 
     """Część sprawdzająca poprawnośc danych"""
@@ -248,6 +248,27 @@ class DxfElement:
         # In this place must create all blocks
         self._create_block_reinforcement_description()
 
+    def start_points(self, start_x: float = None, start_y: float = None):
+        if start_x is None:
+            start_x = self.start_point_x
+        if start_y is None:
+            start_y = self.start_point_y
+
+        beam = self.width_support_left + self.beam_span + self.width_support_right
+
+        # main beam
+        self.position['main_beam'] = (start_x, start_y)
+        # top bar dimension
+        self.position['main_bar_top'] = (start_x, start_y - self.beam_height - 600)
+        # bottom bar dimension
+        self.position['main_bar_bottom'] = (start_x, start_y - self.beam_height - 750)
+        # section
+        self.position['section'] = (start_x + beam + 500, start_y)
+        # stirrup
+        self.position['stirrup'] = (start_x + beam + 500 + self.beam_width + 400, start_y)
+        # bending_schedule
+        self.position['bending_schedule'] = (start_x + beam + 300, start_y - 300)
+
     def save(self):
         """Zapisywanie do pliku"""
         print(f"Zapisuje {self.name}.dxf")
@@ -261,15 +282,20 @@ class DxfElement:
 
     def beam_outline(self):
         """generowanie obrysu belki"""
-        points = [(self.start_point_x, self.start_point_y),
-                  (self.start_point_x + self.width_support_left, self.start_point_y),
-                  ((self.start_point_x + self.width_support_left + self.beam_span), self.start_point_y),
-                  ((self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right),
-                   self.start_point_y),
-                  ((self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right),
-                   self.start_point_y + self.beam_height),
-                  (self.start_point_x, self.start_point_y + self.beam_height)]
-        return self.msp.add_lwpolyline(points, dxfattribs={'closed': True, 'layer': self.counter})
+        start_point_x, start_point_y = self.position['main_beam']
+        points = [(start_point_x, start_point_y),
+                  (start_point_x + self.width_support_left, start_point_y),
+                  ((start_point_x + self.width_support_left + self.beam_span), start_point_y),
+                  ((start_point_x + self.width_support_left + self.beam_span + self.width_support_right),
+                   start_point_y),
+                  ((start_point_x + self.width_support_left + self.beam_span + self.width_support_right),
+                   start_point_y + self.beam_height),
+                  (start_point_x, start_point_y + self.beam_height)]
+        self.msp.add_lwpolyline(points, dxfattribs={'closed': True, 'layer': self.counter})
+
+        self.supports(start_point_x, start_point_x + self.width_support_left)
+        self.supports(start_point_x + self.width_support_left + self.beam_span,
+                      start_point_x + self.width_support_left + self.beam_span + self.width_support_right)
 
     def length_bar(self, points: list, diameter: float, angle: int = 90) -> float:
         """angle jest to kąt pod jakim zmieniają się proste"""
@@ -282,7 +308,8 @@ class DxfElement:
             total_length_bar += ((points[i][0] - points[i + 1][0]) ** 2 + (points[i][1] - points[i + 1][1]) ** 2) ** 0.5
         return round(total_length_bar)
 
-    def list_bar(self, diameter: float = None, quantity_bar: int = None, length: float = None, steel_grade: str = None,
+    def list_bar(self, points: tuple[float, float], diameter: float = None, quantity_bar: int = None,
+                 length: float = None, steel_grade: str = None,
                  name: str = None):
         self.steel_bill = [dict(t) for t in {tuple(d.items()) for d in self.steel_bill}]
 
@@ -293,28 +320,20 @@ class DxfElement:
             'quantity_bar': quantity_bar,
             'length': length,
             'steel_grade': steel_grade,
+            'points_generate': points,
         }
-
-        # test1 = {
-        #     'name_element': self.name if name is None else self._is_valid_path_name(name),
-        #     'number': len(self.steel_bill) + 2,
-        #     'diameter': 20,
-        #     'quantity_bar': 6,
-        #     'length': 4500,
-        #     'steel_grade': "B500SP",
-        # }
-        # self.steel_bill.append(test1)
-
+        # todo: można dodać sortowanie po 'name_element' potem po 'number'
         self.steel_bill.append(bar)
         self.steel_bill.sort(key=(lambda x: x['number']))
 
-    def view_top_bar(self, dimension: bool = False, start_point_x: float = None, start_point_y: float = None):
+    def view_top_bar(self, quantity_bar: int, steel_grade: str, dimension: bool = False, start_point_x: float = None,
+                     start_point_y: float = None):
         """generowanie pręta górnego"""
 
         if start_point_x is None:
-            start_point_x = self.start_point_x
+            start_point_x = self.position['main_bar_top'][0] if dimension else self.position['main_beam'][0]
         if start_point_y is None:
-            start_point_y = self.start_point_y
+            start_point_y = self.position['main_bar_top'][1] if dimension else self.position['main_beam'][1]
 
         bugle = self.bar_bulge(self.diameter_main_top)
         bending = self.bar_bending(self.diameter_main_top)
@@ -349,7 +368,9 @@ class DxfElement:
         length_bar = self.length_bar(points=points, diameter=self.diameter_main_top)
 
         if dimension:
-            self.list_bar(diameter=self.diameter_main_top, quantity_bar=2, length=length_bar, steel_grade='B500SP')
+            self.list_bar(diameter=self.diameter_main_top, quantity_bar=quantity_bar, length=length_bar,
+                          steel_grade=steel_grade,
+                          points=(points[0][0] + (points[-1][0] - points[0][0]) / 2, points[3][1]))
             half = 0.5 * self.diameter_main_top
             self.dimension_generator(
                 (points[0][0] - 25, points[0][1]), points[0][:2], (points[2][0], points[2][1] + half), angle=90,
@@ -364,13 +385,14 @@ class DxfElement:
                 dimstyle=self.dim_name_bar
             )
 
-    def view_bottom_bar(self, dimension: bool = False, start_point_x: float = None, start_point_y: float = None):
+    def view_bottom_bar(self, quantity_bar: int, steel_grade: str, dimension: bool = False, start_point_x: float = None,
+                        start_point_y: float = None):
         """generowanie pręta dolnego"""
 
         if start_point_x is None:
-            start_point_x = self.start_point_x
+            start_point_x = self.position['main_bar_bottom'][0] if dimension else self.position['main_beam'][0]
         if start_point_y is None:
-            start_point_y = self.start_point_y
+            start_point_y = self.position['main_bar_bottom'][1] if dimension else self.position['main_beam'][1]
 
         points = [((start_point_x + self.cover_view_left),
                    (start_point_y + self.cover_bottom + self.diameter_stirrup + 0.5 * self.diameter_main_bottom),
@@ -383,12 +405,14 @@ class DxfElement:
         length_bar = self.length_bar(points=points, diameter=self.diameter_main_bottom)
 
         if dimension:
-            self.list_bar(diameter=self.diameter_main_bottom, quantity_bar=3, length=length_bar, steel_grade='B500SP')
+            self.list_bar(diameter=self.diameter_main_bottom, quantity_bar=quantity_bar, length=length_bar,
+                          steel_grade=steel_grade,
+                          points=(points[0][0] + (points[-1][0] - points[0][0]) / 2, points[0][1]))
             self.dimension_generator(
                 (points[0][0], points[0][1] - 100), points[0][:2], points[1][:2], dimstyle=self.dim_name_bar
             )
 
-    def distance_from_supports(self, distance):
+    def distance_from_supports(self, distance: float) -> float:
         value = 0
 
         if self.first_row_stirrup_range_left != 0 and self.first_row_stirrup_spacing_left != 0:
@@ -407,10 +431,10 @@ class DxfElement:
 
     def stirrup_spacing(self):
         """rozstaw strzemion w belce"""
-        "todo: dokonczyc"
         last_stirrup_left: float = 0
         last_stirrup_right: float = self.beam_span
         localization_stirrups = []
+        start_point_x, start_point_y = self.position['main_beam']
         range_first_row = self.distance_from_supports(self.secondary_stirrup_spacing)
 
         while range_first_row > 60:
@@ -451,27 +475,30 @@ class DxfElement:
 
         for i in localization_stirrups:
             points_stirrups = [
-                ((self.width_support_left + i), self.cover_bottom, self.diameter_stirrup, self.diameter_stirrup),
-                ((self.width_support_left + i), (self.beam_height - self.cover_top))]
+                (
+                (start_point_x + self.width_support_left + i), start_point_y + self.cover_bottom, self.diameter_stirrup,
+                self.diameter_stirrup),
+                ((start_point_x + self.width_support_left + i), start_point_y + (self.beam_height - self.cover_top))]
             self.msp.add_lwpolyline(points_stirrups, dxfattribs={'layer': self.stirrup})
         self.count_stirrups = len(localization_stirrups)
 
     def supports(self, value_left: float, value_right: float, height: int = 200):
+        start_point_x, start_point_y = self.position['main_beam']
         hatch = self.msp.add_hatch(dxfattribs={'layer': self.hatch})
         hatch.set_pattern_fill('ANSI33', scale=20, color=-1)
         hatch.paths.add_polyline_path(
-            [(value_left, self.start_point_y), (value_left, self.start_point_y - height),
-             (value_right, self.start_point_y - height), (value_right, self.start_point_y)]
+            [(value_left, start_point_y), (value_left, start_point_y - height),
+             (value_right, start_point_y - height), (value_right, start_point_y)]
         )
 
-        line_point_left = [(value_left, self.start_point_y), (value_left, self.start_point_y - height)]
-        line_point_right = [(value_right, self.start_point_y), (value_right, self.start_point_y - height)]
+        line_point_left = [(value_left, start_point_y), (value_left, start_point_y - height)]
+        line_point_right = [(value_right, start_point_y), (value_right, start_point_y - height)]
 
         self.msp.add_lwpolyline(line_point_left, dxfattribs={'layer': self.counter})
         self.msp.add_lwpolyline(line_point_right, dxfattribs={'layer': self.counter})
 
-        line_hidden = [(value_left - 200, self.start_point_y - height),
-                       (value_right + 200, self.start_point_y - height)]
+        line_hidden = [(value_left - 200, start_point_y - height),
+                       (value_right + 200, start_point_y - height)]
 
         self.msp.add_lwpolyline(line_hidden, dxfattribs={'layer': self.hidden})
 
@@ -484,36 +511,37 @@ class DxfElement:
                                        text=text)
 
     def dimension_main(self, height: int = 400):
+        start_point_x, start_point_y = self.position['main_beam']
         self.dimension_generator(
-            (self.start_point_x, self.start_point_y - height),
-            (self.start_point_x, self.start_point_y - height),
-            (self.start_point_x + self.width_support_left, self.start_point_y - height)
+            (start_point_x, start_point_y - height),
+            (start_point_x, start_point_y - height),
+            (start_point_x + self.width_support_left, start_point_y - height)
         )
 
         self.dimension_generator(
-            (self.start_point_x, self.start_point_y - height),
-            (self.start_point_x + self.width_support_left, self.start_point_y - height),
-            (self.start_point_x + self.width_support_left + self.beam_span, self.start_point_y - height)
+            (start_point_x, start_point_y - height),
+            (start_point_x + self.width_support_left, start_point_y - height),
+            (start_point_x + self.width_support_left + self.beam_span, start_point_y - height)
         )
 
         self.dimension_generator(
-            (self.start_point_x, self.start_point_y - height),
-            (self.start_point_x + self.width_support_left + self.beam_span, self.start_point_y - height),
-            (self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right,
-             self.start_point_y - height)
+            (start_point_x, start_point_y - height),
+            (start_point_x + self.width_support_left + self.beam_span, start_point_y - height),
+            (start_point_x + self.width_support_left + self.beam_span + self.width_support_right,
+             start_point_y - height)
         )
 
         self.dimension_generator(
-            (self.start_point_x - 200, self.start_point_y),
-            (self.start_point_x, self.start_point_y),
-            (self.start_point_x, self.start_point_y + self.beam_height),
+            (start_point_x - 200, start_point_y),
+            (start_point_x, start_point_y),
+            (start_point_x, start_point_y + self.beam_height),
             90
         )
 
     def dimension_stirrup(self, height: float = 300):
         value1, value2, value3, value4, value5, value6 = 0, 0, 0, 0, 0, self.beam_span
         start_end_dimension: bool = False
-
+        start_point_x, start_point_y = self.position['main_beam']
         if len(self.dimension_points) == 2:
             value3 = 0
             value4 = self.beam_span
@@ -567,50 +595,49 @@ class DxfElement:
 
         if start_end_dimension:
             self.dimension_generator(
-                (self.start_point_x, self.start_point_y - height),
-                (self.start_point_x + self.width_support_left + value1, self.start_point_y - height),
-                (self.start_point_x + self.width_support_left + value2, self.start_point_y - height)
+                (start_point_x, start_point_y - height),
+                (start_point_x + self.width_support_left + value1, start_point_y - height),
+                (start_point_x + self.width_support_left + value2, start_point_y - height)
             )
 
             self.dimension_generator(
-                (self.start_point_x, self.start_point_y - height),
-                (self.start_point_x + self.width_support_left + value5, self.start_point_y - height),
-                (self.start_point_x + self.width_support_left + value6, self.start_point_y - height)
+                (start_point_x, start_point_y - height),
+                (start_point_x + self.width_support_left + value5, start_point_y - height),
+                (start_point_x + self.width_support_left + value6, start_point_y - height)
             )
 
         if self.first_row_stirrup_range_left != 0 and self.first_row_stirrup_spacing_left != 0:
             self.dimension_generator(
-                (self.start_point_x, self.start_point_y - height),
-                (self.start_point_x + self.width_support_left + value2,
-                 self.start_point_y - height),
-                (self.start_point_x + self.width_support_left + value3,
-                 self.start_point_y - height),
+                (start_point_x, start_point_y - height),
+                (start_point_x + self.width_support_left + value2,
+                 start_point_y - height),
+                (start_point_x + self.width_support_left + value3,
+                 start_point_y - height),
                 text=f'{math.ceil((value3 - value2) / self.first_row_stirrup_spacing_left)} x {self.first_row_stirrup_spacing_left} = <>'
             )
 
         if self.first_row_stirrup_range_right != 0 and self.first_row_stirrup_spacing_right != 0:
             self.dimension_generator(
-                (self.start_point_x, self.start_point_y - height),
-                (self.start_point_x + self.width_support_left + value5,
-                 self.start_point_y - height),
-                (self.start_point_x + self.width_support_left + value4,
-                 self.start_point_y - height),
+                (start_point_x, start_point_y - height),
+                (start_point_x + self.width_support_left + value5,
+                 start_point_y - height),
+                (start_point_x + self.width_support_left + value4,
+                 start_point_y - height),
                 text=f'{math.ceil((value5 - value4) / self.first_row_stirrup_spacing_right)} x {self.first_row_stirrup_spacing_right} = <>'
             )
 
         if self.number_of_stirrups_of_the_second_row != 0:
             self.dimension_generator(
-                (self.start_point_x, self.start_point_y - height),
-                (self.start_point_x + self.width_support_left + value3,
-                 self.start_point_y - height),
-                (self.start_point_x + self.width_support_left + value4,
-                 self.start_point_y - height),
+                (start_point_x, start_point_y - height),
+                (start_point_x + self.width_support_left + value3,
+                 start_point_y - height),
+                (start_point_x + self.width_support_left + value4,
+                 start_point_y - height),
                 text=f'{math.ceil((value4 - value3) / self.number_of_stirrups_of_the_second_row)} x {self.number_of_stirrups_of_the_second_row} = <>'
             )
 
-    def beam_section_rectangular(self, between_element: float = 500):
-        start_point_x = self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right + between_element
-        start_point_y = self.start_point_y
+    def beam_section_rectangular(self):
+        start_point_x, start_point_y = self.position['section']
 
         points_beam_section = [(start_point_x, start_point_y),
                                (start_point_x + self.beam_width, start_point_y),
@@ -666,12 +693,13 @@ class DxfElement:
         length_bar = self.length_bar(points=points, diameter=self.diameter_stirrup)
 
         self.list_bar(diameter=self.diameter_stirrup, quantity_bar=self.count_stirrups, length=length_bar,
-                      steel_grade='B500A')
+                      steel_grade='B500A', points=(0, 0))
 
         self.msp.add_lwpolyline(points, dxfattribs={'layer': self.bar})
 
-    def view_stirrups_type_2(self, start_point_x: float, start_point_y: float, anchoring_stirrup: float = (10 * 8)):
+    def view_stirrups_type_2(self, anchoring_stirrup: float = (10 * 8)):
         bending_stirrup = self.bar_bending(self.diameter_stirrup)
+        start_point_x, start_point_y = self.position['stirrup']
 
         theta = 60
 
@@ -739,6 +767,8 @@ class DxfElement:
             (start_point_x + self.cover_left, start_point_y + self.beam_height - self.cover_top),
             dimstyle=self.dim_name_bar,
             dxfattribs={'layer': self.dimension}, angle=90, text='<>')
+        self.steel_bill[-1]['points_generate'] = (
+        start_point_x + self.beam_width - self.cover_right + 400, start_point_y + self.beam_height / 2 - 100)
 
     # def generate_cell(self, points: list[tuple[float, float]], scale: int = 20, text: str = "__"):
 
@@ -763,8 +793,6 @@ class DxfElement:
 
         self.msp.add_lwpolyline(points, dxfattribs={'closed': True, 'layer': self.counter})
 
-
-
         if attachment_point == 5:
             location = (tuple(map(lambda x: sum(x) / float(len(x)), zip(*points[:3:2]))))
         elif attachment_point == 4:
@@ -781,11 +809,8 @@ class DxfElement:
                                        'layer': self.counter}) \
             .set_location(location)
 
-    def create_table(self, steel_bill: list, start_point_x: float = None, start_point_y: float = None, scale: int = 20):
-        start_point_x = \
-            (
-                    self.start_point_x + self.width_support_left + self.beam_span + self.width_support_right + 2000 + self.beam_width * 2) if start_point_x is None else start_point_x
-        start_point_y = self.start_point_y if start_point_y is None else start_point_y
+    def create_table(self, steel_bill: list, scale: int = 20):
+        start_point_x, start_point_y = self.position['bending_schedule']
 
         steel_grade = {}
         for i in steel_bill:
@@ -1012,9 +1037,7 @@ class DxfElement:
         for i in range(len(array_bending_schedule[0])):
             for j in array_bending_schedule:
                 if type(j[i]) is float:
-                    value = j[i]
-
-                    array_total_mass[0][i] += round(value, 1)
+                    array_total_mass[0][i] += j[i]
 
         count_count_grade_value = 0
         for i in steel_grade:
@@ -1047,11 +1070,12 @@ class DxfElement:
             for j in range(len(array_total_mass[i])):
                 self.generate_cell(point_top_left=tuple_dest(start_point,
                                                              height=-(sum(row_height[:6]) + row_height[6] * i) * scale,
-                                                             width=(sum(column_width[:5]) + column_width[5] * j / count_column) * scale),
+                                                             width=(sum(column_width[:5]) + column_width[
+                                                                 5] * j / count_column) * scale),
                                    height=row_height[6],
                                    width=column_width[5] / (count_column if len(array_total_mass[i]) > 1 else 1),
                                    attachment_point=6 if len(array_total_mass[i]) > 1 else 5,
-                                   text=f"{array_total_mass[i][j]}")
+                                   text=f"{round(array_total_mass[i][j], 3)}")
             if column_width[6] > 0:
                 self.generate_cell(point_top_left=tuple_dest(start_point,
                                                              height=-(sum(row_height[:6]) + row_height[6] * i) * scale,
@@ -1068,17 +1092,37 @@ class DxfElement:
         else:
             block = self.drawing.blocks.new(name)
 
-        block.add_circle((0, 0), 4)
-        block.add_attdef('NUMBER', (0, 0), dxfattribs={"height": 2.5, 'style': self.text}).set_placement((0, 0), align=TextEntityAlignment.MIDDLE_CENTER)
+        block.add_circle((-14, 5), 4, dxfattribs={"layer": self.counter})
+        block.add_attdef('NUMBER', dxfattribs={"height": 2.5, 'style': self.text, "layer": self.counter}).set_placement(
+            (-14, 5), align=TextEntityAlignment.MIDDLE_CENTER)
+        block.add_attdef('QUANTITY',
+                         dxfattribs={"height": 2.5, 'style': self.text, "layer": self.counter}).set_placement((-4, 5),
+                                                                                                              align=TextEntityAlignment.MIDDLE_RIGHT)
+        block.add_text('%%c', dxfattribs={"height": 2.5, 'style': self.text, "layer": self.counter}).set_placement(
+            (-2.5, 5), align=TextEntityAlignment.MIDDLE_CENTER)
+        block.add_attdef('DIAMETER',
+                         dxfattribs={"height": 2.5, 'style': self.text, "layer": self.counter}).set_placement((0, 5),
+                                                                                                              align=TextEntityAlignment.MIDDLE_LEFT)
+        block.add_text('L=', dxfattribs={"height": 2.5, 'style': self.text, "layer": self.counter}).set_placement(
+            (5, 5), align=TextEntityAlignment.MIDDLE_LEFT)
+        block.add_attdef('LENGTH', dxfattribs={"height": 2.5, 'style': self.text, "layer": self.counter}).set_placement(
+            (9, 5), align=TextEntityAlignment.MIDDLE_LEFT)
 
-        # "MIDDLE_CENTER": (TextHAlign.CENTER, TextVAlign.MIDDLE),
-        # .set_align("MIDDLE_CENTER")
+    def generate(self, position: tuple, number: float or str, quantity: float or str, diameter: float or str,
+                 length: float or str, scale: int = 20):
+        self.msp.add_auto_blockref("reinforcement_description", position,
+                                   {"NUMBER": str(number), "QUANTITY": str(quantity), "DIAMETER": str(diameter),
+                                    "LENGTH": str(length)}).set_scale(scale).explode()
 
-        # .set_pos((0, 0), align="MIDDLE_CENTER").
-
-    def generate(self):
-        self.msp.add_auto_blockref("reinforcement_description", (0, 2000), {"NUMBER": "888"}, dxfattribs={"layer": self.counter}).set_scale(20)
-
+    def generate_block(self):
+        for i in self.steel_bill:
+            self.generate(
+                position=i['points_generate'],
+                number=i['number'],
+                quantity=i['quantity_bar'],
+                diameter=i['diameter'],
+                length=i['length']
+            ),
 
     def layout_new(self):
         """layauty, początki"""
@@ -1089,18 +1133,18 @@ class DxfElement:
             layout = self.drawing.layouts.new(name)
 
         layout.page_setup(
-            size=(420, 297), margins=(0.5, 0.5, 0.5, 0.5), units="mm", scale=50
+            size=(420, 297), margins=(0.5, 0.5, 0.5, 0.5), units="mm", scale=(1, 20)
         )
+        # layout.add_viewport((420 / 2, 297 / 2), (419 * 20, 296 * 20), (420, 297), 296 * 20)
 
 
 # testy plików
 draw = DxfElement(3450, 500, 250, 250, 250, 16, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 1350, 250, 125, 400, name="BŻ-3",
-                  number_of_elements=4)
+                  number_of_elements=2)
 # draw1 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 1250, 250, 100, 400, name="BŻ-2")
 # draw4 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 300, name="BŻ-21")
 # draw41 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 310, name="BŻ-23")
 # draw5 = DxfElement(3020, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 600, 600, 150, 150, 200, name="BŻ-22")
 # draw2 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 0, 1250, 110, 100, 400, name="BŻ-3")
 # draw3 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 0, 0, 110, 100, 400, name="BŻ-4")
-# draw31 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 0, 250, 0, 400, name="BŻ-5")
-# draw.initial_drawing(LTSCALE=20, INSUNITS=0)
+draw31 = DxfElement(12000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 0, 250, 0, 400, name="BŻ-5")

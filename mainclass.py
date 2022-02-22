@@ -1,10 +1,11 @@
 # Copyright (c) 2021-2022, Mogielski Mateusz - KONEC
 # Copyright (c) 2011-2022, Manfred Moitzi - EZDXF
-
 import math
 import re
+from typing import Literal
 import ezdxf
 import ezdxf.math
+from ezdxf import zoom
 from ezdxf.enums import TextEntityAlignment
 
 lang = 'pl'
@@ -55,7 +56,9 @@ else:
 # from ezdxf.tools.standards import linetypes
 
 def point_position(x0: float, y0: float, distance: float, theta: float = 60) -> tuple[float, float]:
-    """theta zgodna z ruchem wskazowek zegara. godzina 12:00 to 0st, 3:00 to 90st, 6:00 to 180st, 9:00 to 270st"""
+    """
+    theta zgodna z ruchem wskazowek zegara. godzina 12:00 to 0st, 3:00 to 90st, 6:00 to 180st, 9:00 to 270st
+    """
     theta_rad = math.pi / 2 - math.radians(theta)
     return x0 + distance * math.cos(theta_rad), y0 + distance * math.sin(theta_rad)
 
@@ -64,7 +67,9 @@ def tuple_dest(tuple_start: tuple[float, float], width: float = 0, height: float
     return tuple_start[0] + width, tuple_start[1] + height
 
 
-# todo: 1. przekrój. generator odstępów między prętami oraz pręty w dwóch warstwach
+def spacing_between_bars(diameter: float, diameter_aggregate: float = 16) -> float:
+    return math.ceil(max(diameter, 20, diameter_aggregate + 5)) + diameter
+
 
 class DxfElement:
     def __init__(self,
@@ -139,13 +144,13 @@ class DxfElement:
         self.drawing = ezdxf.new(dxfversion=self.dxfversion, setup=["linetypes"])
         self.initial_drawing()
         self.layer_element()
-        self.start_points(-5000, -600)
+        self.start_points()
         self.msp = self.drawing.modelspace()
         self.beam_outline()
-        self.view_top_bar(quantity_bar=2, steel_grade='B500SP')
-        self.view_top_bar(quantity_bar=2, steel_grade='B500SP', dimension=True)
-        self.view_bottom_bar(quantity_bar=3, steel_grade='B500SP')
-        self.view_bottom_bar(quantity_bar=3, steel_grade='B500SP', dimension=True)
+        self.view_top_bar(quantity_bar=6, steel_grade='B500SP')
+        self.view_top_bar(quantity_bar=6, steel_grade='B500SP', dimension=True)
+        self.view_bottom_bar(quantity_bar=10, steel_grade='B500SP')
+        self.view_bottom_bar(quantity_bar=10, steel_grade='B500SP', dimension=True)
         self.secondary_stirrup_spacing_min()
         self.layout_new()
         self.stirrup_spacing()
@@ -271,6 +276,7 @@ class DxfElement:
 
     def save(self):
         """Zapisywanie do pliku"""
+        zoom.extents(self.msp, factor=1.1)
         print(f"Zapisuje {self.name}.dxf")
         self.drawing.saveas(f'{self.name}.dxf')
 
@@ -476,8 +482,9 @@ class DxfElement:
         for i in localization_stirrups:
             points_stirrups = [
                 (
-                (start_point_x + self.width_support_left + i), start_point_y + self.cover_bottom, self.diameter_stirrup,
-                self.diameter_stirrup),
+                    (start_point_x + self.width_support_left + i), start_point_y + self.cover_bottom,
+                    self.diameter_stirrup,
+                    self.diameter_stirrup),
                 ((start_point_x + self.width_support_left + i), start_point_y + (self.beam_height - self.cover_top))]
             self.msp.add_lwpolyline(points_stirrups, dxfattribs={'layer': self.stirrup})
         self.count_stirrups = len(localization_stirrups)
@@ -636,9 +643,74 @@ class DxfElement:
                 text=f'{math.ceil((value4 - value3) / self.number_of_stirrups_of_the_second_row)} x {self.number_of_stirrups_of_the_second_row} = <>'
             )
 
+    def bar_section(self, diameter: float, point: list[tuple[float, float]]):
+        for i in point:
+            self.msp.add_circle(i, diameter / 2, dxfattribs={"layer": self.bar})
+            self.msp.add_hatch(color=-1, dxfattribs={"layer": self.hatch}).paths.add_edge_path().add_arc(i, diameter / 2)
+
+    def localization_bar_section(self, localization: Literal['top', 'bottom']) -> list[tuple[float, float]]:
+        start_point_x, start_point_y = self.position['section']
+        bar = {}
+        turn = 1
+        list_points = []
+        center = 0
+        if localization == 'top':
+            bar = self.steel_bill[0]
+            start_point_y += self.beam_height
+            turn = -1
+            center = self.cover_top + self.diameter_stirrup + bar['diameter'] / 2
+        elif localization == 'bottom':
+            bar = self.steel_bill[1]
+            center = self.cover_bottom + self.diameter_stirrup + bar['diameter'] / 2
+
+        bending = self.bar_bending(self.diameter_stirrup)
+        first_bar_horizontal = (
+            self.cover_left + self.diameter_stirrup / 2 + bending,
+            self.beam_width - self.cover_right - self.diameter_stirrup / 2 - bending) \
+            if bending - self.diameter_stirrup / 2 >= bar['diameter'] / 2 \
+            else (
+            self.cover_left + self.diameter_stirrup + bar['diameter'] / 2,
+            self.beam_width - self.cover_right - self.diameter_stirrup - bar['diameter'] / 2)
+
+        value = spacing_between_bars(bar['diameter'])
+
+        count_bar_next_line = 0
+        while (first_bar_horizontal[1] - first_bar_horizontal[0]) / (
+                bar['quantity_bar'] - count_bar_next_line - 1) < value:
+            count_bar_next_line += 1
+
+        spacing_first_line = first_bar_horizontal[1] - first_bar_horizontal[0]
+        first_line = bar['quantity_bar'] - count_bar_next_line
+
+        for i in range(first_line):
+            list_points.append(
+                (start_point_x + first_bar_horizontal[0] + spacing_first_line / (first_line - 1) * i, start_point_y + turn * center))
+
+        if count_bar_next_line > 0:
+            if count_bar_next_line == 1:
+                list_points.append(
+                    (start_point_x + self.cover_left + self.diameter_stirrup + bar['diameter'] / 2,
+                     start_point_y + turn * (center + value)))
+            else:
+                second_bar_horizontal = (
+                    self.cover_left + self.diameter_stirrup + bar['diameter'] / 2,
+                    self.beam_width - self.cover_left - self.diameter_stirrup - bar['diameter'] / 2
+                )
+                spacing_second_line = second_bar_horizontal[1] - second_bar_horizontal[0]
+                print(spacing_second_line)
+                try:
+                    (second_bar_horizontal[1] - second_bar_horizontal[0]) / (count_bar_next_line if count_bar_next_line == 1 else count_bar_next_line - 1) < value
+                except ValueError:
+                    print('Maksymalnie dwie warstwy')
+
+                for i in range(count_bar_next_line):
+                    list_points.append(
+                        (start_point_x + second_bar_horizontal[0] + spacing_second_line / (count_bar_next_line - 1) * i, start_point_y + turn * (center + value)))
+
+        return list_points
+
     def beam_section_rectangular(self):
         start_point_x, start_point_y = self.position['section']
-
         points_beam_section = [(start_point_x, start_point_y),
                                (start_point_x + self.beam_width, start_point_y),
                                (start_point_x + self.beam_width, start_point_y + self.beam_height),
@@ -646,6 +718,9 @@ class DxfElement:
 
         self.msp.add_lwpolyline(points_beam_section, dxfattribs={'closed': True, 'layer': self.counter})
         self.view_stirrups_type_1(start_point_x, start_point_y)
+
+        self.bar_section(self.diameter_main_bottom, self.localization_bar_section('bottom'))
+        self.bar_section(self.diameter_main_top, self.localization_bar_section('top'))
 
     def view_stirrups_type_1(self, start_point_x: float, start_point_y: float, anchoring_stirrup: float = 80):
 
@@ -768,7 +843,7 @@ class DxfElement:
             dimstyle=self.dim_name_bar,
             dxfattribs={'layer': self.dimension}, angle=90, text='<>')
         self.steel_bill[-1]['points_generate'] = (
-        start_point_x + self.beam_width - self.cover_right + 400, start_point_y + self.beam_height / 2 - 100)
+            start_point_x + self.beam_width - self.cover_right + 400, start_point_y + self.beam_height / 2 - 100)
 
     # def generate_cell(self, points: list[tuple[float, float]], scale: int = 20, text: str = "__"):
 
@@ -1122,7 +1197,7 @@ class DxfElement:
                 quantity=i['quantity_bar'],
                 diameter=i['diameter'],
                 length=i['length']
-            ),
+                )
 
     def layout_new(self):
         """layauty, początki"""
@@ -1139,7 +1214,7 @@ class DxfElement:
 
 
 # testy plików
-draw = DxfElement(3450, 500, 250, 250, 250, 16, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 1350, 250, 125, 400, name="BŻ-3",
+draw = DxfElement(3450, 500, 400, 250, 250, 40, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 1350, 250, 125, 400, name="BŻ-3",
                   number_of_elements=2)
 # draw1 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 1250, 250, 100, 400, name="BŻ-2")
 # draw4 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 300, name="BŻ-21")
@@ -1147,4 +1222,4 @@ draw = DxfElement(3450, 500, 250, 250, 250, 16, 12, 8, 25, 30, 25, 30, 35, 35, 1
 # draw5 = DxfElement(3020, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 600, 600, 150, 150, 200, name="BŻ-22")
 # draw2 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 0, 1250, 110, 100, 400, name="BŻ-3")
 # draw3 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 0, 0, 110, 100, 400, name="BŻ-4")
-draw31 = DxfElement(12000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 0, 250, 0, 400, name="BŻ-5")
+# draw31 = DxfElement(12000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 0, 250, 0, 400, name="BŻ-5")

@@ -144,14 +144,14 @@ class DxfElement:
         self.drawing = ezdxf.new(dxfversion=self.dxfversion, setup=["linetypes"])
         self.initial_drawing()
         self.layer_element()
-        self.start_points()
+        self._start_points(-5000, 600)
         self.msp = self.drawing.modelspace()
         self.beam_outline()
-        self.view_top_bar(quantity_bar=6, steel_grade='B500SP')
-        self.view_top_bar(quantity_bar=6, steel_grade='B500SP', dimension=True)
-        self.view_bottom_bar(quantity_bar=10, steel_grade='B500SP')
-        self.view_bottom_bar(quantity_bar=10, steel_grade='B500SP', dimension=True)
-        self.secondary_stirrup_spacing_min()
+        self.view_top_bar(quantity_bar=7, steel_grade='B500SP')
+        self.view_top_bar(quantity_bar=7, steel_grade='B500SP', dimension=True)
+        self.view_bottom_bar(quantity_bar=13, steel_grade='B500SP')
+        self.view_bottom_bar(quantity_bar=13, steel_grade='B500SP', dimension=True)
+        self._secondary_stirrup_spacing_min()
         self.layout_new()
         self.stirrup_spacing()
         self.dimension_main()
@@ -198,7 +198,7 @@ class DxfElement:
     def mass_1m_bar(diameter: float, mass: float = 7850) -> float:
         return round(mass * math.pi * ((diameter / 2) / 1000) ** 2, 3)
 
-    def secondary_stirrup_spacing_min(self) -> float:
+    def _secondary_stirrup_spacing_min(self) -> float:
         self.secondary_stirrup_spacing = math.floor(
             min(self.secondary_stirrup_spacing, 400, int(self.beam_height * 0.75)) / 5) * 5
         return self.secondary_stirrup_spacing
@@ -252,8 +252,10 @@ class DxfElement:
 
         # In this place must create all blocks
         self._create_block_reinforcement_description()
+        self._create_block_marker_left()
+        self._create_block_marker_section()
 
-    def start_points(self, start_x: float = None, start_y: float = None):
+    def _start_points(self, start_x: float = None, start_y: float = None):
         if start_x is None:
             start_x = self.start_point_x
         if start_y is None:
@@ -264,9 +266,9 @@ class DxfElement:
         # main beam
         self.position['main_beam'] = (start_x, start_y)
         # top bar dimension
-        self.position['main_bar_top'] = (start_x, start_y - self.beam_height - 600)
+        self.position['main_bar_top'] = (start_x, start_y - self.beam_height - 800)
         # bottom bar dimension
-        self.position['main_bar_bottom'] = (start_x, start_y - self.beam_height - 750)
+        self.position['main_bar_bottom'] = (start_x, start_y - self.beam_height - 950)
         # section
         self.position['section'] = (start_x + beam + 500, start_y)
         # stirrup
@@ -302,6 +304,9 @@ class DxfElement:
         self.supports(start_point_x, start_point_x + self.width_support_left)
         self.supports(start_point_x + self.width_support_left + self.beam_span,
                       start_point_x + self.width_support_left + self.beam_span + self.width_support_right)
+
+        self.generate_marker_section((start_point_x + self.width_support_left + self.beam_span / 2, start_point_y + self.beam_height + 300), 'a')
+        self.generate_marker_section((start_point_x + self.width_support_left + self.beam_span / 2, start_point_y - 500), 'a')
 
     def length_bar(self, points: list, diameter: float, angle: int = 90) -> float:
         """angle jest to kąt pod jakim zmieniają się proste"""
@@ -697,7 +702,6 @@ class DxfElement:
                     self.beam_width - self.cover_left - self.diameter_stirrup - bar['diameter'] / 2
                 )
                 spacing_second_line = second_bar_horizontal[1] - second_bar_horizontal[0]
-                print(spacing_second_line)
                 try:
                     (second_bar_horizontal[1] - second_bar_horizontal[0]) / (count_bar_next_line if count_bar_next_line == 1 else count_bar_next_line - 1) < value
                 except ValueError:
@@ -711,6 +715,10 @@ class DxfElement:
 
     def beam_section_rectangular(self):
         start_point_x, start_point_y = self.position['section']
+
+        self.msp.add_text('A-A', dxfattribs={"height": 5 * 20, 'style': self.text, "layer": self.counter})\
+            .set_placement((start_point_x + self.beam_height / 2, start_point_y + self.beam_height + 200), align=TextEntityAlignment.BOTTOM_CENTER)
+
         points_beam_section = [(start_point_x, start_point_y),
                                (start_point_x + self.beam_width, start_point_y),
                                (start_point_x + self.beam_width, start_point_y + self.beam_height),
@@ -721,6 +729,48 @@ class DxfElement:
 
         self.bar_section(self.diameter_main_bottom, self.localization_bar_section('bottom'))
         self.bar_section(self.diameter_main_top, self.localization_bar_section('top'))
+        start_for_line = []
+        for value, (x0, y0) in enumerate(self.localization_bar_section('top')):
+            x1 = (x0 + (start_point_y + self.beam_height + 100 - y0) * math.tan(math.pi / 2 - math.radians(60)))
+            if value == 0:
+                start_for_line.append(x1)
+            self.msp.add_lwpolyline(
+                [(x0, y0),
+                 (x1,
+                 (start_point_y + self.beam_height + 100))],
+                dxfattribs={'layer': self.counter})
+        for value, (x0, y0) in enumerate(self.localization_bar_section('bottom')):
+            x1 = (x0 + (y0 - start_point_y + 100) * math.tan(2 * math.pi + math.radians(30)))
+            if value == 0:
+                start_for_line.append(x1)
+            self.msp.add_lwpolyline(
+                [(x0, y0),
+                 (x1,
+                  (start_point_y - 100))
+                 ],
+                dxfattribs={'layer': self.counter})
+        self.msp.add_lwpolyline([(start_for_line[0], start_point_y + self.beam_height + 100), ((start_point_x + self.beam_width + 100), (start_point_y + self.beam_height + 100))], dxfattribs={'layer': self.counter})
+        self.msp.add_lwpolyline([(start_for_line[1], start_point_y - 100), ((start_point_x + self.beam_width + 100), (start_point_y - 100))], dxfattribs={'layer': self.counter})
+        self.msp.add_lwpolyline([(start_point_x + self.beam_width - self.cover_right, start_point_y + self.beam_height / 2), (start_point_x + self.beam_width + 100, start_point_y + self.beam_height / 2)], dxfattribs={'layer': self.counter})
+        # todo: Poprawić ponieważ powinno samo nadawać nr pręta
+        self.generate_marker_left(((start_point_x + self.beam_width + 100), (start_point_y + self.beam_height + 100)), 1)
+        self.generate_marker_left(((start_point_x + self.beam_width + 100), (start_point_y - 100)), 2)
+        self.generate_marker_left((start_point_x + self.beam_width + 100, start_point_y + self.beam_height / 2), 3)
+
+    def dimension_section(self, height: int = 200):
+        start_point_x, start_point_y = self.position['section']
+        self.dimension_generator(
+            (start_point_x, start_point_y - height),
+            (start_point_x, start_point_y - height),
+            (start_point_x + self.beam_width, start_point_y - height)
+        )
+
+        self.dimension_generator(
+            (start_point_x - height, start_point_y),
+            (start_point_x, start_point_y),
+            (start_point_x, start_point_y + self.beam_height)
+        )
+
 
     def view_stirrups_type_1(self, start_point_x: float, start_point_y: float, anchoring_stirrup: float = 80):
 
@@ -1160,6 +1210,28 @@ class DxfElement:
                                    text='')
         # todo: dodać pod tabelą uwagi
 
+    def _create_block_marker_section(self):
+        name = 'marker_section'
+        if name in self.drawing.blocks:
+            block = self.drawing.blocks.get(name)
+        else:
+            block = self.drawing.blocks.new(name)
+
+        block.add_lwpolyline([(0, -4), (0, 4)])
+        block.add_attdef('SECTION', dxfattribs={"height": 5, 'style': self.text, "layer": self.counter}).set_placement(
+            (1, 0), align=TextEntityAlignment.MIDDLE_LEFT)
+
+    def _create_block_marker_left(self):
+        name = 'marker'
+        if name in self.drawing.blocks:
+            block = self.drawing.blocks.get(name)
+        else:
+            block = self.drawing.blocks.new(name)
+
+        block.add_circle((4, 0), 4, dxfattribs={"layer": self.counter})
+        block.add_attdef('NUMBER', dxfattribs={"height": 2.5, 'style': self.text, "layer": self.counter}).set_placement(
+            (4, 0), align=TextEntityAlignment.MIDDLE_CENTER)
+
     def _create_block_reinforcement_description(self):
         name = "reinforcement_description"
         if name in self.drawing.blocks:
@@ -1183,15 +1255,21 @@ class DxfElement:
         block.add_attdef('LENGTH', dxfattribs={"height": 2.5, 'style': self.text, "layer": self.counter}).set_placement(
             (9, 5), align=TextEntityAlignment.MIDDLE_LEFT)
 
-    def generate(self, position: tuple, number: float or str, quantity: float or str, diameter: float or str,
-                 length: float or str, scale: int = 20):
+    def generate_reinforcement_description(self, position: tuple, number: float or str, quantity: float or str, diameter: float or str,
+                                           length: float or str, scale: int = 20):
         self.msp.add_auto_blockref("reinforcement_description", position,
                                    {"NUMBER": str(number), "QUANTITY": str(quantity), "DIAMETER": str(diameter),
                                     "LENGTH": str(length)}).set_scale(scale).explode()
 
+    def generate_marker_left(self, position: tuple, number: float or str, scale: int = 20):
+        self.msp.add_auto_blockref("marker", position, {"NUMBER": str(number)}).set_scale(scale).explode()
+
+    def generate_marker_section(self, position: tuple, section: float or str, scale: int = 20):
+        self.msp.add_auto_blockref("marker_section", position, {"SECTION": str(section).upper()}).set_scale(scale).explode()
+
     def generate_block(self):
         for i in self.steel_bill:
-            self.generate(
+            self.generate_reinforcement_description(
                 position=i['points_generate'],
                 number=i['number'],
                 quantity=i['quantity_bar'],

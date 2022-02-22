@@ -493,7 +493,7 @@ $SKPOLY
   9
 $TDCREATE
  40
-2459632.5530208335
+2459633.873912037
   9
 $TDUCREATE
  40
@@ -501,7 +501,7 @@ $TDUCREATE
   9
 $TDUPDATE
  40
-2459632.5530208335
+2459633.873912037
   9
 $TDUUPDATE
  40
@@ -553,7 +553,7 @@ $SPLINESEGS
   9
 $HANDSEED
   5
-14B
+1CC
   9
 $SURFTAB1
  70
@@ -933,11 +933,11 @@ $PSTYLEMODE
   9
 $FINGERPRINTGUID
   2
-{38018ACF-6113-4CE5-8BF1-63C664188077}
+{45305D70-C245-4B63-A833-CE00F653D0FB}
   9
 $VERSIONGUID
   2
-{3384FB7B-AEA2-43D4-BCAA-25C1B003E5B1}
+{1225CB02-F260-486B-B696-5A67EFB4C065}
   9
 $EXTNAMES
 290
@@ -1327,9 +1327,9 @@ ISM
   0
 CLASS
   1
-ACDBPLACEHOLDER
+LAYOUT
   2
-AcDbPlaceHolder
+AcDbLayout
   3
 ObjectDBX Classes
  90
@@ -1343,9 +1343,9 @@ ObjectDBX Classes
   0
 CLASS
   1
-LAYOUT
+ACDBPLACEHOLDER
   2
-AcDbLayout
+AcDbPlaceHolder
   3
 ObjectDBX Classes
  90
@@ -1377,7 +1377,7 @@ AcDbSymbolTable
   0
 VPORT
   5
-23
+1C8
 330
 8
 100
@@ -1397,9 +1397,9 @@ AcDbViewportTableRecord
  21
 1.0
  12
-0.0
+-1625.0
  22
-0.0
+227.46249999999986
  13
 0.0
  23
@@ -1425,7 +1425,7 @@ AcDbViewportTableRecord
  37
 0.0
  40
-1000.0
+3932.5000000000005
  41
 1.34
  42
@@ -2561,7 +2561,7 @@ ACAD
   0
 APPID
   5
-148
+1C9
 330
 3
 100
@@ -2575,7 +2575,7 @@ HATCHBACKGROUNDCOLOR
   0
 APPID
   5
-149
+1CA
 330
 3
 100
@@ -2873,7 +2873,7 @@ KONEC_1_20
 340
 47
 342
-14B
+1CC
 371
 -2
 372
@@ -3013,7 +3013,7 @@ KONEC_BAR_1_20
 340
 47
 342
-14F
+1D0
 371
 -2
 372
@@ -3031,7 +3031,7 @@ BLOCK_RECORD
 100
 AcDbSymbolTable
  70
-9
+16
   0
 BLOCK_RECORD
   5
@@ -3095,7 +3095,7 @@ reinforcement_description
   0
 BLOCK_RECORD
   5
-65
+54
 330
 9
 100
@@ -3103,9 +3103,9 @@ AcDbSymbolTableRecord
 100
 AcDbBlockTableRecord
   2
-*Paper_Space0
+marker
 340
-68
+0
  70
 0
 280
@@ -3115,7 +3115,27 @@ AcDbBlockTableRecord
   0
 BLOCK_RECORD
   5
-115
+59
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+marker_section
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+67
 330
 9
 100
@@ -3135,7 +3155,7 @@ AcDbBlockTableRecord
   0
 BLOCK_RECORD
   5
-126
+72
 330
 9
 100
@@ -3155,7 +3175,27 @@ AcDbBlockTableRecord
   0
 BLOCK_RECORD
   5
-137
+85
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+*Paper_Space0
+340
+88
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+E9
 330
 9
 100
@@ -3175,7 +3215,107 @@ AcDbBlockTableRecord
   0
 BLOCK_RECORD
   5
-14B
+F4
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+*U4
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+FF
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+*U5
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+195
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+*U6
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+1A6
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+*U7
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+1B7
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+*U8
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+1CC
 330
 9
 100
@@ -3195,7 +3335,7 @@ _OBLIQUE
   0
 BLOCK_RECORD
   5
-14F
+1D0
 330
 9
 100
@@ -3639,9 +3779,475 @@ AcDbBlockEnd
   0
 BLOCK
   5
-66
+55
 330
-65
+54
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+marker
+ 70
+2
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+marker
+  1
+
+  0
+CIRCLE
+  5
+57
+330
+54
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbCircle
+ 10
+4.0
+ 20
+0.0
+ 30
+0.0
+ 40
+4.0
+  0
+ATTDEF
+  5
+58
+330
+54
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbText
+ 10
+4.0
+ 20
+0.0
+ 30
+0.0
+ 40
+2.5
+  1
+
+  7
+KONEC-Tekst
+ 72
+1
+ 11
+4.0
+ 21
+0.0
+ 31
+0.0
+100
+AcDbAttributeDefinition
+280
+0
+  3
+
+  2
+NUMBER
+ 70
+0
+ 74
+2
+ 71
+1
+ 72
+0
+ 11
+4.0
+ 21
+0.0
+ 31
+0.0
+  0
+ENDBLK
+  5
+56
+330
+54
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+5A
+330
+59
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+marker_section
+ 70
+2
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+marker_section
+  1
+
+  0
+LWPOLYLINE
+  5
+5C
+330
+59
+100
+AcDbEntity
+  8
+0
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+0.0
+ 20
+-4.0
+ 10
+0.0
+ 20
+4.0
+  0
+ATTDEF
+  5
+5D
+330
+59
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbText
+ 10
+1.0
+ 20
+0.0
+ 30
+0.0
+ 40
+5.0
+  1
+
+  7
+KONEC-Tekst
+ 11
+1.0
+ 21
+0.0
+ 31
+0.0
+100
+AcDbAttributeDefinition
+280
+0
+  3
+
+  2
+SECTION
+ 70
+0
+ 74
+2
+ 71
+1
+ 72
+0
+ 11
+1.0
+ 21
+0.0
+ 31
+0.0
+  0
+ENDBLK
+  5
+5B
+330
+59
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+68
+330
+67
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+*U1
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+*U1
+  1
+
+  0
+INSERT
+  5
+6A
+330
+67
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockReference
+ 66
+1
+  2
+marker_section
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  0
+ATTRIB
+  5
+6C
+330
+67
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbText
+ 10
+1.0
+ 20
+0.0
+ 30
+0.0
+ 40
+5.0
+  1
+A
+  7
+KONEC-Tekst
+ 11
+1.0
+ 21
+0.0
+ 31
+0.0
+100
+AcDbAttribute
+280
+0
+  2
+SECTION
+ 70
+0
+ 74
+2
+ 71
+1
+ 72
+0
+ 11
+1.0
+ 21
+0.0
+ 31
+0.0
+  0
+SEQEND
+  5
+6B
+330
+67
+100
+AcDbEntity
+  8
+0
+  0
+ENDBLK
+  5
+69
+330
+67
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+73
+330
+72
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+*U2
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+*U2
+  1
+
+  0
+INSERT
+  5
+75
+330
+72
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockReference
+ 66
+1
+  2
+marker_section
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  0
+ATTRIB
+  5
+77
+330
+72
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbText
+ 10
+1.0
+ 20
+0.0
+ 30
+0.0
+ 40
+5.0
+  1
+A
+  7
+KONEC-Tekst
+ 11
+1.0
+ 21
+0.0
+ 31
+0.0
+100
+AcDbAttribute
+280
+0
+  2
+SECTION
+ 70
+0
+ 74
+2
+ 71
+1
+ 72
+0
+ 11
+1.0
+ 21
+0.0
+ 31
+0.0
+  0
+SEQEND
+  5
+76
+330
+72
+100
+AcDbEntity
+  8
+0
+  0
+ENDBLK
+  5
+74
+330
+72
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+86
+330
+85
 100
 AcDbEntity
   8
@@ -3665,9 +4271,9 @@ AcDbBlockBegin
   0
 VIEWPORT
   5
-69
+89
 330
-65
+85
 100
 AcDbEntity
  67
@@ -3767,115 +4373,11 @@ AcDbViewport
 282
 0
   0
-VIEWPORT
-  5
-6A
-330
-65
-100
-AcDbEntity
- 67
-1
-  8
-VIEWPORTS
-100
-AcDbViewport
- 10
-210.0
- 20
-148.5
- 30
-0.0
- 40
-8380.0
- 41
-5920.0
- 68
-1
- 69
-3
- 12
-420.0
- 22
-297.0
- 13
-0.0
- 23
-0.0
- 14
-10.0
- 24
-10.0
- 15
-10.0
- 25
-10.0
- 16
-0.0
- 26
-0.0
- 36
-0.0
- 17
-0.0
- 27
-0.0
- 37
-0.0
- 42
-50.0
- 43
-0.0
- 44
-0.0
- 45
-5920.0
- 50
-0.0
- 51
-0.0
- 72
-100
- 90
-0
-  1
-
-281
-0
- 71
-0
- 74
-0
-110
-0.0
-120
-0.0
-130
-0.0
-111
-1.0
-121
-0.0
-131
-0.0
-112
-0.0
-122
-1.0
-132
-0.0
- 79
-0
-146
-0.0
-282
-0
-  0
 ENDBLK
   5
-67
+87
 330
-65
+85
 100
 AcDbEntity
   8
@@ -3885,9 +4387,9 @@ AcDbBlockEnd
   0
 BLOCK
   5
-116
+EA
 330
-115
+E9
 100
 AcDbEntity
   8
@@ -3895,7 +4397,7 @@ AcDbEntity
 100
 AcDbBlockBegin
   2
-*U1
+*U3
  70
 1
  10
@@ -3905,15 +4407,381 @@ AcDbBlockBegin
  30
 0.0
   3
-*U1
+*U3
   1
 
   0
 INSERT
   5
-118
+EC
 330
-115
+E9
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockReference
+ 66
+1
+  2
+marker
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  0
+ATTRIB
+  5
+EE
+330
+E9
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbText
+ 10
+4.0
+ 20
+0.0
+ 30
+0.0
+ 40
+2.5
+  1
+1
+  7
+KONEC-Tekst
+ 72
+1
+ 11
+4.0
+ 21
+0.0
+ 31
+0.0
+100
+AcDbAttribute
+280
+0
+  2
+NUMBER
+ 70
+0
+ 74
+2
+ 71
+1
+ 72
+0
+ 11
+4.0
+ 21
+0.0
+ 31
+0.0
+  0
+SEQEND
+  5
+ED
+330
+E9
+100
+AcDbEntity
+  8
+0
+  0
+ENDBLK
+  5
+EB
+330
+E9
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+F5
+330
+F4
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+*U4
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+*U4
+  1
+
+  0
+INSERT
+  5
+F7
+330
+F4
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockReference
+ 66
+1
+  2
+marker
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  0
+ATTRIB
+  5
+F9
+330
+F4
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbText
+ 10
+4.0
+ 20
+0.0
+ 30
+0.0
+ 40
+2.5
+  1
+2
+  7
+KONEC-Tekst
+ 72
+1
+ 11
+4.0
+ 21
+0.0
+ 31
+0.0
+100
+AcDbAttribute
+280
+0
+  2
+NUMBER
+ 70
+0
+ 74
+2
+ 71
+1
+ 72
+0
+ 11
+4.0
+ 21
+0.0
+ 31
+0.0
+  0
+SEQEND
+  5
+F8
+330
+F4
+100
+AcDbEntity
+  8
+0
+  0
+ENDBLK
+  5
+F6
+330
+F4
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+100
+330
+FF
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+*U5
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+*U5
+  1
+
+  0
+INSERT
+  5
+102
+330
+FF
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockReference
+ 66
+1
+  2
+marker
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  0
+ATTRIB
+  5
+104
+330
+FF
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbText
+ 10
+4.0
+ 20
+0.0
+ 30
+0.0
+ 40
+2.5
+  1
+3
+  7
+KONEC-Tekst
+ 72
+1
+ 11
+4.0
+ 21
+0.0
+ 31
+0.0
+100
+AcDbAttribute
+280
+0
+  2
+NUMBER
+ 70
+0
+ 74
+2
+ 71
+1
+ 72
+0
+ 11
+4.0
+ 21
+0.0
+ 31
+0.0
+  0
+SEQEND
+  5
+103
+330
+FF
+100
+AcDbEntity
+  8
+0
+  0
+ENDBLK
+  5
+101
+330
+FF
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+196
+330
+195
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+*U6
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+*U6
+  1
+
+  0
+INSERT
+  5
+198
+330
+195
 100
 AcDbEntity
   8
@@ -3933,9 +4801,9 @@ reinforcement_description
   0
 ATTRIB
   5
-11A
+19A
 330
-115
+195
 100
 AcDbEntity
   8
@@ -3985,9 +4853,9 @@ NUMBER
   0
 ATTRIB
   5
-11B
+19B
 330
-115
+195
 100
 AcDbEntity
   8
@@ -4003,7 +4871,7 @@ AcDbText
  40
 2.5
   1
-2
+7
   7
 KONEC-Tekst
  72
@@ -4037,9 +4905,9 @@ QUANTITY
   0
 ATTRIB
   5
-11C
+19C
 330
-115
+195
 100
 AcDbEntity
   8
@@ -4055,7 +4923,7 @@ AcDbText
  40
 2.5
   1
-16
+40
   7
 KONEC-Tekst
  11
@@ -4087,9 +4955,9 @@ DIAMETER
   0
 ATTRIB
   5
-11D
+19D
 330
-115
+195
 100
 AcDbEntity
   8
@@ -4105,7 +4973,7 @@ AcDbText
  40
 2.5
   1
-4703
+4552
   7
 KONEC-Tekst
  11
@@ -4137,9 +5005,9 @@ LENGTH
   0
 SEQEND
   5
-119
+199
 330
-115
+195
 100
 AcDbEntity
   8
@@ -4147,9 +5015,9 @@ AcDbEntity
   0
 ENDBLK
   5
-117
+197
 330
-115
+195
 100
 AcDbEntity
   8
@@ -4159,9 +5027,9 @@ AcDbBlockEnd
   0
 BLOCK
   5
-127
+1A7
 330
-126
+1A6
 100
 AcDbEntity
   8
@@ -4169,7 +5037,7 @@ AcDbEntity
 100
 AcDbBlockBegin
   2
-*U2
+*U7
  70
 1
  10
@@ -4179,15 +5047,15 @@ AcDbBlockBegin
  30
 0.0
   3
-*U2
+*U7
   1
 
   0
 INSERT
   5
-129
+1A9
 330
-126
+1A6
 100
 AcDbEntity
   8
@@ -4207,9 +5075,9 @@ reinforcement_description
   0
 ATTRIB
   5
-12B
+1AB
 330
-126
+1A6
 100
 AcDbEntity
   8
@@ -4259,9 +5127,9 @@ NUMBER
   0
 ATTRIB
   5
-12C
+1AC
 330
-126
+1A6
 100
 AcDbEntity
   8
@@ -4277,7 +5145,7 @@ AcDbText
  40
 2.5
   1
-3
+13
   7
 KONEC-Tekst
  72
@@ -4311,9 +5179,9 @@ QUANTITY
   0
 ATTRIB
   5
-12D
+1AD
 330
-126
+1A6
 100
 AcDbEntity
   8
@@ -4361,9 +5229,9 @@ DIAMETER
   0
 ATTRIB
   5
-12E
+1AE
 330
-126
+1A6
 100
 AcDbEntity
   8
@@ -4411,9 +5279,9 @@ LENGTH
   0
 SEQEND
   5
-12A
+1AA
 330
-126
+1A6
 100
 AcDbEntity
   8
@@ -4421,9 +5289,9 @@ AcDbEntity
   0
 ENDBLK
   5
-128
+1A8
 330
-126
+1A6
 100
 AcDbEntity
   8
@@ -4433,9 +5301,9 @@ AcDbBlockEnd
   0
 BLOCK
   5
-138
+1B8
 330
-137
+1B7
 100
 AcDbEntity
   8
@@ -4443,7 +5311,7 @@ AcDbEntity
 100
 AcDbBlockBegin
   2
-*U3
+*U8
  70
 1
  10
@@ -4453,15 +5321,15 @@ AcDbBlockBegin
  30
 0.0
   3
-*U3
+*U8
   1
 
   0
 INSERT
   5
-13A
+1BA
 330
-137
+1B7
 100
 AcDbEntity
   8
@@ -4481,9 +5349,9 @@ reinforcement_description
   0
 ATTRIB
   5
-13C
+1BC
 330
-137
+1B7
 100
 AcDbEntity
   8
@@ -4533,9 +5401,9 @@ NUMBER
   0
 ATTRIB
   5
-13D
+1BD
 330
-137
+1B7
 100
 AcDbEntity
   8
@@ -4585,9 +5453,9 @@ QUANTITY
   0
 ATTRIB
   5
-13E
+1BE
 330
-137
+1B7
 100
 AcDbEntity
   8
@@ -4635,9 +5503,9 @@ DIAMETER
   0
 ATTRIB
   5
-13F
+1BF
 330
-137
+1B7
 100
 AcDbEntity
   8
@@ -4653,7 +5521,7 @@ AcDbText
  40
 2.5
   1
-1375
+1675
   7
 KONEC-Tekst
  11
@@ -4685,9 +5553,9 @@ LENGTH
   0
 SEQEND
   5
-13B
+1BB
 330
-137
+1B7
 100
 AcDbEntity
   8
@@ -4695,9 +5563,9 @@ AcDbEntity
   0
 ENDBLK
   5
-139
+1B9
 330
-137
+1B7
 100
 AcDbEntity
   8
@@ -4707,9 +5575,9 @@ AcDbBlockEnd
   0
 BLOCK
   5
-14C
+1CD
 330
-14B
+1CC
 100
 AcDbEntity
   8
@@ -4733,9 +5601,9 @@ _OBLIQUE
   0
 LINE
   5
-14E
+1CF
 330
-14B
+1CC
 100
 AcDbEntity
   8
@@ -4761,9 +5629,9 @@ AcDbLine
   0
 ENDBLK
   5
-14D
+1CE
 330
-14B
+1CC
 100
 AcDbEntity
   8
@@ -4773,9 +5641,9 @@ AcDbBlockEnd
   0
 BLOCK
   5
-150
+1D1
 330
-14F
+1D0
 100
 AcDbEntity
   8
@@ -4799,9 +5667,9 @@ _NONE
   0
 ENDBLK
   5
-151
+1D2
 330
-14F
+1D0
 100
 AcDbEntity
   8
@@ -4817,7 +5685,7 @@ ENTITIES
   0
 LWPOLYLINE
   5
-54
+5E
 330
 17
 100
@@ -4833,31 +5701,31 @@ AcDbPolyline
  10
 -5000.0
  20
--600.0
+600.0
  10
 -4750.0
  20
--600.0
+600.0
  10
 -1300.0
  20
--600.0
+600.0
  10
 -1050.0
  20
--600.0
+600.0
  10
 -1050.0
  20
--100.0
+1100.0
  10
 -5000.0
  20
--100.0
+1100.0
   0
 HATCH
   5
-55
+5F
 330
 17
 100
@@ -4897,19 +5765,19 @@ ANSI33
  10
 -5000.0
  20
--600.0
+600.0
  10
 -5000.0
  20
--800.0
+400.0
  10
 -4750.0
  20
--800.0
+400.0
  10
 -4750.0
  20
--600.0
+600.0
  97
 0
  75
@@ -4957,7 +5825,7 @@ ANSI33
   0
 LWPOLYLINE
   5
-56
+60
 330
 17
 100
@@ -4973,15 +5841,15 @@ AcDbPolyline
  10
 -5000.0
  20
--600.0
+600.0
  10
 -5000.0
  20
--800.0
+400.0
   0
 LWPOLYLINE
   5
-57
+61
 330
 17
 100
@@ -4997,15 +5865,15 @@ AcDbPolyline
  10
 -4750.0
  20
--600.0
+600.0
  10
 -4750.0
  20
--800.0
+400.0
   0
 LWPOLYLINE
   5
-58
+62
 330
 17
 100
@@ -5021,15 +5889,15 @@ AcDbPolyline
  10
 -5200.0
  20
--800.0
+400.0
  10
 -4550.0
  20
--800.0
+400.0
   0
 HATCH
   5
-59
+63
 330
 17
 100
@@ -5069,19 +5937,19 @@ ANSI33
  10
 -1300.0
  20
--600.0
+600.0
  10
 -1300.0
  20
--800.0
+400.0
  10
 -1050.0
  20
--800.0
+400.0
  10
 -1050.0
  20
--600.0
+600.0
  97
 0
  75
@@ -5129,7 +5997,7 @@ ANSI33
   0
 LWPOLYLINE
   5
-5A
+64
 330
 17
 100
@@ -5145,15 +6013,15 @@ AcDbPolyline
  10
 -1300.0
  20
--600.0
+600.0
  10
 -1300.0
  20
--800.0
+400.0
   0
 LWPOLYLINE
   5
-5B
+65
 330
 17
 100
@@ -5169,15 +6037,15 @@ AcDbPolyline
  10
 -1050.0
  20
--600.0
+600.0
  10
 -1050.0
  20
--800.0
+400.0
   0
 LWPOLYLINE
   5
-5C
+66
 330
 17
 100
@@ -5193,493 +6061,13 @@ AcDbPolyline
  10
 -1500.0
  20
--800.0
+400.0
  10
 -850.0
  20
--800.0
+400.0
   0
-LWPOLYLINE
-  5
-5D
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Prety
-100
-AcDbPolyline
- 90
-6
- 70
-0
- 10
--4967.0
- 20
--575.0
- 40
-16.0
- 41
-16.0
- 10
--4967.0
- 20
--186.0
- 40
-16.0
- 41
-16.0
- 42
--0.41421356237309515
- 10
--4927.0
- 20
--146.0
- 40
-16.0
- 41
-16.0
- 10
--1128.0
- 20
--146.0
- 40
-16.0
- 41
-16.0
- 42
--0.41421356237309515
- 10
--1088.0
- 20
--186.0
- 40
-16.0
- 41
-16.0
- 10
--1088.0
- 20
--575.0
-  0
-LWPOLYLINE
-  5
-5E
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Prety
-100
-AcDbPolyline
- 90
-6
- 70
-0
- 10
--4967.0
- 20
--1675.0
- 40
-16.0
- 41
-16.0
- 10
--4967.0
- 20
--1286.0
- 40
-16.0
- 41
-16.0
- 42
--0.41421356237309515
- 10
--4927.0
- 20
--1246.0
- 40
-16.0
- 41
-16.0
- 10
--1128.0
- 20
--1246.0
- 40
-16.0
- 41
-16.0
- 42
--0.41421356237309515
- 10
--1088.0
- 20
--1286.0
- 40
-16.0
- 41
-16.0
- 10
--1088.0
- 20
--1675.0
-  0
-DIMENSION
-  5
-5F
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Wymiary
-100
-AcDbDimension
-280
-0
-  3
-KONEC_BAR_1_20
- 10
--4992.0
- 20
--1675.0
- 30
-0.0
- 70
-32
- 71
-5
-  1
-<>
-100
-AcDbAlignedDimension
- 13
--4967.0
- 23
--1675.0
- 33
-0.0
- 14
--4927.0
- 24
--1238.0
- 34
-0.0
- 50
-90.0
-100
-AcDbRotatedDimension
-  0
-DIMENSION
-  5
-60
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Wymiary
-100
-AcDbDimension
-280
-0
-  3
-KONEC_BAR_1_20
- 10
--1128.0
- 20
--1346.0
- 30
-0.0
- 70
-32
- 71
-5
-  1
-<>
-100
-AcDbAlignedDimension
- 13
--4975.0
- 23
--1286.0
- 33
-0.0
- 14
--1080.0
- 24
--1286.0
- 34
-0.0
- 50
-0.0
-100
-AcDbRotatedDimension
-  0
-DIMENSION
-  5
-61
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Wymiary
-100
-AcDbDimension
-280
-0
-  3
-KONEC_BAR_1_20
- 10
--988.0
- 20
--1675.0
- 30
-0.0
- 70
-32
- 71
-5
-  1
-<>
-100
-AcDbAlignedDimension
- 13
--1128.0
- 23
--1238.0
- 33
-0.0
- 14
--1088.0
- 24
--1675.0
- 34
-0.0
- 50
-90.0
-100
-AcDbRotatedDimension
-  0
-LWPOLYLINE
-  5
-62
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Prety
-100
-AcDbPolyline
- 90
-2
- 70
-0
- 10
--4975.0
- 20
--561.0
- 40
-12.0
- 41
-12.0
- 10
--1080.0
- 20
--561.0
-  0
-LWPOLYLINE
-  5
-63
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Prety
-100
-AcDbPolyline
- 90
-2
- 70
-0
- 10
--4975.0
- 20
--1811.0
- 40
-12.0
- 41
-12.0
- 10
--1080.0
- 20
--1811.0
-  0
-DIMENSION
-  5
-64
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Wymiary
-100
-AcDbDimension
-280
-0
-  3
-KONEC_BAR_1_20
- 10
--4975.0
- 20
--1911.0
- 30
-0.0
- 70
-32
- 71
-5
-  1
-<>
-100
-AcDbAlignedDimension
- 13
--4975.0
- 23
--1811.0
- 33
-0.0
- 14
--1080.0
- 24
--1811.0
- 34
-0.0
- 50
-0.0
-100
-AcDbRotatedDimension
-  0
-LWPOLYLINE
-  5
-6B
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Strzemiona
-100
-AcDbPolyline
- 90
-2
- 70
-0
- 10
--4742.5
- 20
--575.0
- 40
-8.0
- 41
-8.0
- 10
--4742.5
- 20
--130.0
-  0
-LWPOLYLINE
-  5
-6C
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Strzemiona
-100
-AcDbPolyline
- 90
-2
- 70
-0
- 10
--4492.5
- 20
--575.0
- 40
-8.0
- 41
-8.0
- 10
--4492.5
- 20
--130.0
-  0
-LWPOLYLINE
-  5
-6D
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Strzemiona
-100
-AcDbPolyline
- 90
-2
- 70
-0
- 10
--4242.5
- 20
--575.0
- 40
-8.0
- 41
-8.0
- 10
--4242.5
- 20
--130.0
-  0
-LWPOLYLINE
-  5
-6E
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Strzemiona
-100
-AcDbPolyline
- 90
-2
- 70
-0
- 10
--3992.5
- 20
--575.0
- 40
-8.0
- 41
-8.0
- 10
--3992.5
- 20
--130.0
-  0
-LWPOLYLINE
+INSERT
   5
 6F
 330
@@ -5687,27 +6075,27 @@ LWPOLYLINE
 100
 AcDbEntity
   8
-KONEC-Strzemiona
-100
-AcDbPolyline
- 90
-2
- 70
 0
+100
+AcDbBlockReference
+ 66
+1
+  2
+marker_section
  10
--3742.5
+-3025.0
  20
--575.0
- 40
-8.0
+1400.0
+ 30
+0.0
  41
-8.0
- 10
--3742.5
- 20
--130.0
+20.0
+ 42
+20.0
+ 43
+20.0
   0
-LWPOLYLINE
+ATTRIB
   5
 70
 330
@@ -5715,27 +6103,49 @@ LWPOLYLINE
 100
 AcDbEntity
   8
-KONEC-Strzemiona
+KONEC-Obrys
 100
-AcDbPolyline
- 90
-2
+AcDbText
+ 10
+-3005.0
+ 20
+1400.0
+ 30
+0.0
+ 40
+100.0
+  1
+A
+  7
+KONEC-Tekst
+ 11
+-3005.0
+ 21
+1400.0
+ 31
+0.0
+100
+AcDbAttribute
+280
+0
+  2
+SECTION
  70
 0
- 10
--3477.5
- 20
--575.0
- 40
-8.0
- 41
-8.0
- 10
--3477.5
- 20
--130.0
+ 74
+2
+ 71
+1
+ 72
+0
+ 11
+-3005.0
+ 21
+1400.0
+ 31
+0.0
   0
-LWPOLYLINE
+SEQEND
   5
 71
 330
@@ -5743,251 +6153,9 @@ LWPOLYLINE
 100
 AcDbEntity
   8
-KONEC-Strzemiona
-100
-AcDbPolyline
- 90
-2
- 70
 0
- 10
--3212.5
- 20
--575.0
- 40
-8.0
- 41
-8.0
- 10
--3212.5
- 20
--130.0
   0
-LWPOLYLINE
-  5
-72
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Strzemiona
-100
-AcDbPolyline
- 90
-2
- 70
-0
- 10
--2947.5
- 20
--575.0
- 40
-8.0
- 41
-8.0
- 10
--2947.5
- 20
--130.0
-  0
-LWPOLYLINE
-  5
-73
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Strzemiona
-100
-AcDbPolyline
- 90
-2
- 70
-0
- 10
--2682.5
- 20
--575.0
- 40
-8.0
- 41
-8.0
- 10
--2682.5
- 20
--130.0
-  0
-LWPOLYLINE
-  5
-74
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Strzemiona
-100
-AcDbPolyline
- 90
-2
- 70
-0
- 10
--2557.5
- 20
--575.0
- 40
-8.0
- 41
-8.0
- 10
--2557.5
- 20
--130.0
-  0
-LWPOLYLINE
-  5
-75
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Strzemiona
-100
-AcDbPolyline
- 90
-2
- 70
-0
- 10
--2432.5
- 20
--575.0
- 40
-8.0
- 41
-8.0
- 10
--2432.5
- 20
--130.0
-  0
-LWPOLYLINE
-  5
-76
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Strzemiona
-100
-AcDbPolyline
- 90
-2
- 70
-0
- 10
--2307.5
- 20
--575.0
- 40
-8.0
- 41
-8.0
- 10
--2307.5
- 20
--130.0
-  0
-LWPOLYLINE
-  5
-77
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Strzemiona
-100
-AcDbPolyline
- 90
-2
- 70
-0
- 10
--2182.5
- 20
--575.0
- 40
-8.0
- 41
-8.0
- 10
--2182.5
- 20
--130.0
-  0
-LWPOLYLINE
-  5
-78
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Strzemiona
-100
-AcDbPolyline
- 90
-2
- 70
-0
- 10
--2057.5
- 20
--575.0
- 40
-8.0
- 41
-8.0
- 10
--2057.5
- 20
--130.0
-  0
-LWPOLYLINE
-  5
-79
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Strzemiona
-100
-AcDbPolyline
- 90
-2
- 70
-0
- 10
--1932.5
- 20
--575.0
- 40
-8.0
- 41
-8.0
- 10
--1932.5
- 20
--130.0
-  0
-LWPOLYLINE
+INSERT
   5
 7A
 330
@@ -5995,27 +6163,27 @@ LWPOLYLINE
 100
 AcDbEntity
   8
-KONEC-Strzemiona
-100
-AcDbPolyline
- 90
-2
- 70
 0
+100
+AcDbBlockReference
+ 66
+1
+  2
+marker_section
  10
--1807.5
+-3025.0
  20
--575.0
- 40
-8.0
+100.0
+ 30
+0.0
  41
-8.0
- 10
--1807.5
- 20
--130.0
+20.0
+ 42
+20.0
+ 43
+20.0
   0
-LWPOLYLINE
+ATTRIB
   5
 7B
 330
@@ -6023,27 +6191,49 @@ LWPOLYLINE
 100
 AcDbEntity
   8
-KONEC-Strzemiona
+KONEC-Obrys
 100
-AcDbPolyline
- 90
-2
+AcDbText
+ 10
+-3005.0
+ 20
+100.0
+ 30
+0.0
+ 40
+100.0
+  1
+A
+  7
+KONEC-Tekst
+ 11
+-3005.0
+ 21
+100.0
+ 31
+0.0
+100
+AcDbAttribute
+280
+0
+  2
+SECTION
  70
 0
- 10
--1682.5
- 20
--575.0
- 40
-8.0
- 41
-8.0
- 10
--1682.5
- 20
--130.0
+ 74
+2
+ 71
+1
+ 72
+0
+ 11
+-3005.0
+ 21
+100.0
+ 31
+0.0
   0
-LWPOLYLINE
+SEQEND
   5
 7C
 330
@@ -6051,25 +6241,7 @@ LWPOLYLINE
 100
 AcDbEntity
   8
-KONEC-Strzemiona
-100
-AcDbPolyline
- 90
-2
- 70
 0
- 10
--1557.5
- 20
--575.0
- 40
-8.0
- 41
-8.0
- 10
--1557.5
- 20
--130.0
   0
 LWPOLYLINE
   5
@@ -6079,25 +6251,61 @@ LWPOLYLINE
 100
 AcDbEntity
   8
-KONEC-Strzemiona
+KONEC-Prety
 100
 AcDbPolyline
  90
-2
+6
  70
 0
  10
--1432.5
+-4955.0
  20
--575.0
+625.0
  40
-8.0
+40.0
  41
-8.0
+40.0
  10
--1432.5
+-4955.0
  20
--130.0
+882.0
+ 40
+40.0
+ 41
+40.0
+ 42
+-0.41421356237309515
+ 10
+-4795.0
+ 20
+1042.0
+ 40
+40.0
+ 41
+40.0
+ 10
+-1260.0
+ 20
+1042.0
+ 40
+40.0
+ 41
+40.0
+ 42
+-0.41421356237309515
+ 10
+-1100.0
+ 20
+882.0
+ 40
+40.0
+ 41
+40.0
+ 10
+-1100.0
+ 20
+625.0
   0
 LWPOLYLINE
   5
@@ -6107,25 +6315,61 @@ LWPOLYLINE
 100
 AcDbEntity
   8
-KONEC-Strzemiona
+KONEC-Prety
 100
 AcDbPolyline
  90
-2
+6
  70
 0
  10
--1307.5
+-4955.0
  20
--575.0
+-675.0
  40
-8.0
+40.0
  41
-8.0
+40.0
  10
--1307.5
+-4955.0
  20
--130.0
+-418.0
+ 40
+40.0
+ 41
+40.0
+ 42
+-0.41421356237309515
+ 10
+-4795.0
+ 20
+-258.0
+ 40
+40.0
+ 41
+40.0
+ 10
+-1260.0
+ 20
+-258.0
+ 40
+40.0
+ 41
+40.0
+ 42
+-0.41421356237309515
+ 10
+-1100.0
+ 20
+-418.0
+ 40
+40.0
+ 41
+40.0
+ 10
+-1100.0
+ 20
+-675.0
   0
 DIMENSION
   5
@@ -6141,11 +6385,11 @@ AcDbDimension
 280
 0
   3
-KONEC_1_20
+KONEC_BAR_1_20
  10
--5000.0
+-4980.0
  20
--1000.0
+-675.0
  30
 0.0
  70
@@ -6157,19 +6401,19 @@ KONEC_1_20
 100
 AcDbAlignedDimension
  13
--5000.0
+-4955.0
  23
--1000.0
+-675.0
  33
 0.0
  14
--4750.0
+-4795.0
  24
--1000.0
+-238.0
  34
 0.0
  50
-0.0
+90.0
 100
 AcDbRotatedDimension
   0
@@ -6187,11 +6431,11 @@ AcDbDimension
 280
 0
   3
-KONEC_1_20
+KONEC_BAR_1_20
  10
--5000.0
+-1260.0
  20
--1000.0
+-358.0
  30
 0.0
  70
@@ -6203,15 +6447,15 @@ KONEC_1_20
 100
 AcDbAlignedDimension
  13
--4750.0
+-4975.0
  23
--1000.0
+-418.0
  33
 0.0
  14
--1300.0
+-1080.0
  24
--1000.0
+-418.0
  34
 0.0
  50
@@ -6233,11 +6477,11 @@ AcDbDimension
 280
 0
   3
-KONEC_1_20
+KONEC_BAR_1_20
  10
--5000.0
- 20
 -1000.0
+ 20
+-675.0
  30
 0.0
  70
@@ -6249,61 +6493,15 @@ KONEC_1_20
 100
 AcDbAlignedDimension
  13
--1300.0
+-1260.0
  23
--1000.0
+-238.0
  33
 0.0
  14
--1050.0
+-1100.0
  24
--1000.0
- 34
-0.0
- 50
-0.0
-100
-AcDbRotatedDimension
-  0
-DIMENSION
-  5
-82
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Wymiary
-100
-AcDbDimension
-280
-0
-  3
-KONEC_1_20
- 10
--5200.0
- 20
--600.0
- 30
-0.0
- 70
-32
- 71
-5
-  1
-<>
-100
-AcDbAlignedDimension
- 13
--5000.0
- 23
--600.0
- 33
-0.0
- 14
--5000.0
- 24
--100.0
+-675.0
  34
 0.0
  50
@@ -6311,7 +6509,35 @@ AcDbAlignedDimension
 100
 AcDbRotatedDimension
   0
-DIMENSION
+LWPOLYLINE
+  5
+82
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Prety
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+-4975.0
+ 20
+639.0
+ 40
+12.0
+ 41
+12.0
+ 10
+-1080.0
+ 20
+639.0
+  0
+LWPOLYLINE
   5
 83
 330
@@ -6319,43 +6545,25 @@ DIMENSION
 100
 AcDbEntity
   8
-KONEC-Wymiary
+KONEC-Prety
 100
-AcDbDimension
-280
-0
-  3
-KONEC_1_20
- 10
--5000.0
- 20
--900.0
- 30
-0.0
+AcDbPolyline
+ 90
+2
  70
-32
- 71
-5
-  1
-<>
-100
-AcDbAlignedDimension
- 13
--4750.0
- 23
--900.0
- 33
-0.0
- 14
--4742.5
- 24
--900.0
- 34
-0.0
- 50
-0.0
-100
-AcDbRotatedDimension
+0
+ 10
+-4975.0
+ 20
+-811.0
+ 40
+12.0
+ 41
+12.0
+ 10
+-1080.0
+ 20
+-811.0
   0
 DIMENSION
   5
@@ -6371,11 +6579,847 @@ AcDbDimension
 280
 0
   3
+KONEC_BAR_1_20
+ 10
+-4975.0
+ 20
+-911.0
+ 30
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+-4975.0
+ 23
+-811.0
+ 33
+0.0
+ 14
+-1080.0
+ 24
+-811.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
+  0
+LWPOLYLINE
+  5
+8A
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Strzemiona
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+-4742.5
+ 20
+625.0
+ 40
+8.0
+ 41
+8.0
+ 10
+-4742.5
+ 20
+1070.0
+  0
+LWPOLYLINE
+  5
+8B
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Strzemiona
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+-4492.5
+ 20
+625.0
+ 40
+8.0
+ 41
+8.0
+ 10
+-4492.5
+ 20
+1070.0
+  0
+LWPOLYLINE
+  5
+8C
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Strzemiona
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+-4242.5
+ 20
+625.0
+ 40
+8.0
+ 41
+8.0
+ 10
+-4242.5
+ 20
+1070.0
+  0
+LWPOLYLINE
+  5
+8D
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Strzemiona
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+-3992.5
+ 20
+625.0
+ 40
+8.0
+ 41
+8.0
+ 10
+-3992.5
+ 20
+1070.0
+  0
+LWPOLYLINE
+  5
+8E
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Strzemiona
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+-3742.5
+ 20
+625.0
+ 40
+8.0
+ 41
+8.0
+ 10
+-3742.5
+ 20
+1070.0
+  0
+LWPOLYLINE
+  5
+8F
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Strzemiona
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+-3477.5
+ 20
+625.0
+ 40
+8.0
+ 41
+8.0
+ 10
+-3477.5
+ 20
+1070.0
+  0
+LWPOLYLINE
+  5
+90
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Strzemiona
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+-3212.5
+ 20
+625.0
+ 40
+8.0
+ 41
+8.0
+ 10
+-3212.5
+ 20
+1070.0
+  0
+LWPOLYLINE
+  5
+91
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Strzemiona
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+-2947.5
+ 20
+625.0
+ 40
+8.0
+ 41
+8.0
+ 10
+-2947.5
+ 20
+1070.0
+  0
+LWPOLYLINE
+  5
+92
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Strzemiona
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+-2682.5
+ 20
+625.0
+ 40
+8.0
+ 41
+8.0
+ 10
+-2682.5
+ 20
+1070.0
+  0
+LWPOLYLINE
+  5
+93
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Strzemiona
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+-2557.5
+ 20
+625.0
+ 40
+8.0
+ 41
+8.0
+ 10
+-2557.5
+ 20
+1070.0
+  0
+LWPOLYLINE
+  5
+94
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Strzemiona
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+-2432.5
+ 20
+625.0
+ 40
+8.0
+ 41
+8.0
+ 10
+-2432.5
+ 20
+1070.0
+  0
+LWPOLYLINE
+  5
+95
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Strzemiona
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+-2307.5
+ 20
+625.0
+ 40
+8.0
+ 41
+8.0
+ 10
+-2307.5
+ 20
+1070.0
+  0
+LWPOLYLINE
+  5
+96
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Strzemiona
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+-2182.5
+ 20
+625.0
+ 40
+8.0
+ 41
+8.0
+ 10
+-2182.5
+ 20
+1070.0
+  0
+LWPOLYLINE
+  5
+97
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Strzemiona
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+-2057.5
+ 20
+625.0
+ 40
+8.0
+ 41
+8.0
+ 10
+-2057.5
+ 20
+1070.0
+  0
+LWPOLYLINE
+  5
+98
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Strzemiona
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+-1932.5
+ 20
+625.0
+ 40
+8.0
+ 41
+8.0
+ 10
+-1932.5
+ 20
+1070.0
+  0
+LWPOLYLINE
+  5
+99
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Strzemiona
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+-1807.5
+ 20
+625.0
+ 40
+8.0
+ 41
+8.0
+ 10
+-1807.5
+ 20
+1070.0
+  0
+LWPOLYLINE
+  5
+9A
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Strzemiona
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+-1682.5
+ 20
+625.0
+ 40
+8.0
+ 41
+8.0
+ 10
+-1682.5
+ 20
+1070.0
+  0
+LWPOLYLINE
+  5
+9B
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Strzemiona
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+-1557.5
+ 20
+625.0
+ 40
+8.0
+ 41
+8.0
+ 10
+-1557.5
+ 20
+1070.0
+  0
+LWPOLYLINE
+  5
+9C
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Strzemiona
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+-1432.5
+ 20
+625.0
+ 40
+8.0
+ 41
+8.0
+ 10
+-1432.5
+ 20
+1070.0
+  0
+LWPOLYLINE
+  5
+9D
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Strzemiona
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+-1307.5
+ 20
+625.0
+ 40
+8.0
+ 41
+8.0
+ 10
+-1307.5
+ 20
+1070.0
+  0
+DIMENSION
+  5
+9E
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Wymiary
+100
+AcDbDimension
+280
+0
+  3
 KONEC_1_20
  10
 -5000.0
  20
--900.0
+200.0
+ 30
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+-5000.0
+ 23
+200.0
+ 33
+0.0
+ 14
+-4750.0
+ 24
+200.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
+  0
+DIMENSION
+  5
+9F
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Wymiary
+100
+AcDbDimension
+280
+0
+  3
+KONEC_1_20
+ 10
+-5000.0
+ 20
+200.0
+ 30
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+-4750.0
+ 23
+200.0
+ 33
+0.0
+ 14
+-1300.0
+ 24
+200.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
+  0
+DIMENSION
+  5
+A0
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Wymiary
+100
+AcDbDimension
+280
+0
+  3
+KONEC_1_20
+ 10
+-5000.0
+ 20
+200.0
+ 30
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+-1300.0
+ 23
+200.0
+ 33
+0.0
+ 14
+-1050.0
+ 24
+200.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
+  0
+DIMENSION
+  5
+A1
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Wymiary
+100
+AcDbDimension
+280
+0
+  3
+KONEC_1_20
+ 10
+-5200.0
+ 20
+600.0
+ 30
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+-5000.0
+ 23
+600.0
+ 33
+0.0
+ 14
+-5000.0
+ 24
+1100.0
+ 34
+0.0
+ 50
+90.0
+100
+AcDbRotatedDimension
+  0
+DIMENSION
+  5
+A2
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Wymiary
+100
+AcDbDimension
+280
+0
+  3
+KONEC_1_20
+ 10
+-5000.0
+ 20
+300.0
+ 30
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+-4750.0
+ 23
+300.0
+ 33
+0.0
+ 14
+-4742.5
+ 24
+300.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
+  0
+DIMENSION
+  5
+A3
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Wymiary
+100
+AcDbDimension
+280
+0
+  3
+KONEC_1_20
+ 10
+-5000.0
+ 20
+300.0
  30
 0.0
  70
@@ -6389,13 +7433,13 @@ AcDbAlignedDimension
  13
 -1307.5
  23
--900.0
+300.0
  33
 0.0
  14
 -1300.0
  24
--900.0
+300.0
  34
 0.0
  50
@@ -6405,7 +7449,7 @@ AcDbRotatedDimension
   0
 DIMENSION
   5
-85
+A4
 330
 17
 100
@@ -6421,7 +7465,7 @@ KONEC_1_20
  10
 -5000.0
  20
--900.0
+300.0
  30
 0.0
  70
@@ -6435,13 +7479,13 @@ AcDbAlignedDimension
  13
 -4742.5
  23
--900.0
+300.0
  33
 0.0
  14
 -3742.5
  24
--900.0
+300.0
  34
 0.0
  50
@@ -6451,7 +7495,7 @@ AcDbRotatedDimension
   0
 DIMENSION
   5
-86
+A5
 330
 17
 100
@@ -6467,7 +7511,7 @@ KONEC_1_20
  10
 -5000.0
  20
--900.0
+300.0
  30
 0.0
  70
@@ -6481,13 +7525,13 @@ AcDbAlignedDimension
  13
 -1307.5
  23
--900.0
+300.0
  33
 0.0
  14
 -2682.5
  24
--900.0
+300.0
  34
 0.0
  50
@@ -6497,7 +7541,7 @@ AcDbRotatedDimension
   0
 DIMENSION
   5
-87
+A6
 330
 17
 100
@@ -6513,7 +7557,7 @@ KONEC_1_20
  10
 -5000.0
  20
--900.0
+300.0
  30
 0.0
  70
@@ -6527,13 +7571,13 @@ AcDbAlignedDimension
  13
 -3742.5
  23
--900.0
+300.0
  33
 0.0
  14
 -2682.5
  24
--900.0
+300.0
  34
 0.0
  50
@@ -6541,9 +7585,45 @@ AcDbAlignedDimension
 100
 AcDbRotatedDimension
   0
+TEXT
+  5
+A7
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbText
+ 10
+-300.0
+ 20
+1300.0
+ 30
+0.0
+ 40
+100.0
+  1
+A-A
+  7
+KONEC-Tekst
+ 72
+1
+ 11
+-300.0
+ 21
+1300.0
+ 31
+0.0
+100
+AcDbText
+ 73
+1
+  0
 LWPOLYLINE
   5
-88
+A8
 330
 17
 100
@@ -6559,23 +7639,23 @@ AcDbPolyline
  10
 -550.0
  20
--600.0
+600.0
  10
--300.0
+-150.0
  20
--600.0
+600.0
  10
--300.0
+-150.0
  20
--100.0
+1100.0
  10
 -550.0
  20
--100.0
+1100.0
   0
 LWPOLYLINE
   5
-89
+A9
 330
 17
 100
@@ -6591,7 +7671,7 @@ AcDbPolyline
  10
 -511.0
  20
--234.0
+966.0
  40
 8.0
  41
@@ -6599,7 +7679,7 @@ AcDbPolyline
  10
 -511.0
  20
--154.0
+1046.0
  40
 8.0
  41
@@ -6609,33 +7689,15 @@ AcDbPolyline
  10
 -491.0
  20
--134.0
+1066.0
  40
 8.0
  41
 8.0
  10
--359.0
+-209.0
  20
--134.0
- 40
-8.0
- 41
-8.0
- 42
--0.41421356237309515
- 10
--339.0
- 20
--154.0
- 40
-8.0
- 41
-8.0
- 10
--339.0
- 20
--551.0
+1066.0
  40
 8.0
  41
@@ -6643,9 +7705,27 @@ AcDbPolyline
  42
 -0.41421356237309515
  10
--359.0
+-189.0
  20
--571.0
+1046.0
+ 40
+8.0
+ 41
+8.0
+ 10
+-189.0
+ 20
+649.0
+ 40
+8.0
+ 41
+8.0
+ 42
+-0.41421356237309515
+ 10
+-209.0
+ 20
+629.0
  40
 8.0
  41
@@ -6653,7 +7733,7 @@ AcDbPolyline
  10
 -491.0
  20
--571.0
+629.0
  40
 8.0
  41
@@ -6663,7 +7743,7 @@ AcDbPolyline
  10
 -511.0
  20
--551.0
+649.0
  40
 8.0
  41
@@ -6671,7 +7751,7 @@ AcDbPolyline
  10
 -511.0
  20
--154.0
+1046.0
  40
 8.0
  41
@@ -6681,7 +7761,7 @@ AcDbPolyline
  10
 -491.0
  20
--134.0
+1066.0
  40
 8.0
  41
@@ -6689,1029 +7769,13 @@ AcDbPolyline
  10
 -411.0
  20
--134.0
+1066.0
  40
 8.0
  41
 8.0
   0
-LWPOLYLINE
-  5
-8A
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Prety
-100
-AcDbPolyline
- 90
-8
- 70
-0
- 10
-211.0
- 20
--134.0
- 40
-8.0
- 41
-8.0
- 10
-311.0
- 20
--134.0
- 40
-8.0
- 41
-8.0
- 10
-311.0
- 20
--571.0
- 40
-8.0
- 41
-8.0
- 10
-139.0
- 20
--571.0
- 40
-8.0
- 41
-8.0
- 10
-139.0
- 20
--134.0
- 40
-8.0
- 41
-8.0
- 10
-139.0
- 20
--134.0
- 40
-8.0
- 41
-8.0
- 10
-287.95636945092343
- 20
--48.0
- 40
-8.0
- 41
-8.0
- 10
-337.95636945092343
- 20
--134.60254037844388
- 40
-8.0
- 41
-8.0
-  0
-DIMENSION
-  5
-8B
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Wymiary
-100
-AcDbDimension
-280
-0
-  3
-KONEC_BAR_1_20
- 10
-100.0
- 20
--650.0
- 30
-0.0
- 70
-32
- 71
-5
-  1
-<>
-100
-AcDbAlignedDimension
- 13
-135.0
- 23
--575.0
- 33
-0.0
- 14
-315.0
- 24
--575.0
- 34
-0.0
- 50
-0.0
-100
-AcDbRotatedDimension
-  0
-DIMENSION
-  5
-8C
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Wymiary
-100
-AcDbDimension
-280
-0
-  3
-KONEC_BAR_1_20
- 10
-110.0
- 20
--600.0
- 30
-0.0
- 70
-32
- 71
-5
-  1
-<>
-100
-AcDbAlignedDimension
- 13
-135.0
- 23
--575.0
- 33
-0.0
- 14
-135.0
- 24
--130.0
- 34
-0.0
- 50
-90.0
-100
-AcDbRotatedDimension
-  0
-LWPOLYLINE
-  5
-8D
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
--750.0
- 20
--900.0
- 10
-1950.0
- 20
--900.0
- 10
-1950.0
- 20
--1100.0
- 10
--750.0
- 20
--1100.0
-  0
-MTEXT
-  5
-8E
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
-600.0
- 20
--1000.0
- 30
-0.0
- 40
-100.0
- 71
-5
-  1
-WYKAZ ZBROJENIA
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-8F
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
--750.0
- 20
--1100.0
- 10
--550.0
- 20
--1100.0
- 10
--550.0
- 20
--1400.0
- 10
--750.0
- 20
--1400.0
-  0
-MTEXT
-  5
-90
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
--650.0
- 20
--1250.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-Poz.\Pnr
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-91
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
--550.0
- 20
--1100.0
- 10
--250.0
- 20
--1100.0
- 10
--250.0
- 20
--1300.0
- 10
--550.0
- 20
--1300.0
-  0
-MTEXT
-  5
-92
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
--400.0
- 20
--1200.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-Średnica\P%%c
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-93
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
--550.0
- 20
--1300.0
- 10
--250.0
- 20
--1300.0
- 10
--250.0
- 20
--1400.0
- 10
--550.0
- 20
--1400.0
-  0
-MTEXT
-  5
-94
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
--400.0
- 20
--1350.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-[mm]
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-95
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
--250.0
- 20
--1100.0
- 10
-50.0
- 20
--1100.0
- 10
-50.0
- 20
--1300.0
- 10
--250.0
- 20
--1300.0
-  0
-MTEXT
-  5
-96
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
--100.0
- 20
--1200.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-Długość
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-97
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
--250.0
- 20
--1300.0
- 10
-50.0
- 20
--1300.0
- 10
-50.0
- 20
--1400.0
- 10
--250.0
- 20
--1400.0
-  0
-MTEXT
-  5
-98
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
--100.0
- 20
--1350.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-[mm]
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-99
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
-50.0
- 20
--1100.0
- 10
-350.0
- 20
--1100.0
- 10
-350.0
- 20
--1300.0
- 10
-50.0
- 20
--1300.0
-  0
-MTEXT
-  5
-9A
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
-200.0
- 20
--1200.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-Liczba w\P1 elem.
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-9B
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
-50.0
- 20
--1300.0
- 10
-350.0
- 20
--1300.0
- 10
-350.0
- 20
--1400.0
- 10
-50.0
- 20
--1400.0
-  0
-MTEXT
-  5
-9C
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
-200.0
- 20
--1350.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-[szt.]
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-9D
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
-350.0
- 20
--1100.0
- 10
-650.0
- 20
--1100.0
- 10
-650.0
- 20
--1300.0
- 10
-350.0
- 20
--1300.0
-  0
-MTEXT
-  5
-9E
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
-500.0
- 20
--1200.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-Liczba\Pogólna
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-9F
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
-350.0
- 20
--1300.0
- 10
-650.0
- 20
--1300.0
- 10
-650.0
- 20
--1400.0
- 10
-350.0
- 20
--1400.0
-  0
-MTEXT
-  5
-A0
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
-500.0
- 20
--1350.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-[szt.]
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-A1
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
-650.0
- 20
--1100.0
- 10
-1550.0
- 20
--1100.0
- 10
-1550.0
- 20
--1200.0
- 10
-650.0
- 20
--1200.0
-  0
-MTEXT
-  5
-A2
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
-1100.0
- 20
--1150.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-Długość całkowita [m]
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-A3
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
-650.0
- 20
--1200.0
- 10
-1250.0
- 20
--1200.0
- 10
-1250.0
- 20
--1300.0
- 10
-650.0
- 20
--1300.0
-  0
-MTEXT
-  5
-A4
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
-950.0
- 20
--1250.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-B500SP
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-A5
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
-650.0
- 20
--1300.0
- 10
-950.0
- 20
--1300.0
- 10
-950.0
- 20
--1400.0
- 10
-650.0
- 20
--1400.0
-  0
-MTEXT
-  5
-A6
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
-800.0
- 20
--1350.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-%%c16
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-A7
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
-950.0
- 20
--1300.0
- 10
-1250.0
- 20
--1300.0
- 10
-1250.0
- 20
--1400.0
- 10
-950.0
- 20
--1400.0
-  0
-MTEXT
-  5
-A8
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
-1100.0
- 20
--1350.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-%%c12
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-A9
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
-1250.0
- 20
--1200.0
- 10
-1550.0
- 20
--1200.0
- 10
-1550.0
- 20
--1300.0
- 10
-1250.0
- 20
--1300.0
-  0
-MTEXT
+CIRCLE
   5
 AA
 330
@@ -7719,25 +7783,19 @@ AA
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Prety
 100
-AcDbMText
+AcDbCircle
  10
-1400.0
+-491.0
  20
--1250.0
+639.0
  30
 0.0
  40
-50.0
- 71
-5
-  1
-B500A
-  7
-KONEC-Tekst
+6.0
   0
-LWPOLYLINE
+HATCH
   5
 AB
 330
@@ -7745,31 +7803,57 @@ AB
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Kreskowanie
 100
-AcDbPolyline
- 90
-4
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+SOLID
  70
 1
+ 71
+0
+ 91
+1
+ 92
+1
+ 93
+1
+ 72
+2
  10
-1250.0
+-491.0
  20
--1300.0
- 10
-1550.0
- 20
--1300.0
- 10
-1550.0
- 20
--1400.0
- 10
-1250.0
- 20
--1400.0
+639.0
+ 40
+6.0
+ 50
+0.0
+ 51
+360.0
+ 73
+1
+ 97
+0
+ 75
+0
+ 76
+1
+ 98
+0
   0
-MTEXT
+CIRCLE
   5
 AC
 330
@@ -7777,25 +7861,19 @@ AC
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Prety
 100
-AcDbMText
+AcDbCircle
  10
-1400.0
+-455.75
  20
--1350.0
+639.0
  30
 0.0
  40
-50.0
- 71
-5
-  1
-%%c8
-  7
-KONEC-Tekst
+6.0
   0
-LWPOLYLINE
+HATCH
   5
 AD
 330
@@ -7803,31 +7881,57 @@ AD
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Kreskowanie
 100
-AcDbPolyline
- 90
-4
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+SOLID
  70
 1
+ 71
+0
+ 91
+1
+ 92
+1
+ 93
+1
+ 72
+2
  10
-1550.0
+-455.75
  20
--1100.0
- 10
-1950.0
- 20
--1100.0
- 10
-1950.0
- 20
--1400.0
- 10
-1550.0
- 20
--1400.0
+639.0
+ 40
+6.0
+ 50
+0.0
+ 51
+360.0
+ 73
+1
+ 97
+0
+ 75
+0
+ 76
+1
+ 98
+0
   0
-MTEXT
+CIRCLE
   5
 AE
 330
@@ -7835,25 +7939,19 @@ AE
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Prety
 100
-AcDbMText
+AcDbCircle
  10
-1750.0
+-420.5
  20
--1250.0
+639.0
  30
 0.0
  40
-50.0
- 71
-5
-  1
-Uwagi
-  7
-KONEC-Tekst
+6.0
   0
-LWPOLYLINE
+HATCH
   5
 AF
 330
@@ -7861,31 +7959,57 @@ AF
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Kreskowanie
 100
-AcDbPolyline
- 90
-4
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+SOLID
  70
 1
+ 71
+0
+ 91
+1
+ 92
+1
+ 93
+1
+ 72
+2
  10
--750.0
+-420.5
  20
--1400.0
- 10
-1950.0
- 20
--1400.0
- 10
-1950.0
- 20
--1500.0
- 10
--750.0
- 20
--1500.0
+639.0
+ 40
+6.0
+ 50
+0.0
+ 51
+360.0
+ 73
+1
+ 97
+0
+ 75
+0
+ 76
+1
+ 98
+0
   0
-MTEXT
+CIRCLE
   5
 B0
 330
@@ -7893,25 +8017,19 @@ B0
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Prety
 100
-AcDbMText
+AcDbCircle
  10
--730.0
+-385.25
  20
--1450.0
+639.0
  30
 0.0
  40
-50.0
- 71
-4
-  1
-Element: BŻ-3
-  7
-KONEC-Tekst
+6.0
   0
-LWPOLYLINE
+HATCH
   5
 B1
 330
@@ -7919,31 +8037,57 @@ B1
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Kreskowanie
 100
-AcDbPolyline
- 90
-4
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+SOLID
  70
 1
+ 71
+0
+ 91
+1
+ 92
+1
+ 93
+1
+ 72
+2
  10
--750.0
+-385.25
  20
--1400.0
- 10
-1950.0
- 20
--1400.0
- 10
-1950.0
- 20
--1500.0
- 10
--750.0
- 20
--1500.0
+639.0
+ 40
+6.0
+ 50
+0.0
+ 51
+360.0
+ 73
+1
+ 97
+0
+ 75
+0
+ 76
+1
+ 98
+0
   0
-MTEXT
+CIRCLE
   5
 B2
 330
@@ -7951,25 +8095,19 @@ B2
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Prety
 100
-AcDbMText
+AcDbCircle
  10
-1930.0
+-350.0
  20
--1450.0
+639.0
  30
 0.0
  40
-50.0
- 71
-6
-  1
-Wykonac 2 [szt.]
-  7
-KONEC-Tekst
+6.0
   0
-LWPOLYLINE
+HATCH
   5
 B3
 330
@@ -7977,31 +8115,57 @@ B3
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Kreskowanie
 100
-AcDbPolyline
- 90
-4
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+SOLID
  70
 1
+ 71
+0
+ 91
+1
+ 92
+1
+ 93
+1
+ 72
+2
  10
--750.0
+-350.0
  20
--1500.0
- 10
--550.0
- 20
--1500.0
- 10
--550.0
- 20
--1600.0
- 10
--750.0
- 20
--1600.0
+639.0
+ 40
+6.0
+ 50
+0.0
+ 51
+360.0
+ 73
+1
+ 97
+0
+ 75
+0
+ 76
+1
+ 98
+0
   0
-MTEXT
+CIRCLE
   5
 B4
 330
@@ -8009,25 +8173,19 @@ B4
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Prety
 100
-AcDbMText
+AcDbCircle
  10
--650.0
+-314.75
  20
--1550.0
+639.0
  30
 0.0
  40
-50.0
- 71
-5
-  1
-1
-  7
-KONEC-Tekst
+6.0
   0
-LWPOLYLINE
+HATCH
   5
 B5
 330
@@ -8035,31 +8193,57 @@ B5
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Kreskowanie
 100
-AcDbPolyline
- 90
-4
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+SOLID
  70
 1
+ 71
+0
+ 91
+1
+ 92
+1
+ 93
+1
+ 72
+2
  10
--550.0
+-314.75
  20
--1500.0
- 10
--250.0
- 20
--1500.0
- 10
--250.0
- 20
--1600.0
- 10
--550.0
- 20
--1600.0
+639.0
+ 40
+6.0
+ 50
+0.0
+ 51
+360.0
+ 73
+1
+ 97
+0
+ 75
+0
+ 76
+1
+ 98
+0
   0
-MTEXT
+CIRCLE
   5
 B6
 330
@@ -8067,25 +8251,19 @@ B6
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Prety
 100
-AcDbMText
+AcDbCircle
  10
--400.0
+-279.5
  20
--1550.0
+639.0
  30
 0.0
  40
-50.0
- 71
-5
-  1
-%%c 16
-  7
-KONEC-Tekst
+6.0
   0
-LWPOLYLINE
+HATCH
   5
 B7
 330
@@ -8093,31 +8271,57 @@ B7
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Kreskowanie
 100
-AcDbPolyline
- 90
-4
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+SOLID
  70
 1
+ 71
+0
+ 91
+1
+ 92
+1
+ 93
+1
+ 72
+2
  10
--250.0
+-279.5
  20
--1500.0
- 10
-50.0
- 20
--1500.0
- 10
-50.0
- 20
--1600.0
- 10
--250.0
- 20
--1600.0
+639.0
+ 40
+6.0
+ 50
+0.0
+ 51
+360.0
+ 73
+1
+ 97
+0
+ 75
+0
+ 76
+1
+ 98
+0
   0
-MTEXT
+CIRCLE
   5
 B8
 330
@@ -8125,25 +8329,19 @@ B8
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Prety
 100
-AcDbMText
+AcDbCircle
  10
--100.0
+-244.25
  20
--1550.0
+639.0
  30
 0.0
  40
-50.0
- 71
-5
-  1
-4703
-  7
-KONEC-Tekst
+6.0
   0
-LWPOLYLINE
+HATCH
   5
 B9
 330
@@ -8151,31 +8349,57 @@ B9
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Kreskowanie
 100
-AcDbPolyline
- 90
-4
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+SOLID
  70
 1
+ 71
+0
+ 91
+1
+ 92
+1
+ 93
+1
+ 72
+2
  10
-50.0
+-244.25
  20
--1500.0
- 10
-350.0
- 20
--1500.0
- 10
-350.0
- 20
--1600.0
- 10
-50.0
- 20
--1600.0
+639.0
+ 40
+6.0
+ 50
+0.0
+ 51
+360.0
+ 73
+1
+ 97
+0
+ 75
+0
+ 76
+1
+ 98
+0
   0
-MTEXT
+CIRCLE
   5
 BA
 330
@@ -8183,25 +8407,19 @@ BA
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Prety
 100
-AcDbMText
+AcDbCircle
  10
-200.0
+-209.0
  20
--1550.0
+639.0
  30
 0.0
  40
-50.0
- 71
-5
-  1
-2
-  7
-KONEC-Tekst
+6.0
   0
-LWPOLYLINE
+HATCH
   5
 BB
 330
@@ -8209,31 +8427,57 @@ BB
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Kreskowanie
 100
-AcDbPolyline
- 90
-4
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+SOLID
  70
 1
+ 71
+0
+ 91
+1
+ 92
+1
+ 93
+1
+ 72
+2
  10
-350.0
+-209.0
  20
--1500.0
- 10
-650.0
- 20
--1500.0
- 10
-650.0
- 20
--1600.0
- 10
-350.0
- 20
--1600.0
+639.0
+ 40
+6.0
+ 50
+0.0
+ 51
+360.0
+ 73
+1
+ 97
+0
+ 75
+0
+ 76
+1
+ 98
+0
   0
-MTEXT
+CIRCLE
   5
 BC
 330
@@ -8241,25 +8485,19 @@ BC
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Prety
 100
-AcDbMText
+AcDbCircle
  10
-500.0
+-501.0
  20
--1550.0
+672.0
  30
 0.0
  40
-50.0
- 71
-5
-  1
-4
-  7
-KONEC-Tekst
+6.0
   0
-LWPOLYLINE
+HATCH
   5
 BD
 330
@@ -8267,31 +8505,57 @@ BD
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Kreskowanie
 100
-AcDbPolyline
- 90
-4
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+SOLID
  70
 1
+ 71
+0
+ 91
+1
+ 92
+1
+ 93
+1
+ 72
+2
  10
-650.0
+-501.0
  20
--1500.0
- 10
-950.0
- 20
--1500.0
- 10
-950.0
- 20
--1600.0
- 10
-650.0
- 20
--1600.0
+672.0
+ 40
+6.0
+ 50
+0.0
+ 51
+360.0
+ 73
+1
+ 97
+0
+ 75
+0
+ 76
+1
+ 98
+0
   0
-MTEXT
+CIRCLE
   5
 BE
 330
@@ -8299,25 +8563,19 @@ BE
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Prety
 100
-AcDbMText
+AcDbCircle
  10
-800.0
+-400.3333333333333
  20
--1550.0
+672.0
  30
 0.0
  40
-50.0
- 71
-5
-  1
-18.81
-  7
-KONEC-Tekst
+6.0
   0
-LWPOLYLINE
+HATCH
   5
 BF
 330
@@ -8325,31 +8583,57 @@ BF
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Kreskowanie
 100
-AcDbPolyline
- 90
-4
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+SOLID
  70
 1
+ 71
+0
+ 91
+1
+ 92
+1
+ 93
+1
+ 72
+2
  10
-950.0
+-400.3333333333333
  20
--1500.0
- 10
-1250.0
- 20
--1500.0
- 10
-1250.0
- 20
--1600.0
- 10
-950.0
- 20
--1600.0
+672.0
+ 40
+6.0
+ 50
+0.0
+ 51
+360.0
+ 73
+1
+ 97
+0
+ 75
+0
+ 76
+1
+ 98
+0
   0
-MTEXT
+CIRCLE
   5
 C0
 330
@@ -8357,25 +8641,19 @@ C0
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Prety
 100
-AcDbMText
+AcDbCircle
  10
-1100.0
+-299.66666666666663
  20
--1550.0
+672.0
  30
 0.0
  40
-50.0
- 71
-5
-  1
--
-  7
-KONEC-Tekst
+6.0
   0
-LWPOLYLINE
+HATCH
   5
 C1
 330
@@ -8383,31 +8661,57 @@ C1
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Kreskowanie
 100
-AcDbPolyline
- 90
-4
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+SOLID
  70
 1
+ 71
+0
+ 91
+1
+ 92
+1
+ 93
+1
+ 72
+2
  10
-1250.0
+-299.66666666666663
  20
--1500.0
- 10
-1550.0
- 20
--1500.0
- 10
-1550.0
- 20
--1600.0
- 10
-1250.0
- 20
--1600.0
+672.0
+ 40
+6.0
+ 50
+0.0
+ 51
+360.0
+ 73
+1
+ 97
+0
+ 75
+0
+ 76
+1
+ 98
+0
   0
-MTEXT
+CIRCLE
   5
 C2
 330
@@ -8415,25 +8719,19 @@ C2
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Prety
 100
-AcDbMText
+AcDbCircle
  10
-1400.0
+-199.0
  20
--1550.0
+672.0
  30
 0.0
  40
-50.0
- 71
-5
-  1
--
-  7
-KONEC-Tekst
+6.0
   0
-LWPOLYLINE
+HATCH
   5
 C3
 330
@@ -8441,31 +8739,57 @@ C3
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Kreskowanie
 100
-AcDbPolyline
- 90
-4
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+SOLID
  70
 1
+ 71
+0
+ 91
+1
+ 92
+1
+ 93
+1
+ 72
+2
  10
-1550.0
+-199.0
  20
--1500.0
- 10
-1950.0
- 20
--1500.0
- 10
-1950.0
- 20
--1600.0
- 10
-1550.0
- 20
--1600.0
+672.0
+ 40
+6.0
+ 50
+0.0
+ 51
+360.0
+ 73
+1
+ 97
+0
+ 75
+0
+ 76
+1
+ 98
+0
   0
-MTEXT
+CIRCLE
   5
 C4
 330
@@ -8473,25 +8797,19 @@ C4
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Prety
 100
-AcDbMText
+AcDbCircle
  10
-1750.0
+-487.0
  20
--1550.0
+1042.0
  30
 0.0
  40
-50.0
- 71
-5
-  1
-
-  7
-KONEC-Tekst
+20.0
   0
-LWPOLYLINE
+HATCH
   5
 C5
 330
@@ -8499,31 +8817,57 @@ C5
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Kreskowanie
 100
-AcDbPolyline
- 90
-4
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+SOLID
  70
 1
+ 71
+0
+ 91
+1
+ 92
+1
+ 93
+1
+ 72
+2
  10
--750.0
+-487.0
  20
--1600.0
- 10
--550.0
- 20
--1600.0
- 10
--550.0
- 20
--1700.0
- 10
--750.0
- 20
--1700.0
+1042.0
+ 40
+20.0
+ 50
+0.0
+ 51
+360.0
+ 73
+1
+ 97
+0
+ 75
+0
+ 76
+1
+ 98
+0
   0
-MTEXT
+CIRCLE
   5
 C6
 330
@@ -8531,25 +8875,19 @@ C6
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Prety
 100
-AcDbMText
+AcDbCircle
  10
--650.0
+-395.6666666666667
  20
--1650.0
+1042.0
  30
 0.0
  40
-50.0
- 71
-5
-  1
-2
-  7
-KONEC-Tekst
+20.0
   0
-LWPOLYLINE
+HATCH
   5
 C7
 330
@@ -8557,31 +8895,57 @@ C7
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Kreskowanie
 100
-AcDbPolyline
- 90
-4
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+SOLID
  70
 1
+ 71
+0
+ 91
+1
+ 92
+1
+ 93
+1
+ 72
+2
  10
--550.0
+-395.6666666666667
  20
--1600.0
- 10
--250.0
- 20
--1600.0
- 10
--250.0
- 20
--1700.0
- 10
--550.0
- 20
--1700.0
+1042.0
+ 40
+20.0
+ 50
+0.0
+ 51
+360.0
+ 73
+1
+ 97
+0
+ 75
+0
+ 76
+1
+ 98
+0
   0
-MTEXT
+CIRCLE
   5
 C8
 330
@@ -8589,25 +8953,19 @@ C8
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Prety
 100
-AcDbMText
+AcDbCircle
  10
--400.0
+-304.33333333333337
  20
--1650.0
+1042.0
  30
 0.0
  40
-50.0
- 71
-5
-  1
-%%c 12
-  7
-KONEC-Tekst
+20.0
   0
-LWPOLYLINE
+HATCH
   5
 C9
 330
@@ -8615,31 +8973,57 @@ C9
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Kreskowanie
 100
-AcDbPolyline
- 90
-4
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+SOLID
  70
 1
+ 71
+0
+ 91
+1
+ 92
+1
+ 93
+1
+ 72
+2
  10
--250.0
+-304.33333333333337
  20
--1600.0
- 10
-50.0
- 20
--1600.0
- 10
-50.0
- 20
--1700.0
- 10
--250.0
- 20
--1700.0
+1042.0
+ 40
+20.0
+ 50
+0.0
+ 51
+360.0
+ 73
+1
+ 97
+0
+ 75
+0
+ 76
+1
+ 98
+0
   0
-MTEXT
+CIRCLE
   5
 CA
 330
@@ -8647,25 +9031,19 @@ CA
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Prety
 100
-AcDbMText
+AcDbCircle
  10
--100.0
+-213.0
  20
--1650.0
+1042.0
  30
 0.0
  40
-50.0
- 71
-5
-  1
-3895
-  7
-KONEC-Tekst
+20.0
   0
-LWPOLYLINE
+HATCH
   5
 CB
 330
@@ -8673,31 +9051,57 @@ CB
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Kreskowanie
 100
-AcDbPolyline
- 90
-4
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+SOLID
  70
 1
+ 71
+0
+ 91
+1
+ 92
+1
+ 93
+1
+ 72
+2
  10
-50.0
+-213.0
  20
--1600.0
- 10
-350.0
- 20
--1600.0
- 10
-350.0
- 20
--1700.0
- 10
-50.0
- 20
--1700.0
+1042.0
+ 40
+20.0
+ 50
+0.0
+ 51
+360.0
+ 73
+1
+ 97
+0
+ 75
+0
+ 76
+1
+ 98
+0
   0
-MTEXT
+CIRCLE
   5
 CC
 330
@@ -8705,25 +9109,19 @@ CC
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Prety
 100
-AcDbMText
+AcDbCircle
  10
-200.0
+-487.0
  20
--1650.0
+962.0
  30
 0.0
  40
-50.0
- 71
-5
-  1
-3
-  7
-KONEC-Tekst
+20.0
   0
-LWPOLYLINE
+HATCH
   5
 CD
 330
@@ -8731,31 +9129,57 @@ CD
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Kreskowanie
 100
-AcDbPolyline
- 90
-4
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+SOLID
  70
 1
+ 71
+0
+ 91
+1
+ 92
+1
+ 93
+1
+ 72
+2
  10
-350.0
+-487.0
  20
--1600.0
- 10
-650.0
- 20
--1600.0
- 10
-650.0
- 20
--1700.0
- 10
-350.0
- 20
--1700.0
+962.0
+ 40
+20.0
+ 50
+0.0
+ 51
+360.0
+ 73
+1
+ 97
+0
+ 75
+0
+ 76
+1
+ 98
+0
   0
-MTEXT
+CIRCLE
   5
 CE
 330
@@ -8763,25 +9187,19 @@ CE
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Prety
 100
-AcDbMText
+AcDbCircle
  10
-500.0
+-350.0
  20
--1650.0
+962.0
  30
 0.0
  40
-50.0
- 71
-5
-  1
-6
-  7
-KONEC-Tekst
+20.0
   0
-LWPOLYLINE
+HATCH
   5
 CF
 330
@@ -8789,31 +9207,57 @@ CF
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Kreskowanie
 100
-AcDbPolyline
- 90
-4
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+SOLID
  70
 1
+ 71
+0
+ 91
+1
+ 92
+1
+ 93
+1
+ 72
+2
  10
-650.0
+-350.0
  20
--1600.0
- 10
-950.0
- 20
--1600.0
- 10
-950.0
- 20
--1700.0
- 10
-650.0
- 20
--1700.0
+962.0
+ 40
+20.0
+ 50
+0.0
+ 51
+360.0
+ 73
+1
+ 97
+0
+ 75
+0
+ 76
+1
+ 98
+0
   0
-MTEXT
+CIRCLE
   5
 D0
 330
@@ -8821,25 +9265,19 @@ D0
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Prety
 100
-AcDbMText
+AcDbCircle
  10
-800.0
+-213.0
  20
--1650.0
+962.0
  30
 0.0
  40
-50.0
- 71
-5
-  1
--
-  7
-KONEC-Tekst
+20.0
   0
-LWPOLYLINE
+HATCH
   5
 D1
 330
@@ -8847,31 +9285,57 @@ D1
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Kreskowanie
 100
-AcDbPolyline
- 90
-4
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+SOLID
  70
 1
+ 71
+0
+ 91
+1
+ 92
+1
+ 93
+1
+ 72
+2
  10
-950.0
+-213.0
  20
--1600.0
- 10
-1250.0
- 20
--1600.0
- 10
-1250.0
- 20
--1700.0
- 10
-950.0
- 20
--1700.0
+962.0
+ 40
+20.0
+ 50
+0.0
+ 51
+360.0
+ 73
+1
+ 97
+0
+ 75
+0
+ 76
+1
+ 98
+0
   0
-MTEXT
+LWPOLYLINE
   5
 D2
 330
@@ -8881,21 +9345,19 @@ AcDbEntity
   8
 KONEC-Obrys
 100
-AcDbMText
+AcDbPolyline
+ 90
+2
+ 70
+0
  10
-1100.0
+-487.0
  20
--1650.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-23.37
-  7
-KONEC-Tekst
+1042.0
+ 10
+-395.7786574680391
+ 20
+1200.0
   0
 LWPOLYLINE
   5
@@ -8909,27 +9371,19 @@ KONEC-Obrys
 100
 AcDbPolyline
  90
-4
+2
  70
-1
+0
  10
-1250.0
+-395.6666666666667
  20
--1600.0
+1042.0
  10
-1550.0
+-304.4453241347058
  20
--1600.0
- 10
-1550.0
- 20
--1700.0
- 10
-1250.0
- 20
--1700.0
+1200.0
   0
-MTEXT
+LWPOLYLINE
   5
 D4
 330
@@ -8939,21 +9393,19 @@ AcDbEntity
   8
 KONEC-Obrys
 100
-AcDbMText
+AcDbPolyline
+ 90
+2
+ 70
+0
  10
-1400.0
+-304.33333333333337
  20
--1650.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
--
-  7
-KONEC-Tekst
+1042.0
+ 10
+-213.11199080137249
+ 20
+1200.0
   0
 LWPOLYLINE
   5
@@ -8967,27 +9419,19 @@ KONEC-Obrys
 100
 AcDbPolyline
  90
-4
+2
  70
-1
+0
  10
-1550.0
+-213.0
  20
--1600.0
+1042.0
  10
-1950.0
+-121.77865746803911
  20
--1600.0
- 10
-1950.0
- 20
--1700.0
- 10
-1550.0
- 20
--1700.0
+1200.0
   0
-MTEXT
+LWPOLYLINE
   5
 D6
 330
@@ -8997,21 +9441,19 @@ AcDbEntity
   8
 KONEC-Obrys
 100
-AcDbMText
+AcDbPolyline
+ 90
+2
+ 70
+0
  10
-1750.0
+-487.0
  20
--1650.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-
-  7
-KONEC-Tekst
+962.0
+ 10
+-349.5906359328691
+ 20
+1200.0
   0
 LWPOLYLINE
   5
@@ -9025,27 +9467,19 @@ KONEC-Obrys
 100
 AcDbPolyline
  90
-4
+2
  70
-1
+0
  10
--750.0
+-350.0
  20
--1700.0
+962.0
  10
--550.0
+-212.59063593286905
  20
--1700.0
- 10
--550.0
- 20
--1800.0
- 10
--750.0
- 20
--1800.0
+1200.0
   0
-MTEXT
+LWPOLYLINE
   5
 D8
 330
@@ -9055,21 +9489,19 @@ AcDbEntity
   8
 KONEC-Obrys
 100
-AcDbMText
+AcDbPolyline
+ 90
+2
+ 70
+0
  10
--650.0
+-213.0
  20
--1750.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-3
-  7
-KONEC-Tekst
+962.0
+ 10
+-75.59063593286905
+ 20
+1200.0
   0
 LWPOLYLINE
   5
@@ -9083,27 +9515,19 @@ KONEC-Obrys
 100
 AcDbPolyline
  90
-4
+2
  70
-1
+0
  10
--550.0
+-491.0
  20
--1700.0
+639.0
  10
--250.0
+-410.74831258264203
  20
--1700.0
- 10
--250.0
- 20
--1800.0
- 10
--550.0
- 20
--1800.0
+500.0
   0
-MTEXT
+LWPOLYLINE
   5
 DA
 330
@@ -9113,21 +9537,19 @@ AcDbEntity
   8
 KONEC-Obrys
 100
-AcDbMText
+AcDbPolyline
+ 90
+2
+ 70
+0
  10
--400.0
+-455.75
  20
--1750.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-%%c 8
-  7
-KONEC-Tekst
+639.0
+ 10
+-375.49831258264203
+ 20
+500.0
   0
 LWPOLYLINE
   5
@@ -9141,27 +9563,19 @@ KONEC-Obrys
 100
 AcDbPolyline
  90
-4
+2
  70
-1
+0
  10
--250.0
+-420.5
  20
--1700.0
+639.0
  10
-50.0
+-340.24831258264203
  20
--1700.0
- 10
-50.0
- 20
--1800.0
- 10
--250.0
- 20
--1800.0
+500.0
   0
-MTEXT
+LWPOLYLINE
   5
 DC
 330
@@ -9171,21 +9585,19 @@ AcDbEntity
   8
 KONEC-Obrys
 100
-AcDbMText
+AcDbPolyline
+ 90
+2
+ 70
+0
  10
--100.0
+-385.25
  20
--1750.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-1375
-  7
-KONEC-Tekst
+639.0
+ 10
+-304.99831258264203
+ 20
+500.0
   0
 LWPOLYLINE
   5
@@ -9199,27 +9611,19 @@ KONEC-Obrys
 100
 AcDbPolyline
  90
-4
+2
  70
-1
+0
  10
-50.0
+-350.0
  20
--1700.0
+639.0
  10
-350.0
+-269.74831258264203
  20
--1700.0
- 10
-350.0
- 20
--1800.0
- 10
-50.0
- 20
--1800.0
+500.0
   0
-MTEXT
+LWPOLYLINE
   5
 DE
 330
@@ -9229,21 +9633,19 @@ AcDbEntity
   8
 KONEC-Obrys
 100
-AcDbMText
+AcDbPolyline
+ 90
+2
+ 70
+0
  10
-200.0
+-314.75
  20
--1750.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-20
-  7
-KONEC-Tekst
+639.0
+ 10
+-234.49831258264203
+ 20
+500.0
   0
 LWPOLYLINE
   5
@@ -9257,27 +9659,19 @@ KONEC-Obrys
 100
 AcDbPolyline
  90
-4
+2
  70
-1
+0
  10
-350.0
+-279.5
  20
--1700.0
+639.0
  10
-650.0
+-199.24831258264203
  20
--1700.0
- 10
-650.0
- 20
--1800.0
- 10
-350.0
- 20
--1800.0
+500.0
   0
-MTEXT
+LWPOLYLINE
   5
 E0
 330
@@ -9287,21 +9681,19 @@ AcDbEntity
   8
 KONEC-Obrys
 100
-AcDbMText
+AcDbPolyline
+ 90
+2
+ 70
+0
  10
-500.0
+-244.25
  20
--1750.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-40
-  7
-KONEC-Tekst
+639.0
+ 10
+-163.99831258264203
+ 20
+500.0
   0
 LWPOLYLINE
   5
@@ -9315,27 +9707,19 @@ KONEC-Obrys
 100
 AcDbPolyline
  90
-4
+2
  70
-1
+0
  10
-650.0
+-209.0
  20
--1700.0
+639.0
  10
-950.0
+-128.74831258264203
  20
--1700.0
- 10
-950.0
- 20
--1800.0
- 10
-650.0
- 20
--1800.0
+500.0
   0
-MTEXT
+LWPOLYLINE
   5
 E2
 330
@@ -9345,21 +9729,19 @@ AcDbEntity
   8
 KONEC-Obrys
 100
-AcDbMText
+AcDbPolyline
+ 90
+2
+ 70
+0
  10
-800.0
+-501.0
  20
--1750.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
--
-  7
-KONEC-Tekst
+672.0
+ 10
+-401.69575369938434
+ 20
+500.0
   0
 LWPOLYLINE
   5
@@ -9373,27 +9755,19 @@ KONEC-Obrys
 100
 AcDbPolyline
  90
-4
+2
  70
-1
+0
  10
-950.0
+-400.3333333333333
  20
--1700.0
+672.0
  10
-1250.0
+-301.02908703271765
  20
--1700.0
- 10
-1250.0
- 20
--1800.0
- 10
-950.0
- 20
--1800.0
+500.0
   0
-MTEXT
+LWPOLYLINE
   5
 E4
 330
@@ -9403,21 +9777,19 @@ AcDbEntity
   8
 KONEC-Obrys
 100
-AcDbMText
+AcDbPolyline
+ 90
+2
+ 70
+0
  10
-1100.0
+-299.66666666666663
  20
--1750.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
--
-  7
-KONEC-Tekst
+672.0
+ 10
+-200.36242036605097
+ 20
+500.0
   0
 LWPOLYLINE
   5
@@ -9431,27 +9803,19 @@ KONEC-Obrys
 100
 AcDbPolyline
  90
-4
+2
  70
-1
+0
  10
-1250.0
+-199.0
  20
--1700.0
+672.0
  10
-1550.0
+-99.69575369938435
  20
--1700.0
- 10
-1550.0
- 20
--1800.0
- 10
-1250.0
- 20
--1800.0
+500.0
   0
-MTEXT
+LWPOLYLINE
   5
 E6
 330
@@ -9461,21 +9825,19 @@ AcDbEntity
   8
 KONEC-Obrys
 100
-AcDbMText
+AcDbPolyline
+ 90
+2
+ 70
+0
  10
-1400.0
+-395.7786574680391
  20
--1750.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-55.0
-  7
-KONEC-Tekst
+1200.0
+ 10
+-50.0
+ 20
+1200.0
   0
 LWPOLYLINE
   5
@@ -9489,27 +9851,19 @@ KONEC-Obrys
 100
 AcDbPolyline
  90
-4
+2
  70
-1
+0
  10
-1550.0
+-410.74831258264203
  20
--1700.0
+500.0
  10
-1950.0
+-50.0
  20
--1700.0
- 10
-1950.0
- 20
--1800.0
- 10
-1550.0
- 20
--1800.0
+500.0
   0
-MTEXT
+LWPOLYLINE
   5
 E8
 330
@@ -9519,255 +9873,21 @@ AcDbEntity
   8
 KONEC-Obrys
 100
-AcDbMText
- 10
-1750.0
- 20
--1750.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-E9
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
 AcDbPolyline
  90
-4
+2
  70
-1
+0
  10
--750.0
+-185.0
  20
--1800.0
+850.0
  10
-650.0
+-50.0
  20
--1800.0
- 10
-650.0
- 20
--1900.0
- 10
--750.0
- 20
--1900.0
+850.0
   0
-MTEXT
-  5
-EA
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
--730.0
- 20
--1850.0
- 30
-0.0
- 40
-50.0
- 71
-4
-  1
-Długość ogólna wg średnic
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-EB
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
--750.0
- 20
--1800.0
- 10
-650.0
- 20
--1800.0
- 10
-650.0
- 20
--1900.0
- 10
--750.0
- 20
--1900.0
-  0
-MTEXT
-  5
-EC
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
-630.0
- 20
--1850.0
- 30
-0.0
- 40
-50.0
- 71
-6
-  1
-[m]
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-ED
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
-650.0
- 20
--1800.0
- 10
-950.0
- 20
--1800.0
- 10
-950.0
- 20
--1900.0
- 10
-650.0
- 20
--1900.0
-  0
-MTEXT
-  5
-EE
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
-930.0
- 20
--1850.0
- 30
-0.0
- 40
-50.0
- 71
-6
-  1
-18.81
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-EF
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
-950.0
- 20
--1800.0
- 10
-1250.0
- 20
--1800.0
- 10
-1250.0
- 20
--1900.0
- 10
-950.0
- 20
--1900.0
-  0
-MTEXT
-  5
-F0
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
-1230.0
- 20
--1850.0
- 30
-0.0
- 40
-50.0
- 71
-6
-  1
-23.37
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
+INSERT
   5
 F1
 330
@@ -9775,31 +9895,27 @@ F1
 100
 AcDbEntity
   8
-KONEC-Obrys
+0
 100
-AcDbPolyline
- 90
-4
- 70
+AcDbBlockReference
+ 66
 1
+  2
+marker
  10
-1250.0
+-50.0
  20
--1800.0
- 10
-1550.0
- 20
--1800.0
- 10
-1550.0
- 20
--1900.0
- 10
-1250.0
- 20
--1900.0
+1200.0
+ 30
+0.0
+ 41
+20.0
+ 42
+20.0
+ 43
+20.0
   0
-MTEXT
+ATTRIB
   5
 F2
 330
@@ -9809,23 +9925,49 @@ AcDbEntity
   8
 KONEC-Obrys
 100
-AcDbMText
+AcDbText
  10
-1530.0
+30.0
  20
--1850.0
+1200.0
  30
 0.0
  40
 50.0
- 71
-6
   1
-55.0
+1
   7
 KONEC-Tekst
+ 72
+1
+ 11
+30.0
+ 21
+1200.0
+ 31
+0.0
+100
+AcDbAttribute
+280
+0
+  2
+NUMBER
+ 70
+0
+ 74
+2
+ 71
+1
+ 72
+0
+ 11
+30.0
+ 21
+1200.0
+ 31
+0.0
   0
-LWPOLYLINE
+SEQEND
   5
 F3
 330
@@ -9833,263 +9975,9 @@ F3
 100
 AcDbEntity
   8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
-1550.0
- 20
--1800.0
- 10
-1950.0
- 20
--1800.0
- 10
-1950.0
- 20
--1900.0
- 10
-1550.0
- 20
--1900.0
+0
   0
-MTEXT
-  5
-F4
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
-1750.0
- 20
--1850.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-F5
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
--750.0
- 20
--1900.0
- 10
-650.0
- 20
--1900.0
- 10
-650.0
- 20
--2000.0
- 10
--750.0
- 20
--2000.0
-  0
-MTEXT
-  5
-F6
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
--730.0
- 20
--1950.0
- 30
-0.0
- 40
-50.0
- 71
-4
-  1
-Masa 1m pręta
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-F7
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
--750.0
- 20
--1900.0
- 10
-650.0
- 20
--1900.0
- 10
-650.0
- 20
--2000.0
- 10
--750.0
- 20
--2000.0
-  0
-MTEXT
-  5
-F8
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
-630.0
- 20
--1950.0
- 30
-0.0
- 40
-50.0
- 71
-6
-  1
-[kg]
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-F9
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
-650.0
- 20
--1900.0
- 10
-950.0
- 20
--1900.0
- 10
-950.0
- 20
--2000.0
- 10
-650.0
- 20
--2000.0
-  0
-MTEXT
-  5
-FA
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
-930.0
- 20
--1950.0
- 30
-0.0
- 40
-50.0
- 71
-6
-  1
-1.578
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-FB
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
-950.0
- 20
--1900.0
- 10
-1250.0
- 20
--1900.0
- 10
-1250.0
- 20
--2000.0
- 10
-950.0
- 20
--2000.0
-  0
-MTEXT
+INSERT
   5
 FC
 330
@@ -10097,25 +9985,27 @@ FC
 100
 AcDbEntity
   8
-KONEC-Obrys
+0
 100
-AcDbMText
+AcDbBlockReference
+ 66
+1
+  2
+marker
  10
-1230.0
+-50.0
  20
--1950.0
+500.0
  30
 0.0
- 40
-50.0
- 71
-6
-  1
-0.888
-  7
-KONEC-Tekst
+ 41
+20.0
+ 42
+20.0
+ 43
+20.0
   0
-LWPOLYLINE
+ATTRIB
   5
 FD
 330
@@ -10125,29 +10015,49 @@ AcDbEntity
   8
 KONEC-Obrys
 100
-AcDbPolyline
- 90
-4
- 70
+AcDbText
+ 10
+30.0
+ 20
+500.0
+ 30
+0.0
+ 40
+50.0
+  1
+2
+  7
+KONEC-Tekst
+ 72
 1
- 10
-1250.0
- 20
--1900.0
- 10
-1550.0
- 20
--1900.0
- 10
-1550.0
- 20
--2000.0
- 10
-1250.0
- 20
--2000.0
+ 11
+30.0
+ 21
+500.0
+ 31
+0.0
+100
+AcDbAttribute
+280
+0
+  2
+NUMBER
+ 70
+0
+ 74
+2
+ 71
+1
+ 72
+0
+ 11
+30.0
+ 21
+500.0
+ 31
+0.0
   0
-MTEXT
+SEQEND
   5
 FE
 330
@@ -10155,257 +10065,9 @@ FE
 100
 AcDbEntity
   8
-KONEC-Obrys
-100
-AcDbMText
- 10
-1530.0
- 20
--1950.0
- 30
-0.0
- 40
-50.0
- 71
-6
-  1
-0.395
-  7
-KONEC-Tekst
+0
   0
-LWPOLYLINE
-  5
-FF
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
-1550.0
- 20
--1900.0
- 10
-1950.0
- 20
--1900.0
- 10
-1950.0
- 20
--2000.0
- 10
-1550.0
- 20
--2000.0
-  0
-MTEXT
-  5
-100
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
-1750.0
- 20
--1950.0
- 30
-0.0
- 40
-50.0
- 71
-5
-  1
-
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-101
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
--750.0
- 20
--2000.0
- 10
-650.0
- 20
--2000.0
- 10
-650.0
- 20
--2100.0
- 10
--750.0
- 20
--2100.0
-  0
-MTEXT
-  5
-102
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
--730.0
- 20
--2050.0
- 30
-0.0
- 40
-50.0
- 71
-4
-  1
-Masa ogólna wg średnic
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-103
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
--750.0
- 20
--2000.0
- 10
-650.0
- 20
--2000.0
- 10
-650.0
- 20
--2100.0
- 10
--750.0
- 20
--2100.0
-  0
-MTEXT
-  5
-104
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
-630.0
- 20
--2050.0
- 30
-0.0
- 40
-50.0
- 71
-6
-  1
-[kg]
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
-  5
-105
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
-650.0
- 20
--2000.0
- 10
-950.0
- 20
--2000.0
- 10
-950.0
- 20
--2100.0
- 10
-650.0
- 20
--2100.0
-  0
-MTEXT
-  5
-106
-330
-17
-100
-AcDbEntity
-  8
-KONEC-Obrys
-100
-AcDbMText
- 10
-930.0
- 20
--2050.0
- 30
-0.0
- 40
-50.0
- 71
-6
-  1
-29.7
-  7
-KONEC-Tekst
-  0
-LWPOLYLINE
+INSERT
   5
 107
 330
@@ -10413,31 +10075,27 @@ LWPOLYLINE
 100
 AcDbEntity
   8
-KONEC-Obrys
+0
 100
-AcDbPolyline
- 90
-4
- 70
+AcDbBlockReference
+ 66
 1
+  2
+marker
  10
-950.0
+-50.0
  20
--2000.0
- 10
-1250.0
- 20
--2000.0
- 10
-1250.0
- 20
--2100.0
- 10
-950.0
- 20
--2100.0
+850.0
+ 30
+0.0
+ 41
+20.0
+ 42
+20.0
+ 43
+20.0
   0
-MTEXT
+ATTRIB
   5
 108
 330
@@ -10447,23 +10105,49 @@ AcDbEntity
   8
 KONEC-Obrys
 100
-AcDbMText
+AcDbText
  10
-1230.0
+30.0
  20
--2050.0
+850.0
  30
 0.0
  40
 50.0
- 71
-6
   1
-20.8
+3
   7
 KONEC-Tekst
+ 72
+1
+ 11
+30.0
+ 21
+850.0
+ 31
+0.0
+100
+AcDbAttribute
+280
+0
+  2
+NUMBER
+ 70
+0
+ 74
+2
+ 71
+1
+ 72
+0
+ 11
+30.0
+ 21
+850.0
+ 31
+0.0
   0
-LWPOLYLINE
+SEQEND
   5
 109
 330
@@ -10471,31 +10155,9 @@ LWPOLYLINE
 100
 AcDbEntity
   8
-KONEC-Obrys
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
-1250.0
- 20
--2000.0
- 10
-1550.0
- 20
--2000.0
- 10
-1550.0
- 20
--2100.0
- 10
-1250.0
- 20
--2100.0
+0
   0
-MTEXT
+LWPOLYLINE
   5
 10A
 330
@@ -10503,25 +10165,79 @@ MTEXT
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Prety
 100
-AcDbMText
+AcDbPolyline
+ 90
+8
+ 70
+0
  10
-1530.0
+511.0
  20
--2050.0
- 30
-0.0
+1066.0
  40
-50.0
- 71
-6
-  1
-21.7
-  7
-KONEC-Tekst
+8.0
+ 41
+8.0
+ 10
+611.0
+ 20
+1066.0
+ 40
+8.0
+ 41
+8.0
+ 10
+611.0
+ 20
+629.0
+ 40
+8.0
+ 41
+8.0
+ 10
+289.0
+ 20
+629.0
+ 40
+8.0
+ 41
+8.0
+ 10
+289.0
+ 20
+1066.0
+ 40
+8.0
+ 41
+8.0
+ 10
+289.0
+ 20
+1066.0
+ 40
+8.0
+ 41
+8.0
+ 10
+567.8601800185893
+ 20
+1227.0
+ 40
+8.0
+ 41
+8.0
+ 10
+617.8601800185893
+ 20
+1140.3974596215562
+ 40
+8.0
+ 41
+8.0
   0
-LWPOLYLINE
+DIMENSION
   5
 10B
 330
@@ -10529,31 +10245,45 @@ LWPOLYLINE
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Wymiary
 100
-AcDbPolyline
- 90
-4
+AcDbDimension
+280
+0
+  3
+KONEC_BAR_1_20
+ 10
+250.0
+ 20
+550.0
+ 30
+0.0
  70
-1
- 10
-1550.0
- 20
--2000.0
- 10
-1950.0
- 20
--2000.0
- 10
-1950.0
- 20
--2100.0
- 10
-1550.0
- 20
--2100.0
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+285.0
+ 23
+625.0
+ 33
+0.0
+ 14
+615.0
+ 24
+625.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
   0
-MTEXT
+DIMENSION
   5
 10C
 330
@@ -10561,23 +10291,43 @@ MTEXT
 100
 AcDbEntity
   8
-KONEC-Obrys
+KONEC-Wymiary
 100
-AcDbMText
+AcDbDimension
+280
+0
+  3
+KONEC_BAR_1_20
  10
-1750.0
+260.0
  20
--2050.0
+600.0
  30
 0.0
- 40
-50.0
+ 70
+32
  71
 5
   1
-
-  7
-KONEC-Tekst
+<>
+100
+AcDbAlignedDimension
+ 13
+285.0
+ 23
+625.0
+ 33
+0.0
+ 14
+285.0
+ 24
+1070.0
+ 34
+0.0
+ 50
+90.0
+100
+AcDbRotatedDimension
   0
 LWPOLYLINE
   5
@@ -10597,19 +10347,19 @@ AcDbPolyline
  10
 -750.0
  20
--2100.0
+300.0
  10
-650.0
+1950.0
  20
--2100.0
+300.0
  10
-650.0
+1950.0
  20
--2200.0
+100.0
  10
 -750.0
  20
--2200.0
+100.0
   0
 MTEXT
   5
@@ -10623,17 +10373,17 @@ KONEC-Obrys
 100
 AcDbMText
  10
--730.0
+600.0
  20
--2150.0
+200.0
  30
 0.0
  40
-50.0
+100.0
  71
-4
+5
   1
-Masa całkowita
+WYKAZ ZBROJENIA
   7
 KONEC-Tekst
   0
@@ -10655,19 +10405,19 @@ AcDbPolyline
  10
 -750.0
  20
--2100.0
+100.0
  10
-650.0
+-550.0
  20
--2100.0
+100.0
  10
-650.0
+-550.0
  20
--2200.0
+-200.0
  10
 -750.0
  20
--2200.0
+-200.0
   0
 MTEXT
   5
@@ -10681,17 +10431,17 @@ KONEC-Obrys
 100
 AcDbMText
  10
-630.0
+-650.0
  20
--2150.0
+-50.0
  30
 0.0
  40
 50.0
  71
-6
+5
   1
-[kg]
+Poz.\Pnr
   7
 KONEC-Tekst
   0
@@ -10711,21 +10461,21 @@ AcDbPolyline
  70
 1
  10
-650.0
+-550.0
  20
--2100.0
+100.0
  10
-1550.0
+-250.0
  20
--2100.0
+100.0
  10
-1550.0
+-250.0
  20
--2200.0
+-100.0
  10
-650.0
+-550.0
  20
--2200.0
+-100.0
   0
 MTEXT
   5
@@ -10739,9 +10489,9 @@ KONEC-Obrys
 100
 AcDbMText
  10
-1100.0
+-400.0
  20
--2150.0
+0.0
  30
 0.0
  40
@@ -10749,7 +10499,7 @@ AcDbMText
  71
 5
   1
-72.2
+Średnica\P%%c
   7
 KONEC-Tekst
   0
@@ -10769,21 +10519,21 @@ AcDbPolyline
  70
 1
  10
-1550.0
+-550.0
  20
--2100.0
+-100.0
  10
-1950.0
+-250.0
  20
--2100.0
+-100.0
  10
-1950.0
+-250.0
  20
--2200.0
+-200.0
  10
-1550.0
+-550.0
  20
--2200.0
+-200.0
   0
 MTEXT
   5
@@ -10797,9 +10547,3721 @@ KONEC-Obrys
 100
 AcDbMText
  10
+-400.0
+ 20
+-150.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+[mm]
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+115
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-250.0
+ 20
+100.0
+ 10
+50.0
+ 20
+100.0
+ 10
+50.0
+ 20
+-100.0
+ 10
+-250.0
+ 20
+-100.0
+  0
+MTEXT
+  5
+116
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+-100.0
+ 20
+0.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+Długość
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+117
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-250.0
+ 20
+-100.0
+ 10
+50.0
+ 20
+-100.0
+ 10
+50.0
+ 20
+-200.0
+ 10
+-250.0
+ 20
+-200.0
+  0
+MTEXT
+  5
+118
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+-100.0
+ 20
+-150.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+[mm]
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+119
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+50.0
+ 20
+100.0
+ 10
+350.0
+ 20
+100.0
+ 10
+350.0
+ 20
+-100.0
+ 10
+50.0
+ 20
+-100.0
+  0
+MTEXT
+  5
+11A
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+200.0
+ 20
+0.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+Liczba w\P1 elem.
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+11B
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+50.0
+ 20
+-100.0
+ 10
+350.0
+ 20
+-100.0
+ 10
+350.0
+ 20
+-200.0
+ 10
+50.0
+ 20
+-200.0
+  0
+MTEXT
+  5
+11C
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+200.0
+ 20
+-150.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+[szt.]
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+11D
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+350.0
+ 20
+100.0
+ 10
+650.0
+ 20
+100.0
+ 10
+650.0
+ 20
+-100.0
+ 10
+350.0
+ 20
+-100.0
+  0
+MTEXT
+  5
+11E
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+500.0
+ 20
+0.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+Liczba\Pogólna
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+11F
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+350.0
+ 20
+-100.0
+ 10
+650.0
+ 20
+-100.0
+ 10
+650.0
+ 20
+-200.0
+ 10
+350.0
+ 20
+-200.0
+  0
+MTEXT
+  5
+120
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+500.0
+ 20
+-150.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+[szt.]
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+121
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+650.0
+ 20
+100.0
+ 10
+1550.0
+ 20
+100.0
+ 10
+1550.0
+ 20
+0.0
+ 10
+650.0
+ 20
+0.0
+  0
+MTEXT
+  5
+122
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1100.0
+ 20
+50.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+Długość całkowita [m]
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+123
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+650.0
+ 20
+0.0
+ 10
+1250.0
+ 20
+0.0
+ 10
+1250.0
+ 20
+-100.0
+ 10
+650.0
+ 20
+-100.0
+  0
+MTEXT
+  5
+124
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+950.0
+ 20
+-50.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+B500SP
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+125
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+650.0
+ 20
+-100.0
+ 10
+950.0
+ 20
+-100.0
+ 10
+950.0
+ 20
+-200.0
+ 10
+650.0
+ 20
+-200.0
+  0
+MTEXT
+  5
+126
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+800.0
+ 20
+-150.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+%%c40
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+127
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+950.0
+ 20
+-100.0
+ 10
+1250.0
+ 20
+-100.0
+ 10
+1250.0
+ 20
+-200.0
+ 10
+950.0
+ 20
+-200.0
+  0
+MTEXT
+  5
+128
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1100.0
+ 20
+-150.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+%%c12
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+129
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+1250.0
+ 20
+0.0
+ 10
+1550.0
+ 20
+0.0
+ 10
+1550.0
+ 20
+-100.0
+ 10
+1250.0
+ 20
+-100.0
+  0
+MTEXT
+  5
+12A
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1400.0
+ 20
+-50.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+B500A
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+12B
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+1250.0
+ 20
+-100.0
+ 10
+1550.0
+ 20
+-100.0
+ 10
+1550.0
+ 20
+-200.0
+ 10
+1250.0
+ 20
+-200.0
+  0
+MTEXT
+  5
+12C
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1400.0
+ 20
+-150.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+%%c8
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+12D
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+1550.0
+ 20
+100.0
+ 10
+1950.0
+ 20
+100.0
+ 10
+1950.0
+ 20
+-200.0
+ 10
+1550.0
+ 20
+-200.0
+  0
+MTEXT
+  5
+12E
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
 1750.0
  20
--2150.0
+-50.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+Uwagi
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+12F
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-750.0
+ 20
+-200.0
+ 10
+1950.0
+ 20
+-200.0
+ 10
+1950.0
+ 20
+-300.0
+ 10
+-750.0
+ 20
+-300.0
+  0
+MTEXT
+  5
+130
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+-730.0
+ 20
+-250.0
+ 30
+0.0
+ 40
+50.0
+ 71
+4
+  1
+Element: BŻ-3
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+131
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-750.0
+ 20
+-200.0
+ 10
+1950.0
+ 20
+-200.0
+ 10
+1950.0
+ 20
+-300.0
+ 10
+-750.0
+ 20
+-300.0
+  0
+MTEXT
+  5
+132
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1930.0
+ 20
+-250.0
+ 30
+0.0
+ 40
+50.0
+ 71
+6
+  1
+Wykonac 2 [szt.]
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+133
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-750.0
+ 20
+-300.0
+ 10
+-550.0
+ 20
+-300.0
+ 10
+-550.0
+ 20
+-400.0
+ 10
+-750.0
+ 20
+-400.0
+  0
+MTEXT
+  5
+134
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+-650.0
+ 20
+-350.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+1
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+135
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-550.0
+ 20
+-300.0
+ 10
+-250.0
+ 20
+-300.0
+ 10
+-250.0
+ 20
+-400.0
+ 10
+-550.0
+ 20
+-400.0
+  0
+MTEXT
+  5
+136
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+-400.0
+ 20
+-350.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+%%c 40
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+137
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-250.0
+ 20
+-300.0
+ 10
+50.0
+ 20
+-300.0
+ 10
+50.0
+ 20
+-400.0
+ 10
+-250.0
+ 20
+-400.0
+  0
+MTEXT
+  5
+138
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+-100.0
+ 20
+-350.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+4552
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+139
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+50.0
+ 20
+-300.0
+ 10
+350.0
+ 20
+-300.0
+ 10
+350.0
+ 20
+-400.0
+ 10
+50.0
+ 20
+-400.0
+  0
+MTEXT
+  5
+13A
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+200.0
+ 20
+-350.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+7
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+13B
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+350.0
+ 20
+-300.0
+ 10
+650.0
+ 20
+-300.0
+ 10
+650.0
+ 20
+-400.0
+ 10
+350.0
+ 20
+-400.0
+  0
+MTEXT
+  5
+13C
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+500.0
+ 20
+-350.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+14
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+13D
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+650.0
+ 20
+-300.0
+ 10
+950.0
+ 20
+-300.0
+ 10
+950.0
+ 20
+-400.0
+ 10
+650.0
+ 20
+-400.0
+  0
+MTEXT
+  5
+13E
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+800.0
+ 20
+-350.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+63.73
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+13F
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+950.0
+ 20
+-300.0
+ 10
+1250.0
+ 20
+-300.0
+ 10
+1250.0
+ 20
+-400.0
+ 10
+950.0
+ 20
+-400.0
+  0
+MTEXT
+  5
+140
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1100.0
+ 20
+-350.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+-
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+141
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+1250.0
+ 20
+-300.0
+ 10
+1550.0
+ 20
+-300.0
+ 10
+1550.0
+ 20
+-400.0
+ 10
+1250.0
+ 20
+-400.0
+  0
+MTEXT
+  5
+142
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1400.0
+ 20
+-350.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+-
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+143
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+1550.0
+ 20
+-300.0
+ 10
+1950.0
+ 20
+-300.0
+ 10
+1950.0
+ 20
+-400.0
+ 10
+1550.0
+ 20
+-400.0
+  0
+MTEXT
+  5
+144
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1750.0
+ 20
+-350.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+145
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-750.0
+ 20
+-400.0
+ 10
+-550.0
+ 20
+-400.0
+ 10
+-550.0
+ 20
+-500.0
+ 10
+-750.0
+ 20
+-500.0
+  0
+MTEXT
+  5
+146
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+-650.0
+ 20
+-450.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+2
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+147
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-550.0
+ 20
+-400.0
+ 10
+-250.0
+ 20
+-400.0
+ 10
+-250.0
+ 20
+-500.0
+ 10
+-550.0
+ 20
+-500.0
+  0
+MTEXT
+  5
+148
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+-400.0
+ 20
+-450.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+%%c 12
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+149
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-250.0
+ 20
+-400.0
+ 10
+50.0
+ 20
+-400.0
+ 10
+50.0
+ 20
+-500.0
+ 10
+-250.0
+ 20
+-500.0
+  0
+MTEXT
+  5
+14A
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+-100.0
+ 20
+-450.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+3895
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+14B
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+50.0
+ 20
+-400.0
+ 10
+350.0
+ 20
+-400.0
+ 10
+350.0
+ 20
+-500.0
+ 10
+50.0
+ 20
+-500.0
+  0
+MTEXT
+  5
+14C
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+200.0
+ 20
+-450.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+13
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+14D
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+350.0
+ 20
+-400.0
+ 10
+650.0
+ 20
+-400.0
+ 10
+650.0
+ 20
+-500.0
+ 10
+350.0
+ 20
+-500.0
+  0
+MTEXT
+  5
+14E
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+500.0
+ 20
+-450.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+26
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+14F
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+650.0
+ 20
+-400.0
+ 10
+950.0
+ 20
+-400.0
+ 10
+950.0
+ 20
+-500.0
+ 10
+650.0
+ 20
+-500.0
+  0
+MTEXT
+  5
+150
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+800.0
+ 20
+-450.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+-
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+151
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+950.0
+ 20
+-400.0
+ 10
+1250.0
+ 20
+-400.0
+ 10
+1250.0
+ 20
+-500.0
+ 10
+950.0
+ 20
+-500.0
+  0
+MTEXT
+  5
+152
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1100.0
+ 20
+-450.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+101.27
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+153
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+1250.0
+ 20
+-400.0
+ 10
+1550.0
+ 20
+-400.0
+ 10
+1550.0
+ 20
+-500.0
+ 10
+1250.0
+ 20
+-500.0
+  0
+MTEXT
+  5
+154
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1400.0
+ 20
+-450.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+-
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+155
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+1550.0
+ 20
+-400.0
+ 10
+1950.0
+ 20
+-400.0
+ 10
+1950.0
+ 20
+-500.0
+ 10
+1550.0
+ 20
+-500.0
+  0
+MTEXT
+  5
+156
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1750.0
+ 20
+-450.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+157
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-750.0
+ 20
+-500.0
+ 10
+-550.0
+ 20
+-500.0
+ 10
+-550.0
+ 20
+-600.0
+ 10
+-750.0
+ 20
+-600.0
+  0
+MTEXT
+  5
+158
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+-650.0
+ 20
+-550.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+3
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+159
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-550.0
+ 20
+-500.0
+ 10
+-250.0
+ 20
+-500.0
+ 10
+-250.0
+ 20
+-600.0
+ 10
+-550.0
+ 20
+-600.0
+  0
+MTEXT
+  5
+15A
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+-400.0
+ 20
+-550.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+%%c 8
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+15B
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-250.0
+ 20
+-500.0
+ 10
+50.0
+ 20
+-500.0
+ 10
+50.0
+ 20
+-600.0
+ 10
+-250.0
+ 20
+-600.0
+  0
+MTEXT
+  5
+15C
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+-100.0
+ 20
+-550.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+1675
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+15D
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+50.0
+ 20
+-500.0
+ 10
+350.0
+ 20
+-500.0
+ 10
+350.0
+ 20
+-600.0
+ 10
+50.0
+ 20
+-600.0
+  0
+MTEXT
+  5
+15E
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+200.0
+ 20
+-550.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+20
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+15F
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+350.0
+ 20
+-500.0
+ 10
+650.0
+ 20
+-500.0
+ 10
+650.0
+ 20
+-600.0
+ 10
+350.0
+ 20
+-600.0
+  0
+MTEXT
+  5
+160
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+500.0
+ 20
+-550.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+40
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+161
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+650.0
+ 20
+-500.0
+ 10
+950.0
+ 20
+-500.0
+ 10
+950.0
+ 20
+-600.0
+ 10
+650.0
+ 20
+-600.0
+  0
+MTEXT
+  5
+162
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+800.0
+ 20
+-550.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+-
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+163
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+950.0
+ 20
+-500.0
+ 10
+1250.0
+ 20
+-500.0
+ 10
+1250.0
+ 20
+-600.0
+ 10
+950.0
+ 20
+-600.0
+  0
+MTEXT
+  5
+164
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1100.0
+ 20
+-550.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+-
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+165
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+1250.0
+ 20
+-500.0
+ 10
+1550.0
+ 20
+-500.0
+ 10
+1550.0
+ 20
+-600.0
+ 10
+1250.0
+ 20
+-600.0
+  0
+MTEXT
+  5
+166
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1400.0
+ 20
+-550.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+67.0
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+167
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+1550.0
+ 20
+-500.0
+ 10
+1950.0
+ 20
+-500.0
+ 10
+1950.0
+ 20
+-600.0
+ 10
+1550.0
+ 20
+-600.0
+  0
+MTEXT
+  5
+168
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1750.0
+ 20
+-550.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+169
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-750.0
+ 20
+-600.0
+ 10
+650.0
+ 20
+-600.0
+ 10
+650.0
+ 20
+-700.0
+ 10
+-750.0
+ 20
+-700.0
+  0
+MTEXT
+  5
+16A
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+-730.0
+ 20
+-650.0
+ 30
+0.0
+ 40
+50.0
+ 71
+4
+  1
+Długość ogólna wg średnic
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+16B
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-750.0
+ 20
+-600.0
+ 10
+650.0
+ 20
+-600.0
+ 10
+650.0
+ 20
+-700.0
+ 10
+-750.0
+ 20
+-700.0
+  0
+MTEXT
+  5
+16C
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+630.0
+ 20
+-650.0
+ 30
+0.0
+ 40
+50.0
+ 71
+6
+  1
+[m]
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+16D
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+650.0
+ 20
+-600.0
+ 10
+950.0
+ 20
+-600.0
+ 10
+950.0
+ 20
+-700.0
+ 10
+650.0
+ 20
+-700.0
+  0
+MTEXT
+  5
+16E
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+930.0
+ 20
+-650.0
+ 30
+0.0
+ 40
+50.0
+ 71
+6
+  1
+63.73
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+16F
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+950.0
+ 20
+-600.0
+ 10
+1250.0
+ 20
+-600.0
+ 10
+1250.0
+ 20
+-700.0
+ 10
+950.0
+ 20
+-700.0
+  0
+MTEXT
+  5
+170
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1230.0
+ 20
+-650.0
+ 30
+0.0
+ 40
+50.0
+ 71
+6
+  1
+101.27
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+171
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+1250.0
+ 20
+-600.0
+ 10
+1550.0
+ 20
+-600.0
+ 10
+1550.0
+ 20
+-700.0
+ 10
+1250.0
+ 20
+-700.0
+  0
+MTEXT
+  5
+172
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1530.0
+ 20
+-650.0
+ 30
+0.0
+ 40
+50.0
+ 71
+6
+  1
+67.0
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+173
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+1550.0
+ 20
+-600.0
+ 10
+1950.0
+ 20
+-600.0
+ 10
+1950.0
+ 20
+-700.0
+ 10
+1550.0
+ 20
+-700.0
+  0
+MTEXT
+  5
+174
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1750.0
+ 20
+-650.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+175
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-750.0
+ 20
+-700.0
+ 10
+650.0
+ 20
+-700.0
+ 10
+650.0
+ 20
+-800.0
+ 10
+-750.0
+ 20
+-800.0
+  0
+MTEXT
+  5
+176
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+-730.0
+ 20
+-750.0
+ 30
+0.0
+ 40
+50.0
+ 71
+4
+  1
+Masa 1m pręta
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+177
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-750.0
+ 20
+-700.0
+ 10
+650.0
+ 20
+-700.0
+ 10
+650.0
+ 20
+-800.0
+ 10
+-750.0
+ 20
+-800.0
+  0
+MTEXT
+  5
+178
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+630.0
+ 20
+-750.0
+ 30
+0.0
+ 40
+50.0
+ 71
+6
+  1
+[kg]
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+179
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+650.0
+ 20
+-700.0
+ 10
+950.0
+ 20
+-700.0
+ 10
+950.0
+ 20
+-800.0
+ 10
+650.0
+ 20
+-800.0
+  0
+MTEXT
+  5
+17A
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+930.0
+ 20
+-750.0
+ 30
+0.0
+ 40
+50.0
+ 71
+6
+  1
+9.865
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+17B
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+950.0
+ 20
+-700.0
+ 10
+1250.0
+ 20
+-700.0
+ 10
+1250.0
+ 20
+-800.0
+ 10
+950.0
+ 20
+-800.0
+  0
+MTEXT
+  5
+17C
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1230.0
+ 20
+-750.0
+ 30
+0.0
+ 40
+50.0
+ 71
+6
+  1
+0.888
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+17D
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+1250.0
+ 20
+-700.0
+ 10
+1550.0
+ 20
+-700.0
+ 10
+1550.0
+ 20
+-800.0
+ 10
+1250.0
+ 20
+-800.0
+  0
+MTEXT
+  5
+17E
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1530.0
+ 20
+-750.0
+ 30
+0.0
+ 40
+50.0
+ 71
+6
+  1
+0.395
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+17F
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+1550.0
+ 20
+-700.0
+ 10
+1950.0
+ 20
+-700.0
+ 10
+1950.0
+ 20
+-800.0
+ 10
+1550.0
+ 20
+-800.0
+  0
+MTEXT
+  5
+180
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1750.0
+ 20
+-750.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+181
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-750.0
+ 20
+-800.0
+ 10
+650.0
+ 20
+-800.0
+ 10
+650.0
+ 20
+-900.0
+ 10
+-750.0
+ 20
+-900.0
+  0
+MTEXT
+  5
+182
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+-730.0
+ 20
+-850.0
+ 30
+0.0
+ 40
+50.0
+ 71
+4
+  1
+Masa ogólna wg średnic
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+183
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-750.0
+ 20
+-800.0
+ 10
+650.0
+ 20
+-800.0
+ 10
+650.0
+ 20
+-900.0
+ 10
+-750.0
+ 20
+-900.0
+  0
+MTEXT
+  5
+184
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+630.0
+ 20
+-850.0
+ 30
+0.0
+ 40
+50.0
+ 71
+6
+  1
+[kg]
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+185
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+650.0
+ 20
+-800.0
+ 10
+950.0
+ 20
+-800.0
+ 10
+950.0
+ 20
+-900.0
+ 10
+650.0
+ 20
+-900.0
+  0
+MTEXT
+  5
+186
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+930.0
+ 20
+-850.0
+ 30
+0.0
+ 40
+50.0
+ 71
+6
+  1
+628.7
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+187
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+950.0
+ 20
+-800.0
+ 10
+1250.0
+ 20
+-800.0
+ 10
+1250.0
+ 20
+-900.0
+ 10
+950.0
+ 20
+-900.0
+  0
+MTEXT
+  5
+188
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1230.0
+ 20
+-850.0
+ 30
+0.0
+ 40
+50.0
+ 71
+6
+  1
+89.9
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+189
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+1250.0
+ 20
+-800.0
+ 10
+1550.0
+ 20
+-800.0
+ 10
+1550.0
+ 20
+-900.0
+ 10
+1250.0
+ 20
+-900.0
+  0
+MTEXT
+  5
+18A
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1530.0
+ 20
+-850.0
+ 30
+0.0
+ 40
+50.0
+ 71
+6
+  1
+26.5
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+18B
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+1550.0
+ 20
+-800.0
+ 10
+1950.0
+ 20
+-800.0
+ 10
+1950.0
+ 20
+-900.0
+ 10
+1550.0
+ 20
+-900.0
+  0
+MTEXT
+  5
+18C
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1750.0
+ 20
+-850.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+18D
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-750.0
+ 20
+-900.0
+ 10
+650.0
+ 20
+-900.0
+ 10
+650.0
+ 20
+-1000.0
+ 10
+-750.0
+ 20
+-1000.0
+  0
+MTEXT
+  5
+18E
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+-730.0
+ 20
+-950.0
+ 30
+0.0
+ 40
+50.0
+ 71
+4
+  1
+Masa całkowita
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+18F
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-750.0
+ 20
+-900.0
+ 10
+650.0
+ 20
+-900.0
+ 10
+650.0
+ 20
+-1000.0
+ 10
+-750.0
+ 20
+-1000.0
+  0
+MTEXT
+  5
+190
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+630.0
+ 20
+-950.0
+ 30
+0.0
+ 40
+50.0
+ 71
+6
+  1
+[kg]
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+191
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+650.0
+ 20
+-900.0
+ 10
+1550.0
+ 20
+-900.0
+ 10
+1550.0
+ 20
+-1000.0
+ 10
+650.0
+ 20
+-1000.0
+  0
+MTEXT
+  5
+192
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1100.0
+ 20
+-950.0
+ 30
+0.0
+ 40
+50.0
+ 71
+5
+  1
+745.1
+  7
+KONEC-Tekst
+  0
+LWPOLYLINE
+  5
+193
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+1550.0
+ 20
+-900.0
+ 10
+1950.0
+ 20
+-900.0
+ 10
+1950.0
+ 20
+-1000.0
+ 10
+1550.0
+ 20
+-1000.0
+  0
+MTEXT
+  5
+194
+330
+17
+100
+AcDbEntity
+  8
+KONEC-Obrys
+100
+AcDbMText
+ 10
+1750.0
+ 20
+-950.0
  30
 0.0
  40
@@ -10813,7 +14275,7 @@ KONEC-Tekst
   0
 INSERT
   5
-120
+1A0
 330
 17
 100
@@ -10829,7 +14291,7 @@ reinforcement_description
  10
 -3027.5
  20
--1246.0
+-258.0
  30
 0.0
  41
@@ -10841,7 +14303,7 @@ reinforcement_description
   0
 ATTRIB
   5
-121
+1A1
 330
 17
 100
@@ -10853,7 +14315,7 @@ AcDbText
  10
 -3307.5
  20
--1146.0
+-158.0
  30
 0.0
  40
@@ -10867,7 +14329,7 @@ KONEC-Tekst
  11
 -3307.5
  21
--1146.0
+-158.0
  31
 0.0
 100
@@ -10887,13 +14349,13 @@ NUMBER
  11
 -3307.5
  21
--1146.0
+-158.0
  31
 0.0
   0
 ATTRIB
   5
-122
+1A2
 330
 17
 100
@@ -10905,13 +14367,13 @@ AcDbText
  10
 -3107.5
  20
--1146.0
+-158.0
  30
 0.0
  40
 50.0
   1
-2
+7
   7
 KONEC-Tekst
  72
@@ -10919,7 +14381,7 @@ KONEC-Tekst
  11
 -3107.5
  21
--1146.0
+-158.0
  31
 0.0
 100
@@ -10939,13 +14401,13 @@ QUANTITY
  11
 -3107.5
  21
--1146.0
+-158.0
  31
 0.0
   0
 ATTRIB
   5
-123
+1A3
 330
 17
 100
@@ -10957,19 +14419,19 @@ AcDbText
  10
 -3027.5
  20
--1146.0
+-158.0
  30
 0.0
  40
 50.0
   1
-16
+40
   7
 KONEC-Tekst
  11
 -3027.5
  21
--1146.0
+-158.0
  31
 0.0
 100
@@ -10989,13 +14451,13 @@ DIAMETER
  11
 -3027.5
  21
--1146.0
+-158.0
  31
 0.0
   0
 ATTRIB
   5
-124
+1A4
 330
 17
 100
@@ -11007,19 +14469,19 @@ AcDbText
  10
 -2847.5
  20
--1146.0
+-158.0
  30
 0.0
  40
 50.0
   1
-4703
+4552
   7
 KONEC-Tekst
  11
 -2847.5
  21
--1146.0
+-158.0
  31
 0.0
 100
@@ -11039,13 +14501,13 @@ LENGTH
  11
 -2847.5
  21
--1146.0
+-158.0
  31
 0.0
   0
 SEQEND
   5
-125
+1A5
 330
 17
 100
@@ -11055,7 +14517,7 @@ AcDbEntity
   0
 INSERT
   5
-131
+1B1
 330
 17
 100
@@ -11071,7 +14533,7 @@ reinforcement_description
  10
 -3027.5
  20
--1811.0
+-811.0
  30
 0.0
  41
@@ -11083,7 +14545,7 @@ reinforcement_description
   0
 ATTRIB
   5
-132
+1B2
 330
 17
 100
@@ -11095,7 +14557,7 @@ AcDbText
  10
 -3307.5
  20
--1711.0
+-711.0
  30
 0.0
  40
@@ -11109,7 +14571,7 @@ KONEC-Tekst
  11
 -3307.5
  21
--1711.0
+-711.0
  31
 0.0
 100
@@ -11129,13 +14591,13 @@ NUMBER
  11
 -3307.5
  21
--1711.0
+-711.0
  31
 0.0
   0
 ATTRIB
   5
-133
+1B3
 330
 17
 100
@@ -11147,13 +14609,13 @@ AcDbText
  10
 -3107.5
  20
--1711.0
+-711.0
  30
 0.0
  40
 50.0
   1
-3
+13
   7
 KONEC-Tekst
  72
@@ -11161,7 +14623,7 @@ KONEC-Tekst
  11
 -3107.5
  21
--1711.0
+-711.0
  31
 0.0
 100
@@ -11181,13 +14643,13 @@ QUANTITY
  11
 -3107.5
  21
--1711.0
+-711.0
  31
 0.0
   0
 ATTRIB
   5
-134
+1B4
 330
 17
 100
@@ -11199,7 +14661,7 @@ AcDbText
  10
 -3027.5
  20
--1711.0
+-711.0
  30
 0.0
  40
@@ -11211,7 +14673,7 @@ KONEC-Tekst
  11
 -3027.5
  21
--1711.0
+-711.0
  31
 0.0
 100
@@ -11231,13 +14693,13 @@ DIAMETER
  11
 -3027.5
  21
--1711.0
+-711.0
  31
 0.0
   0
 ATTRIB
   5
-135
+1B5
 330
 17
 100
@@ -11249,7 +14711,7 @@ AcDbText
  10
 -2847.5
  20
--1711.0
+-711.0
  30
 0.0
  40
@@ -11261,7 +14723,7 @@ KONEC-Tekst
  11
 -2847.5
  21
--1711.0
+-711.0
  31
 0.0
 100
@@ -11281,13 +14743,13 @@ LENGTH
  11
 -2847.5
  21
--1711.0
+-711.0
  31
 0.0
   0
 SEQEND
   5
-136
+1B6
 330
 17
 100
@@ -11297,7 +14759,7 @@ AcDbEntity
   0
 INSERT
   5
-142
+1C2
 330
 17
 100
@@ -11311,9 +14773,9 @@ AcDbBlockReference
   2
 reinforcement_description
  10
-715.0
+1015.0
  20
--450.0
+750.0
  30
 0.0
  41
@@ -11325,7 +14787,7 @@ reinforcement_description
   0
 ATTRIB
   5
-143
+1C3
 330
 17
 100
@@ -11335,9 +14797,9 @@ KONEC-Obrys
 100
 AcDbText
  10
-435.0
+735.0
  20
--350.0
+850.0
  30
 0.0
  40
@@ -11349,9 +14811,9 @@ KONEC-Tekst
  72
 1
  11
-435.0
+735.0
  21
--350.0
+850.0
  31
 0.0
 100
@@ -11369,15 +14831,15 @@ NUMBER
  72
 0
  11
-435.0
+735.0
  21
--350.0
+850.0
  31
 0.0
   0
 ATTRIB
   5
-144
+1C4
 330
 17
 100
@@ -11387,9 +14849,9 @@ KONEC-Obrys
 100
 AcDbText
  10
-635.0
+935.0
  20
--350.0
+850.0
  30
 0.0
  40
@@ -11401,9 +14863,9 @@ KONEC-Tekst
  72
 2
  11
-635.0
+935.0
  21
--350.0
+850.0
  31
 0.0
 100
@@ -11421,15 +14883,15 @@ QUANTITY
  72
 0
  11
-635.0
+935.0
  21
--350.0
+850.0
  31
 0.0
   0
 ATTRIB
   5
-145
+1C5
 330
 17
 100
@@ -11439,9 +14901,9 @@ KONEC-Obrys
 100
 AcDbText
  10
-715.0
+1015.0
  20
--350.0
+850.0
  30
 0.0
  40
@@ -11451,9 +14913,9 @@ AcDbText
   7
 KONEC-Tekst
  11
-715.0
+1015.0
  21
--350.0
+850.0
  31
 0.0
 100
@@ -11471,15 +14933,15 @@ DIAMETER
  72
 0
  11
-715.0
+1015.0
  21
--350.0
+850.0
  31
 0.0
   0
 ATTRIB
   5
-146
+1C6
 330
 17
 100
@@ -11489,21 +14951,21 @@ KONEC-Obrys
 100
 AcDbText
  10
-895.0
+1195.0
  20
--350.0
+850.0
  30
 0.0
  40
 50.0
   1
-1375
+1675
   7
 KONEC-Tekst
  11
-895.0
+1195.0
  21
--350.0
+850.0
  31
 0.0
 100
@@ -11521,15 +14983,15 @@ LENGTH
  72
 0
  11
-895.0
+1195.0
  21
--350.0
+850.0
  31
 0.0
   0
 SEQEND
   5
-147
+1C7
 330
 17
 100
@@ -11641,7 +15103,7 @@ Layout1
   3
 BŻ-3
 350
-68
+88
   0
 DICTIONARY
   5
@@ -12535,7 +15997,7 @@ CREATED_BY_EZDXF
   3
 WRITTEN_BY_EZDXF
 350
-14A
+1CB
   0
 DICTIONARYVAR
   5
@@ -12547,11 +16009,11 @@ DictionaryVariables
 280
 0
   1
-0.17.2 @ 2022-02-21T12:16:21.763379+00:00
+0.17.2 @ 2022-02-22T19:58:26.827987+00:00
   0
 LAYOUT
   5
-68
+88
 330
 D
 100
@@ -12673,13 +16135,13 @@ BŻ-3
  76
 1
 330
-65
+85
 331
-69
+89
   0
 DICTIONARYVAR
   5
-14A
+1CB
 330
 2D
 100
@@ -12687,7 +16149,7 @@ DictionaryVariables
 280
 0
   1
-0.17.2 @ 2022-02-21T12:16:21.785378+00:00
+0.17.2 @ 2022-02-22T19:58:26.902988+00:00
   0
 ENDSEC
   0

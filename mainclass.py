@@ -8,52 +8,9 @@ import ezdxf.math
 from ezdxf import zoom
 from ezdxf.enums import TextEntityAlignment
 
-lang = 'pl'
-
-LANG_PL = {
-    'bending_schedule': 'WYKAZ ZBROJENIA',
-    'mark': 'Poz.\nnr',
-    'dia': 'Średnica\n%%c',
-    'lenght_bar': 'Długość',
-    'number_in_element': 'Liczba w\n1 elem.',
-    'total_number': 'Liczba\nogólna',
-    'tolat_lenght': 'Długość całkowita [m]',
-    'tolat_lenght_dia': 'Długość ogólna wg średnic',
-    'mass_1m': 'Masa 1m pręta',
-    'mass_according_dia': 'Masa ogólna wg średnic',
-    'mass_total': 'Masa całkowita',
-    'element:': 'Element:',
-    'comments': 'Uwagi',
-    'make': 'Wykonac',
-    'pcs': '[szt.]',
-    'mass': '[kg]',
-    'lenght_m': '[m]',
-    'lenght_mm': '[mm]',
-}
-
-LANG_ENG = {
-    'bending_schedule': 'BENDING SCHEDULE',
-    'mark': 'Mark',
-    'dia': 'DIA',
-}
-
-LANG_DE = {
-    'bending_schedule': 'STAHLLISTE',
-    'mark': 'Pos.\nNR.',
-    'dia': '%%c',
-}
-LANG = dict()
-if lang == 'pl':
-    LANG = LANG_PL
-elif lang == 'eng':
-    LANG = LANG_ENG
-elif lang == 'de':
-    LANG = LANG_DE
-else:
-    LANG = LANG_ENG
-
-
-# from ezdxf.tools.standards import linetypes
+from LANG.LANG_PL import LANG_PL
+from LANG.LANG_DE import LANG_DE
+from LANG.LANG_ENG import LANG_ENG
 
 def point_position(x0: float, y0: float, distance: float, theta: float = 60) -> tuple[float, float]:
     """
@@ -79,8 +36,13 @@ class DxfElement:
                  width_support_left: int,
                  width_support_right: int,
                  diameter_main_top: int,
+                 quantity_main_top: int,
+                 steel_grade_main_top: str,
                  diameter_main_bottom: int,
+                 quantity_main_bottom: int,
+                 steel_grade_main_bottom: str,
                  diameter_stirrup: int,
+                 steel_grade_stirrup: str,
                  cover_view_left: int,
                  cover_view_right: int,
                  cover_bottom: int,
@@ -94,9 +56,10 @@ class DxfElement:
                  secondary_stirrup_spacing: int,
                  number_of_elements: int = 1,
                  name: str = "Belka",
-                 dxfversion: str = 'R2018',
+                 dxfversion: str = 'R2010',
                  start_point_x: float = 0,
-                 start_point_y: float = 0):
+                 start_point_y: float = 0,
+                 language: str = 'pl'):
 
         self.first_row_stirrup_spacing_right = self._is_valid_value(first_row_stirrup_spacing_right, 0, 400)
         self.first_row_stirrup_spacing_left = self._is_valid_value(first_row_stirrup_spacing_left, 0, 400)
@@ -112,8 +75,13 @@ class DxfElement:
         self.cover_view_right = self._is_valid_value(cover_view_right, 5, 100)
         self.cover_view_left = self._is_valid_value(cover_view_left, 5, 100)
         self.diameter_main_bottom = self._is_valid_value(diameter_main_bottom, 1, 100)
+        self.quantity_main_top = self._is_valid_value(quantity_main_top, 1, 40)
+        self.steel_grade_main_top = self._is_valid_path_name(steel_grade_main_top)
         self.diameter_main_top = self._is_valid_value(diameter_main_top, 1, 100)
+        self.quantity_main_bottom = self._is_valid_value(quantity_main_bottom, 1, 40)
+        self.steel_grade_main_bottom = self._is_valid_path_name(steel_grade_main_bottom)
         self.diameter_stirrup = self._is_valid_value(diameter_stirrup, 1, 100)
+        self.steel_grade_stirrup = self._is_valid_path_name(steel_grade_stirrup)
         self.start_point_y = start_point_y
         self.start_point_x = start_point_x
         self.width_support_right = self._is_valid_value(width_support_right, 50, 1000)
@@ -121,6 +89,7 @@ class DxfElement:
         self.beam_span = self._is_valid_value_beam(beam_span, first_row_stirrup_range_left,
                                                    first_row_stirrup_range_right, 300, 15000)
         self.beam_height = self._is_valid_value(beam_height, 100, 1500)
+        self.language = self._is_valid_path_name(language)
 
         self.secondary_stirrup_spacing = math.floor(
             min(0.75 * self.beam_height * 0.9, self._is_valid_value(secondary_stirrup_spacing, 0, 400)) / 5) * 5
@@ -141,16 +110,17 @@ class DxfElement:
         self.position = {}
 
         self.dxfversion = dxfversion
+        self.language_choice()
         self.drawing = ezdxf.new(dxfversion=self.dxfversion, setup=["linetypes"])
         self.initial_drawing()
         self.layer_element()
-        self._start_points(-5000, 600)
+        self._start_points(start_y=-2*self.beam_height)
         self.msp = self.drawing.modelspace()
         self.beam_outline()
-        self.view_top_bar(quantity_bar=7, steel_grade='B500SP')
-        self.view_top_bar(quantity_bar=7, steel_grade='B500SP', dimension=True)
-        self.view_bottom_bar(quantity_bar=13, steel_grade='B500SP')
-        self.view_bottom_bar(quantity_bar=13, steel_grade='B500SP', dimension=True)
+        self.view_top_bar(quantity_bar=int(self.quantity_main_top), steel_grade=self.steel_grade_main_top)
+        self.view_top_bar(quantity_bar=int(self.quantity_main_top), steel_grade=self.steel_grade_main_top, dimension=True)
+        self.view_bottom_bar(quantity_bar=int(self.quantity_main_bottom), steel_grade=self.steel_grade_main_bottom)
+        self.view_bottom_bar(quantity_bar=int(self.quantity_main_bottom), steel_grade=self.steel_grade_main_bottom, dimension=True)
         self._secondary_stirrup_spacing_min()
         self.layout_new()
         self.stirrup_spacing()
@@ -213,6 +183,17 @@ class DxfElement:
         self.drawing.header['$INSUNITS'] = INSUNITS
         self.drawing.header['$MEASUREMENT'] = MEASUREMENT
         return self.drawing
+
+    def language_choice(self):
+        global LANG
+        if self.language == 'pl':
+            LANG = LANG_PL
+        elif self.language == 'eng':
+            LANG = LANG_ENG
+        elif self.language == 'de':
+            LANG = LANG_DE
+        else:
+            LANG = LANG_ENG
 
     def layer_element(self,
                       counter: str = 'KONEC-Obrys', color_counter: int = 3,
@@ -305,8 +286,10 @@ class DxfElement:
         self.supports(start_point_x + self.width_support_left + self.beam_span,
                       start_point_x + self.width_support_left + self.beam_span + self.width_support_right)
 
-        self.generate_marker_section((start_point_x + self.width_support_left + self.beam_span / 2, start_point_y + self.beam_height + 300), 'a')
-        self.generate_marker_section((start_point_x + self.width_support_left + self.beam_span / 2, start_point_y - 500), 'a')
+        self.generate_marker_section(
+            (start_point_x + self.width_support_left + self.beam_span / 2, start_point_y + self.beam_height + 300), 'a')
+        self.generate_marker_section(
+            (start_point_x + self.width_support_left + self.beam_span / 2, start_point_y - 500), 'a')
 
     def length_bar(self, points: list, diameter: float, angle: int = 90) -> float:
         """angle jest to kąt pod jakim zmieniają się proste"""
@@ -494,10 +477,10 @@ class DxfElement:
             self.msp.add_lwpolyline(points_stirrups, dxfattribs={'layer': self.stirrup})
         self.count_stirrups = len(localization_stirrups)
 
-    def supports(self, value_left: float, value_right: float, height: int = 200):
+    def supports(self, value_left: float, value_right: float, height: int = 200, hatch_name: str = 'ANSI32'):
         start_point_x, start_point_y = self.position['main_beam']
         hatch = self.msp.add_hatch(dxfattribs={'layer': self.hatch})
-        hatch.set_pattern_fill('ANSI33', scale=20, color=-1)
+        hatch.set_pattern_fill(hatch_name, scale=10, color=-1)
         hatch.paths.add_polyline_path(
             [(value_left, start_point_y), (value_left, start_point_y - height),
              (value_right, start_point_y - height), (value_right, start_point_y)]
@@ -603,7 +586,7 @@ class DxfElement:
             value5 = self.dimension_points[4]
             start_end_dimension = True
         else:
-            print('error 1. Błąd generatora wumiarowania', self.dimension_points)
+            print('error 1. Błąd generatora wymiarowania', self.dimension_points)
 
         if start_end_dimension:
             self.dimension_generator(
@@ -651,7 +634,8 @@ class DxfElement:
     def bar_section(self, diameter: float, point: list[tuple[float, float]]):
         for i in point:
             self.msp.add_circle(i, diameter / 2, dxfattribs={"layer": self.bar})
-            self.msp.add_hatch(color=-1, dxfattribs={"layer": self.hatch}).paths.add_edge_path().add_arc(i, diameter / 2)
+            self.msp.add_hatch(color=-1, dxfattribs={"layer": self.hatch}).paths.add_edge_path().add_arc(i,
+                                                                                                         diameter / 2)
 
     def localization_bar_section(self, localization: Literal['top', 'bottom']) -> list[tuple[float, float]]:
         start_point_x, start_point_y = self.position['section']
@@ -689,7 +673,8 @@ class DxfElement:
 
         for i in range(first_line):
             list_points.append(
-                (start_point_x + first_bar_horizontal[0] + spacing_first_line / (first_line - 1) * i, start_point_y + turn * center))
+                (start_point_x + first_bar_horizontal[0] + spacing_first_line / (first_line - 1) * i,
+                 start_point_y + turn * center))
 
         if count_bar_next_line > 0:
             if count_bar_next_line == 1:
@@ -702,22 +687,21 @@ class DxfElement:
                     self.beam_width - self.cover_left - self.diameter_stirrup - bar['diameter'] / 2
                 )
                 spacing_second_line = second_bar_horizontal[1] - second_bar_horizontal[0]
-                try:
-                    (second_bar_horizontal[1] - second_bar_horizontal[0]) / (count_bar_next_line if count_bar_next_line == 1 else count_bar_next_line - 1) < value
-                except ValueError:
-                    print('Maksymalnie dwie warstwy')
-
-                for i in range(count_bar_next_line):
-                    list_points.append(
-                        (start_point_x + second_bar_horizontal[0] + spacing_second_line / (count_bar_next_line - 1) * i, start_point_y + turn * (center + value)))
+                if (second_bar_horizontal[1] - second_bar_horizontal[0]) / (count_bar_next_line if count_bar_next_line == 1 else count_bar_next_line - 1) >= value:
+                    for i in range(count_bar_next_line):
+                        list_points.append((start_point_x + second_bar_horizontal[0] + spacing_second_line / (count_bar_next_line - 1) * i, start_point_y + turn * (center + value)))
+                else:
+                    self.msp.add_text("Nie poprawny rozstaw prętów, zmień przekrój belki lub prętów!!", dxfattribs={'height': 500, 'style': self.text})\
+                        .set_placement((start_point_x + self.beam_span, start_point_y + 2 * self.beam_height), align=TextEntityAlignment.MIDDLE_CENTER)
 
         return list_points
 
     def beam_section_rectangular(self):
         start_point_x, start_point_y = self.position['section']
 
-        self.msp.add_text('A-A', dxfattribs={"height": 5 * 20, 'style': self.text, "layer": self.counter})\
-            .set_placement((start_point_x + self.beam_height / 2, start_point_y + self.beam_height + 200), align=TextEntityAlignment.BOTTOM_CENTER)
+        self.msp.add_text('A-A', dxfattribs={"height": 5 * 20, 'style': self.text, "layer": self.counter}) \
+            .set_placement((start_point_x + self.beam_height / 2, start_point_y + self.beam_height + 200),
+                           align=TextEntityAlignment.BOTTOM_CENTER)
 
         points_beam_section = [(start_point_x, start_point_y),
                                (start_point_x + self.beam_width, start_point_y),
@@ -737,7 +721,7 @@ class DxfElement:
             self.msp.add_lwpolyline(
                 [(x0, y0),
                  (x1,
-                 (start_point_y + self.beam_height + 100))],
+                  (start_point_y + self.beam_height + 100))],
                 dxfattribs={'layer': self.counter})
         for value, (x0, y0) in enumerate(self.localization_bar_section('bottom')):
             x1 = (x0 + (y0 - start_point_y + 100) * math.tan(2 * math.pi + math.radians(30)))
@@ -749,13 +733,23 @@ class DxfElement:
                   (start_point_y - 100))
                  ],
                 dxfattribs={'layer': self.counter})
-        self.msp.add_lwpolyline([(start_for_line[0], start_point_y + self.beam_height + 100), ((start_point_x + self.beam_width + 100), (start_point_y + self.beam_height + 100))], dxfattribs={'layer': self.counter})
-        self.msp.add_lwpolyline([(start_for_line[1], start_point_y - 100), ((start_point_x + self.beam_width + 100), (start_point_y - 100))], dxfattribs={'layer': self.counter})
-        self.msp.add_lwpolyline([(start_point_x + self.beam_width - self.cover_right, start_point_y + self.beam_height / 2), (start_point_x + self.beam_width + 100, start_point_y + self.beam_height / 2)], dxfattribs={'layer': self.counter})
+        self.msp.add_lwpolyline([(start_for_line[0], start_point_y + self.beam_height + 100),
+                                 ((start_point_x + self.beam_width + 100), (start_point_y + self.beam_height + 100))],
+                                dxfattribs={'layer': self.counter})
+        self.msp.add_lwpolyline([(start_for_line[1], start_point_y - 100),
+                                 ((start_point_x + self.beam_width + 100), (start_point_y - 100))],
+                                dxfattribs={'layer': self.counter})
+        self.msp.add_lwpolyline(
+            [(start_point_x + self.beam_width - self.cover_right, start_point_y + self.beam_height / 2),
+             (start_point_x + self.beam_width + 100, start_point_y + self.beam_height / 2)],
+            dxfattribs={'layer': self.counter})
         # todo: Poprawić ponieważ powinno samo nadawać nr pręta
-        self.generate_marker_left(((start_point_x + self.beam_width + 100), (start_point_y + self.beam_height + 100)), 1)
+        self.generate_marker_left(((start_point_x + self.beam_width + 100), (start_point_y + self.beam_height + 100)),
+                                  1)
         self.generate_marker_left(((start_point_x + self.beam_width + 100), (start_point_y - 100)), 2)
         self.generate_marker_left((start_point_x + self.beam_width + 100, start_point_y + self.beam_height / 2), 3)
+
+        self.dimension_section()
 
     def dimension_section(self, height: int = 200):
         start_point_x, start_point_y = self.position['section']
@@ -766,11 +760,11 @@ class DxfElement:
         )
 
         self.dimension_generator(
-            (start_point_x - height, start_point_y),
+            (start_point_x - height / 4, start_point_y),
             (start_point_x, start_point_y),
-            (start_point_x, start_point_y + self.beam_height)
+            (start_point_x, start_point_y + self.beam_height),
+            angle=90
         )
-
 
     def view_stirrups_type_1(self, start_point_x: float, start_point_y: float, anchoring_stirrup: float = 80):
 
@@ -818,7 +812,7 @@ class DxfElement:
         length_bar = self.length_bar(points=points, diameter=self.diameter_stirrup)
 
         self.list_bar(diameter=self.diameter_stirrup, quantity_bar=self.count_stirrups, length=length_bar,
-                      steel_grade='B500A', points=(0, 0))
+                      steel_grade=self.steel_grade_stirrup, points=(0, 0))
 
         self.msp.add_lwpolyline(points, dxfattribs={'layer': self.bar})
 
@@ -981,21 +975,21 @@ class DxfElement:
                                                      width=sum(column_width[:1]) * scale),
                            width=column_width[1],
                            height=sum(row_height[3:4]),
-                           text=LANG['lenght_mm'])
+                           text=LANG['length_mm'])
 
         self.generate_cell(point_top_left=tuple_dest(start_point,
                                                      height=-sum(row_height[:1]) * scale,
                                                      width=sum(column_width[:2]) * scale),
                            width=column_width[2],
                            height=sum(row_height[1:3]),
-                           text=LANG['lenght_bar'])
+                           text=LANG['length_bar'])
 
         self.generate_cell(point_top_left=tuple_dest(start_point,
                                                      height=-sum(row_height[:3]) * scale,
                                                      width=sum(column_width[:2]) * scale),
                            width=column_width[2],
                            height=sum(row_height[3:4]),
-                           text=LANG['lenght_mm'])
+                           text=LANG['length_mm'])
 
         self.generate_cell(point_top_left=tuple_dest(start_point,
                                                      height=-sum(row_height[:1]) * scale,
@@ -1030,7 +1024,7 @@ class DxfElement:
                                                      width=sum(column_width[:5]) * scale),
                            width=column_width[5],
                            height=sum(row_height[3:4]),
-                           text=LANG['tolat_lenght'])
+                           text=LANG['total_length'])
 
         # nie należy tak tworzyć tablic, listy należy tworzyć przez list comprechention
         # array_bending_schedule = count_column * [count_row * [0]]
@@ -1178,8 +1172,8 @@ class DxfElement:
             array_total_mass[3][0] += round(value, 1)
 
         array_footer = [
-            [(LANG['tolat_lenght_dia'], 4), (LANG['lenght_m'], 6)],
-            [(LANG['mass_1m'], 4), (LANG['mass'], 6)],
+            [(LANG['total_length_dia'], 4), (LANG['length_m'], 6)],
+            [(LANG['mass_1m'], 4), (LANG['mass_length'], 6)],
             [(LANG['mass_according_dia'], 4), (LANG['mass'], 6)],
             [(LANG['mass_total'], 4), (LANG['mass'], 6)]
         ]
@@ -1255,7 +1249,8 @@ class DxfElement:
         block.add_attdef('LENGTH', dxfattribs={"height": 2.5, 'style': self.text, "layer": self.counter}).set_placement(
             (9, 5), align=TextEntityAlignment.MIDDLE_LEFT)
 
-    def generate_reinforcement_description(self, position: tuple, number: float or str, quantity: float or str, diameter: float or str,
+    def generate_reinforcement_description(self, position: tuple, number: float or str, quantity: float or str,
+                                           diameter: float or str,
                                            length: float or str, scale: int = 20):
         self.msp.add_auto_blockref("reinforcement_description", position,
                                    {"NUMBER": str(number), "QUANTITY": str(quantity), "DIAMETER": str(diameter),
@@ -1265,7 +1260,8 @@ class DxfElement:
         self.msp.add_auto_blockref("marker", position, {"NUMBER": str(number)}).set_scale(scale).explode()
 
     def generate_marker_section(self, position: tuple, section: float or str, scale: int = 20):
-        self.msp.add_auto_blockref("marker_section", position, {"SECTION": str(section).upper()}).set_scale(scale).explode()
+        self.msp.add_auto_blockref("marker_section", position, {"SECTION": str(section).upper()}).set_scale(
+            scale).explode()
 
     def generate_block(self):
         for i in self.steel_bill:
@@ -1275,7 +1271,7 @@ class DxfElement:
                 quantity=i['quantity_bar'],
                 diameter=i['diameter'],
                 length=i['length']
-                )
+            )
 
     def layout_new(self):
         """layauty, początki"""
@@ -1292,12 +1288,4 @@ class DxfElement:
 
 
 # testy plików
-draw = DxfElement(3450, 500, 400, 250, 250, 40, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 1350, 250, 125, 400, name="BŻ-3",
-                  number_of_elements=2)
-# draw1 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 1250, 250, 100, 400, name="BŻ-2")
-# draw4 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 300, name="BŻ-21")
-# draw41 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1150, 1250, 250, 150, 310, name="BŻ-23")
-# draw5 = DxfElement(3020, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 600, 600, 150, 150, 200, name="BŻ-22")
-# draw2 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 0, 1250, 110, 100, 400, name="BŻ-3")
-# draw3 = DxfElement(3000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 0, 0, 110, 100, 400, name="BŻ-4")
-# draw31 = DxfElement(12000, 500, 250, 250, 250, 20, 12, 8, 25, 30, 25, 30, 35, 35, 1000, 0, 250, 0, 400, name="BŻ-5")
+draw3 = DxfElement(3000, 500, 250, 250, 250, 20, 3, 'B500SP', 12, 4, 'B500SP', 8, 'B500A', 25, 30, 25, 30, 35, 35, 0, 0, 110, 100, 400, name="BŻ-4", number_of_elements=5, language='pl')

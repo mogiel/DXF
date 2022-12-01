@@ -1283,7 +1283,3 @@ class DxfElement:
             size=(420, 297), margins=(0.5, 0.5, 0.5, 0.5), units="mm", scale=(1, 20)
         )
         # layout.add_viewport((420 / 2, 297 / 2), (419 * 20, 296 * 20), (420, 297), 296 * 20)
-
-
-# testy plików
-draw3 = DxfElement(3000, 500, 250, 250, 250, 20, 3, 'B500SP', 12, 4, 'B500SP', 8, 'B500A', 25, 30, 25, 30, 35, 35, 0, 0, 110, 100, 400, name="BŻ-4", number_of_elements=5, language='pl')

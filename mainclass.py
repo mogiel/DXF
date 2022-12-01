@@ -12,6 +12,7 @@ from LANG.LANG_PL import LANG_PL
 from LANG.LANG_DE import LANG_DE
 from LANG.LANG_ENG import LANG_ENG
 
+
 def point_position(x0: float, y0: float, distance: float, theta: float = 60) -> tuple[float, float]:
     """
     theta zgodna z ruchem wskazowek zegara. godzina 12:00 to 0st, 3:00 to 90st, 6:00 to 180st, 9:00 to 270st
@@ -132,8 +133,6 @@ class DxfElement:
         self.generate_block()
         self.save()
 
-    """Część sprawdzająca poprawnośc danych"""
-
     @staticmethod
     def _is_valid_value(value: float, min_value: float = 0, max_value: float = 99999):
         if type(value) != int or value < min_value or value > max_value:
@@ -195,8 +194,7 @@ class DxfElement:
         else:
             LANG = LANG_ENG
 
-    def layer_element(self,
-                      counter: str = 'KONEC-Obrys', color_counter: int = 3,
+    def layer_element(self,                      counter: str = 'KONEC-Obrys', color_counter: int = 3,
                       bar: str = 'KONEC-Prety', color_bar: int = 1,
                       stirrup: str = 'KONEC-Strzemiona', color_stirrup: int = 6,
                       hatch: str = 'KONEC-Kreskowanie', color_hatch: int = 7,
